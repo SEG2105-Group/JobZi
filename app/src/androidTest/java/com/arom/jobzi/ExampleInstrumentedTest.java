@@ -1,4 +1,4 @@
-package com.test.omaralmo.jobzi;
+package com.arom.jobzi;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
