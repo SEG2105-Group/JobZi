@@ -7,6 +7,8 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.arom.jobzi.util.AccountsManager;
+
 public class MainActivity extends AppCompatActivity {
 
     private TextView usernameTextView;
@@ -14,6 +16,9 @@ public class MainActivity extends AppCompatActivity {
 
     private Button loginButton;
     private Button signupButton;
+    
+    private AccountsManager database;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
