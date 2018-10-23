@@ -5,9 +5,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.arom.jobzi.util.AccountsManager;
+import com.arom.jobzi.account.AccountsManager;
 
 public class MainActivity extends AppCompatActivity {
 

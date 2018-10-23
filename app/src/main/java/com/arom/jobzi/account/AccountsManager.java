@@ -1,8 +1,5 @@
-package com.arom.jobzi.util;
+package com.arom.jobzi.account;
 
-import android.os.Parcel;
-
-import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
