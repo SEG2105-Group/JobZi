@@ -1,4 +1,4 @@
-package com.test.omaralmo.jobzi;
+package com.arom.jobzi;
 
 import org.junit.Test;
 
