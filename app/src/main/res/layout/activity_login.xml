@@ -22,27 +22,10 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.57" />
 
-    <Button
-        android:id="@+id/button_signup"
-        android:layout_width="137dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="4dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
-        android:onClick="signup"
-        android:text="Sign up"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.502"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button_logIn"
-        app:layout_constraintVertical_bias="0.135" />
-
     <LinearLayout
         android:id="@+id/linearLayout"
         android:layout_width="244dp"
-        android:layout_height="252dp"
+        android:layout_height="225dp"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="16dp"
         android:orientation="vertical"
@@ -52,11 +35,16 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
+        <TextView
+            android:id="@+id/textView_userID"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Username:" />
+
         <EditText
             android:id="@+id/userName"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/username"
+            android:layout_height="35dp"
             android:inputType="text"
             tools:layout_editor_absoluteX="142dp"
             tools:layout_editor_absoluteY="141dp" />
@@ -65,11 +53,16 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
+        <TextView
+            android:id="@+id/textView_Password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Password:" />
+
         <EditText
             android:id="@+id/userPassword"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/password"
+            android:layout_height="35dp"
             android:inputType="text"
             tools:layout_editor_absoluteX="142dp"
             tools:layout_editor_absoluteY="206dp" />
