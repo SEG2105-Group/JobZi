@@ -82,14 +82,13 @@ public class SignupActivity extends AppCompatActivity {
         user.setLastName(lastName);
         user.setAccountType(accountType);
 
-        authentication.createUserWithEmailAndPassword(email, password).addOnSuccessListener(new OnSuccessListener<AuthResult>() {
-            @Override
-            public void onSuccess(AuthResult authResult) {
-                String uid = authResult.getUser().getUid();
-                databaseManager.addUser(user, uid);
-            }
-        });
-
+        if (accountType.equals("A Home Owner")){
+            databaseManager.addHomeOwner(user);
+        } else if (accountType.equals("A Service Provider")){
+            databaseManager.addServiceProvider(user);
+        } else {
+            databaseManager.addAdmin(user);
+        }
 
     }
 
