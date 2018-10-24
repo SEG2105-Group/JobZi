@@ -1,4 +1,4 @@
-package com.arom.jobzi.util;
+package com.arom.jobzi.account;
 
 public enum AccountType {
 

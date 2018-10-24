@@ -1,13 +1,13 @@
-package com.arom.jobzi;
+package com.arom.jobzi.user;
 
 import android.app.Activity;
-import android.content.Context;
-import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteOpenHelper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+
+import com.arom.jobzi.R;
+import com.arom.jobzi.user.User;
 
 import java.util.List;
 

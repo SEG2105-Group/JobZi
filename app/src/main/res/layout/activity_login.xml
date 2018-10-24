@@ -22,6 +22,15 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.57" />
 
+    <Button
+        android:id="@+id/signupButton"
+        android:layout_width="137dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Signup"
+        app:layout_constraintTop_toBottomOf="@+id/button_logIn"
+        tools:layout_editor_absoluteX="124dp" />
+
     <LinearLayout
         android:id="@+id/linearLayout"
         android:layout_width="244dp"
