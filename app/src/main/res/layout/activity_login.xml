@@ -6,7 +6,7 @@
     android:layout_height="match_parent">
 
     <Button
-        android:id="@+id/button_logIn"
+        android:id="@+id/loginButton"
         android:layout_width="137dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -21,6 +21,14 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.57" />
+
+    <Button
+        android:id="@+id/gotoSignupButton"
+        android:layout_width="137dp"
+        android:layout_height="wrap_content"
+        android:text="Signup"
+        app:layout_constraintLeft_toLeftOf="@id/loginButton"
+        app:layout_constraintTop_toBottomOf="@+id/loginButton" />
 
     <LinearLayout
         android:id="@+id/linearLayout"
