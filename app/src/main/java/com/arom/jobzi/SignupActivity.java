@@ -32,14 +32,14 @@ public class SignupActivity extends AppCompatActivity {
     private Button signupButton;
     private Button backButton;
 
-    private DatabaseManager databaseManager;
+    private DatabaseReference db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
 
-        databaseManager = new DatabaseManager();
+        db = FirebaseDatabase.getInstance().getReference();
 
         emailTextView = findViewById(R.id.emailTextView);
         firstNameTextView = findViewById(R.id.firstNameTextView);
@@ -74,6 +74,7 @@ public class SignupActivity extends AppCompatActivity {
     }
 
     private void processSignup() {
+        DatabaseReference db = FirebaseDatabase.getInstance().getReference();
 
         String email = emailTextView.getText().toString();
         final String firstName = firstNameTextView.getText().toString();
@@ -90,11 +91,7 @@ public class SignupActivity extends AppCompatActivity {
         user.setFirstName(firstName);
         user.setLastName(lastName);
         user.setAccountType(accountType);
-
-        Log.d("firebaseDebug", "Adding " + firstName + "...");
-
-        DatabaseReference db = FirebaseDatabase.getInstance().getReference();
-        db.child("test").push().setValue("THIS IS A TEST");
+        db.child(user.getId()).setValue(user);
 
     }
 
