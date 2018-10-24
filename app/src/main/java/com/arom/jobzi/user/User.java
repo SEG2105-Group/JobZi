@@ -4,17 +4,26 @@ import com.arom.jobzi.account.AccountType;
 
 public class User {
 
-    private String id;
-    private String username;
     private String email;
+    private String firstName;
+    private String lastName;
+
     private AccountType accountType;
 
-    public void setId(String id) {
-        this.id = id;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
     }
 
     public void setEmail(String email) {
@@ -23,14 +32,6 @@ public class User {
 
     public void setAccountType(AccountType accountType) {
         this.accountType = accountType;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public String getUsername() {
-        return username;
     }
 
     public String getEmail() {
