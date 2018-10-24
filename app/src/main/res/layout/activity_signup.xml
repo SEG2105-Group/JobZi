@@ -8,6 +8,22 @@
     tools:context=".SignupActivity">
 
     <EditText
+        android:id="@+id/usernameTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="Username"
+        android:inputType="textPersonName" />
+
+    <EditText
+        android:id="@+id/passwordTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="Password"
+        android:inputType="textPassword" />
+
+    <EditText
         android:id="@+id/firstNameTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -30,13 +46,6 @@
         android:ems="10"
         android:hint="Email"
         android:inputType="textEmailAddress" />
-
-    <EditText
-        android:id="@+id/passwordTextView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:inputType="textPassword" />
 
     <Spinner
         android:id="@+id/accountTypesSpinner"
