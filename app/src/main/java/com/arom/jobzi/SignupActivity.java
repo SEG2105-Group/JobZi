@@ -3,7 +3,10 @@ package com.arom.jobzi;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.InputType;
+import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
@@ -15,18 +18,20 @@ import com.arom.jobzi.user.User;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class SignupActivity extends AppCompatActivity {
 
+    private TextView usernameTextView;
+    private TextView passwordTextView;
     private TextView emailTextView;
     private TextView firstNameTextView;
     private TextView lastNameTextView;
-    private TextView passwordTextView;
     private Spinner accountTypesSpinner;
     private Button signupButton;
     private Button backButton;
 
-    private FirebaseAuth authentication;
     private DatabaseManager databaseManager;
 
     @Override
@@ -34,7 +39,6 @@ public class SignupActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
 
-        authentication = FirebaseAuth.getInstance();
         databaseManager = new DatabaseManager();
 
         emailTextView = findViewById(R.id.emailTextView);
@@ -48,6 +52,7 @@ public class SignupActivity extends AppCompatActivity {
         ArrayAdapter<AccountType> spinnerArrayAdapter = new ArrayAdapter<AccountType>(this, android.R.layout.simple_spinner_item, AccountType.values());
         spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         accountTypesSpinner.setAdapter(spinnerArrayAdapter);
+        accountTypesSpinner.setSelection(AccountType.HOME_OWNER.ordinal());
 
         signupButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -71,10 +76,14 @@ public class SignupActivity extends AppCompatActivity {
     private void processSignup() {
 
         String email = emailTextView.getText().toString();
-        String firstName = firstNameTextView.getText().toString();
+        final String firstName = firstNameTextView.getText().toString();
         String lastName = lastNameTextView.getText().toString();
         String password = passwordTextView.getText().toString();
         AccountType accountType = (AccountType) accountTypesSpinner.getSelectedItem();
+
+        if(email.isEmpty() || firstName.isEmpty() || lastName.isEmpty() || password.isEmpty()) {
+            return;
+        }
 
         final User user = new User();
         user.setEmail(email);
@@ -82,14 +91,10 @@ public class SignupActivity extends AppCompatActivity {
         user.setLastName(lastName);
         user.setAccountType(accountType);
 
-        authentication.createUserWithEmailAndPassword(email, password).addOnSuccessListener(new OnSuccessListener<AuthResult>() {
-            @Override
-            public void onSuccess(AuthResult authResult) {
-                String uid = authResult.getUser().getUid();
-                databaseManager.addUser(user, uid);
-            }
-        });
+        Log.d("firebaseDebug", "Adding " + firstName + "...");
 
+        DatabaseReference db = FirebaseDatabase.getInstance().getReference();
+        db.child("test").push().setValue("THIS IS A TEST");
 
     }
 
