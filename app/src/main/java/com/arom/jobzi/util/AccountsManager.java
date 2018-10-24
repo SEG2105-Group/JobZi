@@ -23,6 +23,6 @@ public class AccountsManager {
         return authentication.getCurrentUser() != null;
     }
 
-    
+
 
 }
