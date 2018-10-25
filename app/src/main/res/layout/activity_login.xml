@@ -15,6 +15,7 @@
         android:layout_marginBottom="8dp"
         android:onClick="login"
         android:text="Log in"
+        android:textAllCaps="false"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.502"
@@ -27,6 +28,7 @@
         android:layout_width="137dp"
         android:layout_height="wrap_content"
         android:text="Signup"
+        android:textAllCaps="false"
         app:layout_constraintLeft_toLeftOf="@id/loginButton"
         app:layout_constraintTop_toBottomOf="@+id/loginButton" />
 
@@ -43,37 +45,23 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <TextView
-            android:id="@+id/textView_userID"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Username:" />
-
         <EditText
-            android:id="@+id/userName"
+            android:id="@+id/loginPsernameTextView"
             android:layout_width="match_parent"
             android:layout_height="35dp"
             android:inputType="text"
-            tools:layout_editor_absoluteX="142dp"
-            tools:layout_editor_absoluteY="141dp" />
+            android:hint="@string/username"/>
 
         <Space
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
-        <TextView
-            android:id="@+id/textView_Password"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Password:" />
-
         <EditText
-            android:id="@+id/userPassword"
+            android:id="@+id/loginPasswordTextView"
             android:layout_width="match_parent"
             android:layout_height="35dp"
-            android:inputType="text"
-            tools:layout_editor_absoluteX="142dp"
-            tools:layout_editor_absoluteY="206dp" />
+            android:inputType="textPassword"
+            android:hint="@string/password" />
 
     </LinearLayout>
 
