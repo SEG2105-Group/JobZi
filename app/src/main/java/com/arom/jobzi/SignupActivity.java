@@ -27,12 +27,12 @@ import java.util.regex.Pattern;
 
 public class SignupActivity extends AppCompatActivity {
 
-    public static final String USERS = "users";
+    public static final String ACCOUNTS = "accounts";
+
     private static final String EMAIL_REGEX = "^[a-zA-Z0-9_+&*-]+(?:\\."+
             "[a-zA-Z0-9_+&*-]+)*@" +
             "(?:[a-zA-Z0-9-]+\\.)+[a-z" +
             "A-Z]{2,7}$";
-    public static final String ACCOUNTS = "accounts";
 
     private TextView usernameTextView;
     private TextView passwordTextView;
