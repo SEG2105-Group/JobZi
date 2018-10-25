@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -15,12 +16,17 @@ import android.widget.Toast;
 
 import com.arom.jobzi.account.AccountType;
 import com.arom.jobzi.user.User;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.regex.Pattern;
 
 public class SignupActivity extends AppCompatActivity {
+
+    public static final String ACCOUNTS = "accounts";
 
     public static final String USERS = "users";
     private static final String EMAIL_REGEX = "^[a-zA-Z0-9_+&*-]+(?:\\."+
@@ -37,7 +43,7 @@ public class SignupActivity extends AppCompatActivity {
     private Button signupButton;
     private Button backButton;
 
-    private DatabaseReference db;
+    private DatabaseReference accountsDatabase;
 
     private boolean adminExists;
 
@@ -46,8 +52,20 @@ public class SignupActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
 
-        db = FirebaseDatabase.getInstance().getReference().child(USERS);
+        accountsDatabase = FirebaseDatabase.getInstance().getReference().child(ACCOUNTS);
 
+        accountsDatabase.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                Log.d("firebaseDebug", "VALUE CHANGED: " + dataSnapshot.getValue());
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+      
         usernameTextView = findViewById(R.id.usernameTextView);
         emailTextView = findViewById(R.id.emailTextView);
         firstNameTextView = findViewById(R.id.firstNameTextView);
@@ -142,11 +160,13 @@ public class SignupActivity extends AppCompatActivity {
         user.setLastName(lastName);
         user.setAccountType(accountType);
 
-        String id = db.push().getKey();
-        
+        DatabaseReference newUserDb = accountsDatabase.push();
+
+        String id = newUserDb.getKey();
+
         user.setId(id);
         
-        db.child(id).setValue(user);
+        newUserDb.setValue(user);
 
         return user;
         

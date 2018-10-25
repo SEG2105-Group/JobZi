@@ -8,12 +8,17 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.arom.jobzi.user.User;
+import com.google.android.gms.common.data.DataBufferSafeParcelable;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+
+import java.util.Iterator;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -23,14 +28,14 @@ public class LoginActivity extends AppCompatActivity {
     private Button loginButton;
     private Button signupButton;
 
-    private DatabaseReference db;
+    private DatabaseReference accountsDatabase;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        db = FirebaseDatabase.getInstance().getReference();
+        accountsDatabase = FirebaseDatabase.getInstance().getReference().child(SignupActivity.ACCOUNTS);
         
         usernameTextView = findViewById(R.id.loginPsernameTextView);
         passwordTextView = findViewById(R.id.loginPasswordTextView);
@@ -58,17 +63,26 @@ public class LoginActivity extends AppCompatActivity {
 
     public void processLogin() {
 
-        String username = usernameTextView.getText().toString();
-        String password = passwordTextView.getText().toString();
+        final String username = usernameTextView.getText().toString();
+        final String password = passwordTextView.getText().toString();
 
-        db.addListenerForSingleValueEvent(new ValueEventListener() {
+        accountsDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-                String s = dataSnapshot.getKey();
+                for(DataSnapshot userSnapshot: dataSnapshot.getChildren()) {
 
-                Log.d("databaseTest", "Database.getKey(): " + s);
+                    User user = userSnapshot.getValue(User.class);
 
+                    if(user.getUsername().equals(username) && user.getPassword().equals(password)) {
+                        Intent toWelcomeIntent = new Intent(LoginActivity.this, WelcomeActivity.class);
+                        toWelcomeIntent.putExtra(WelcomeActivity.USER, user);
+                        startActivity(toWelcomeIntent);
+                        return;
+                    }
+                }
+
+                Toast.makeText(LoginActivity.this, "Invalid username or password or user does not exist.", Toast.LENGTH_LONG).show();
             }
 
             @Override
