@@ -5,9 +5,12 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.widget.ListView;
 import android.widget.TextView;
 
+import com.arom.jobzi.account.AccountType;
 import com.arom.jobzi.user.User;
+import com.arom.jobzi.user.UserList;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -26,9 +29,9 @@ public class WelcomeActivity extends AppCompatActivity {
     
     private TextView welcomeBannerTextView;
 
-    private DatabaseReference usersDatabase;
-
     private List<User> users;
+
+    private ListView userList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,8 +42,12 @@ public class WelcomeActivity extends AppCompatActivity {
 
         db = FirebaseDatabase.getInstance().getReference().child(SignupActivity.ACCOUNTS);
 
-        if (user.getAccountType().equals("Admin")) {
+        userList = findViewById(R.id.userList);
+
+        if (user.getAccountType().equals(AccountType.ADMIN)) {
+            userList.setVisibility(TextView.VISIBLE);
             addUsersListener();
+            userList.setAdapter(new UserList(this, users));
         }
 
         welcomeBannerTextView = findViewById(R.id.welcomeBannerTextView);
@@ -49,7 +56,7 @@ public class WelcomeActivity extends AppCompatActivity {
 
     private void addUsersListener(){
 
-        usersDatabase.addChildEventListener(new ChildEventListener() {
+        db.addChildEventListener(new ChildEventListener() {
 
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
@@ -59,6 +66,7 @@ public class WelcomeActivity extends AppCompatActivity {
                     users.add(user);
                     Log.d("firebaseDebug", "Adding user");
                 }
+
             }
 
             @Override
