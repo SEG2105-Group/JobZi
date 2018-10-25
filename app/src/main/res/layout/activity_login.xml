@@ -6,8 +6,8 @@
     android:layout_height="match_parent">
 
     <Button
-        android:id="@+id/button_logIn"
-        android:layout_width="137dp"
+        android:id="@+id/loginButton"
+        android:layout_width="@dimen/button_widths"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
@@ -15,57 +15,58 @@
         android:layout_marginBottom="8dp"
         android:onClick="login"
         android:text="Log in"
+        android:textAllCaps="false"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.502"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.57" />
+        app:layout_constraintVertical_bias="0.528" />
+
+    <Button
+        android:id="@+id/gotoSignupButton"
+        android:layout_width="@dimen/button_widths"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:text="Signup"
+        android:textAllCaps="false"
+        app:layout_constraintLeft_toLeftOf="@id/loginButton"
+        app:layout_constraintTop_toBottomOf="@+id/loginButton" />
 
     <LinearLayout
         android:id="@+id/linearLayout"
         android:layout_width="244dp"
-        android:layout_height="225dp"
+        android:layout_height="253dp"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="16dp"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_bias="0.524"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.405">
 
-        <TextView
-            android:id="@+id/textView_userID"
+        <Space
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Username:" />
+            android:layout_height="20dp" />
 
         <EditText
-            android:id="@+id/userName"
+            android:id="@+id/loginPsernameTextView"
             android:layout_width="match_parent"
-            android:layout_height="35dp"
-            android:inputType="text"
-            tools:layout_editor_absoluteX="142dp"
-            tools:layout_editor_absoluteY="141dp" />
+            android:layout_height="45dp"
+            android:hint="@string/username"
+            android:inputType="text" />
 
         <Space
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
-        <TextView
-            android:id="@+id/textView_Password"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Password:" />
-
         <EditText
-            android:id="@+id/userPassword"
+            android:id="@+id/loginPasswordTextView"
             android:layout_width="match_parent"
-            android:layout_height="35dp"
-            android:inputType="text"
-            tools:layout_editor_absoluteX="142dp"
-            tools:layout_editor_absoluteY="206dp" />
+            android:layout_height="45dp"
+            android:hint="@string/password"
+            android:inputType="textPassword" />
 
     </LinearLayout>
 
