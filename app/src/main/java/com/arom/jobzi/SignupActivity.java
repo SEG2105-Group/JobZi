@@ -1,5 +1,6 @@
 package com.arom.jobzi;
 
+import android.accounts.Account;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -28,7 +29,6 @@ public class SignupActivity extends AppCompatActivity {
 
     public static final String ACCOUNTS = "accounts";
 
-    public static final String USERS = "users";
     private static final String EMAIL_REGEX = "^[a-zA-Z0-9_+&*-]+(?:\\."+
             "[a-zA-Z0-9_+&*-]+)*@" +
             "(?:[a-zA-Z0-9-]+\\.)+[a-z" +
@@ -54,10 +54,17 @@ public class SignupActivity extends AppCompatActivity {
 
         accountsDatabase = FirebaseDatabase.getInstance().getReference().child(ACCOUNTS);
 
-        accountsDatabase.addValueEventListener(new ValueEventListener() {
+        accountsDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                Log.d("firebaseDebug", "VALUE CHANGED: " + dataSnapshot.getValue());
+
+                for(DataSnapshot userSnapshot: dataSnapshot.getChildren()) {
+                    User user = userSnapshot.getValue(User.class);
+                    if(user.getAccountType().equals(AccountType.ADMIN)) {
+                        adminExists = true;
+                    }
+                }
+
             }
 
             @Override
@@ -65,7 +72,7 @@ public class SignupActivity extends AppCompatActivity {
 
             }
         });
-      
+
         usernameTextView = findViewById(R.id.usernameTextView);
         emailTextView = findViewById(R.id.emailTextView);
         firstNameTextView = findViewById(R.id.firstNameTextView);
