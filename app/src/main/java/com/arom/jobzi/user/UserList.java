@@ -2,6 +2,7 @@ package com.arom.jobzi.user;
 
 import android.app.Activity;
 import android.support.annotation.NonNull;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,12 +15,15 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.List;
+import java.util.concurrent.Semaphore;
 
 public class UserList extends ArrayAdapter<User> {
 
     private Activity context;
     private List<User> users;
+    private User user;
     private DatabaseReference db;
+    final Semaphore semaphore = new Semaphore(0);
 
     public UserList(Activity context, List<User> users, DatabaseReference db) {
         super(context, R.layout.username_list);
@@ -42,13 +46,15 @@ public class UserList extends ArrayAdapter<User> {
         return usernameListLayout;
     }
 
-    public void addFromDatabase(){
-        boolean flag = true;
-
+    public void getUsers(){
+        db.child("users");
         db.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
+                for (DataSnapshot ds : dataSnapshot.getChildren()){
+                    
+                }
             }
 
             @Override
@@ -56,6 +62,13 @@ public class UserList extends ArrayAdapter<User> {
 
             }
         });
+
+        try {
+            semaphore.acquire();
+        } catch(InterruptedException ex) {
+            ex.printStackTrace();
+        }
+
     }
 
 }
