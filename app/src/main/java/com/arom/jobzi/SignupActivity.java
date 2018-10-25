@@ -18,9 +18,15 @@ import com.arom.jobzi.user.User;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.util.regex.Pattern;
+
 public class SignupActivity extends AppCompatActivity {
 
     public static final String USERS = "users";
+    private static final String EMAIL_REGEX = "^[a-zA-Z0-9_+&*-]+(?:\\."+
+            "[a-zA-Z0-9_+&*-]+)*@" +
+            "(?:[a-zA-Z0-9-]+\\.)+[a-z" +
+            "A-Z]{2,7}$";
 
     private TextView usernameTextView;
     private TextView passwordTextView;
@@ -40,7 +46,7 @@ public class SignupActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
 
-        db = FirebaseDatabase.getInstance().getReference();
+        db = FirebaseDatabase.getInstance().getReference().child(USERS);
 
         usernameTextView = findViewById(R.id.usernameTextView);
         emailTextView = findViewById(R.id.emailTextView);
@@ -112,8 +118,6 @@ public class SignupActivity extends AppCompatActivity {
 
     private User processSignup() {
 
-        db = FirebaseDatabase.getInstance().getReference();
-
         AccountType accountType = (AccountType) accountTypesSpinner.getSelectedItem();
 
         String username = usernameTextView.getText().toString();
@@ -122,9 +126,13 @@ public class SignupActivity extends AppCompatActivity {
         String lastName = lastNameTextView.getText().toString();
         String password = passwordTextView.getText().toString();
 
-        if(email.isEmpty() || firstName.isEmpty() || lastName.isEmpty() || password.isEmpty()) {
+        if(email.isEmpty() || firstName.isEmpty() || lastName.isEmpty() || password.isEmpty() || username.isEmpty()) {
             return null;
         }
+
+        Pattern pat = Pattern.compile(EMAIL_REGEX);
+        if (!pat.matcher(email).matches())
+            return null;
 
         User user = new User();
         user.setUsername(username);
