@@ -1,5 +1,6 @@
 package com.arom.jobzi;
 
+import android.accounts.Account;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -53,10 +54,17 @@ public class SignupActivity extends AppCompatActivity {
 
         accountsDatabase = FirebaseDatabase.getInstance().getReference().child(ACCOUNTS);
 
-        accountsDatabase.addValueEventListener(new ValueEventListener() {
+        accountsDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                Log.d("firebaseDebug", "VALUE CHANGED: " + dataSnapshot.getValue());
+
+                for(DataSnapshot userSnapshot: dataSnapshot.getChildren()) {
+                    User user = userSnapshot.getValue(User.class);
+                    if(user.getAccountType().equals(AccountType.ADMIN)) {
+                        adminExists = true;
+                    }
+                }
+
             }
 
             @Override
