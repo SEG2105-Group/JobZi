@@ -61,6 +61,8 @@ public class LoginActivity extends AppCompatActivity {
         String username = usernameTextView.getText().toString();
         String password = passwordTextView.getText().toString();
 
+        Log.d("direbaseDebug", "Processing login");
+ 
         db.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
