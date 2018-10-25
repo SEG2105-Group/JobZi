@@ -3,21 +3,15 @@ package com.arom.jobzi;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.text.InputType;
-import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.arom.jobzi.account.AccountType;
-import com.arom.jobzi.account.DatabaseManager;
 import com.arom.jobzi.user.User;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -32,15 +26,15 @@ public class SignupActivity extends AppCompatActivity {
     private Button signupButton;
     private Button backButton;
 
-    private DatabaseManager databaseManager;
-
+    private DatabaseReference db;
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
 
-        databaseManager = new DatabaseManager();
-
+        db = FirebaseDatabase.getInstance().getReference();
+        
         emailTextView = findViewById(R.id.emailTextView);
         firstNameTextView = findViewById(R.id.firstNameTextView);
         lastNameTextView = findViewById(R.id.lastNameTextView);
@@ -58,7 +52,15 @@ public class SignupActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                SignupActivity.this.processSignup();
+                User user = SignupActivity.this.processSignup();
+                
+                if(user != null) {
+                    Intent toWelcomeIntent = new Intent(SignupActivity.this, WelcomeActivity.class);
+                    toWelcomeIntent.putExtra(WelcomeActivity.USER, user);
+                    startActivity(toWelcomeIntent);
+                } else {
+                    Toast.makeText(SignupActivity.this, "You are missing some info.", Toast.LENGTH_LONG).show();
+                }
 
             }
         });
@@ -73,29 +75,34 @@ public class SignupActivity extends AppCompatActivity {
 
     }
 
-    private void processSignup() {
-
+    private User processSignup() {
+    
+        String username = usernameTextView.getText().toString();
         String email = emailTextView.getText().toString();
-        final String firstName = firstNameTextView.getText().toString();
+        String firstName = firstNameTextView.getText().toString();
         String lastName = lastNameTextView.getText().toString();
         String password = passwordTextView.getText().toString();
         AccountType accountType = (AccountType) accountTypesSpinner.getSelectedItem();
 
         if(email.isEmpty() || firstName.isEmpty() || lastName.isEmpty() || password.isEmpty()) {
-            return;
+            return null;
         }
 
-        final User user = new User();
+        User user = new User();
+        user.setUsername(username);
         user.setEmail(email);
         user.setFirstName(firstName);
         user.setLastName(lastName);
         user.setAccountType(accountType);
 
-        Log.d("firebaseDebug", "Adding " + firstName + "...");
-
-        DatabaseReference db = FirebaseDatabase.getInstance().getReference();
-        db.child("test").push().setValue("THIS IS A TEST");
-
+        String id = db.push().getKey();
+        
+        user.setId(id);
+        
+        db.child(id).setValue(user);
+        
+        return user;
+        
     }
 
 }
