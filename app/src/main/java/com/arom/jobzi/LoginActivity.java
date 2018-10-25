@@ -62,7 +62,7 @@ public class LoginActivity extends AppCompatActivity {
         String password = passwordTextView.getText().toString();
 
         Log.d("direbaseDebug", "Processing login");
- 
+
         db.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
