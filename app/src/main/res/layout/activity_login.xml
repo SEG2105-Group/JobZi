@@ -46,22 +46,22 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <EditText
-            android:id="@+id/userName"
+            android:id="@+id/loginPsernameTextView"
             android:layout_width="match_parent"
             android:layout_height="35dp"
-            android:inputType="text" />
+            android:inputType="text"
+            android:hint="@string/username"/>
 
         <Space
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
         <EditText
-            android:id="@+id/userPassword"
+            android:id="@+id/loginPasswordTextView"
             android:layout_width="match_parent"
             android:layout_height="35dp"
             android:inputType="textPassword"
-            tools:layout_editor_absoluteX="142dp"
-            tools:layout_editor_absoluteY="206dp" />
+            android:hint="@string/password" />
 
     </LinearLayout>
 

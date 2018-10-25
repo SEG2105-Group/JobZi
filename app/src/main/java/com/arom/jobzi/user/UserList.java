@@ -7,8 +7,6 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 
 import com.arom.jobzi.R;
-import com.arom.jobzi.account.DatabaseManager;
-import com.arom.jobzi.user.User;
 
 import java.util.List;
 
