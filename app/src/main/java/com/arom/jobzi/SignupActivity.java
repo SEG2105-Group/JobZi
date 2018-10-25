@@ -33,7 +33,7 @@ public class SignupActivity extends AppCompatActivity {
             "[a-zA-Z0-9_+&*-]+)*@" +
             "(?:[a-zA-Z0-9-]+\\.)+[a-z" +
             "A-Z]{2,7}$";
-
+    private static String VALID_LETTERS = "^[a-zA-Z]+";
     private TextView usernameTextView;
     private TextView passwordTextView;
     private TextView emailTextView;
@@ -145,12 +145,27 @@ public class SignupActivity extends AppCompatActivity {
         String password = passwordTextView.getText().toString();
 
         if(email.isEmpty() || firstName.isEmpty() || lastName.isEmpty() || password.isEmpty() || username.isEmpty()) {
+            Toast.makeText(SignupActivity.this, "You are missing some info.", Toast.LENGTH_LONG).show();
             return null;
         }
 
         Pattern pat = Pattern.compile(EMAIL_REGEX);
-        if (!pat.matcher(email).matches())
+        if (!pat.matcher(email).matches()) {
+            Toast.makeText(SignupActivity.this, "Email is not valid.", Toast.LENGTH_LONG).show();
             return null;
+        }
+
+        pat = Pattern.compile(VALID_LETTERS);
+
+        if(!pat.matcher(firstName).matches()){
+            Toast.makeText(SignupActivity.this, "First name is not valid.", Toast.LENGTH_LONG).show();
+            return null;
+        }
+
+        if(!pat.matcher(lastName).matches()){
+            Toast.makeText(SignupActivity.this, "First name is not valid.", Toast.LENGTH_LONG).show();
+            return null;
+        }
 
         User user = new User();
         user.setUsername(username);
