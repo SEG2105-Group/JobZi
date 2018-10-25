@@ -1,9 +1,13 @@
 package com.arom.jobzi;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
@@ -12,10 +16,17 @@ import android.widget.Toast;
 
 import com.arom.jobzi.account.AccountType;
 import com.arom.jobzi.user.User;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import org.w3c.dom.Text;
 
 public class SignupActivity extends AppCompatActivity {
+
+    public static final String USERS = "users";
 
     private TextView usernameTextView;
     private TextView passwordTextView;
@@ -27,6 +38,8 @@ public class SignupActivity extends AppCompatActivity {
     private Button backButton;
 
     private DatabaseReference db;
+
+    private boolean adminExists;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,7 +57,34 @@ public class SignupActivity extends AppCompatActivity {
         signupButton = findViewById(R.id.signupButton);
         backButton = findViewById(R.id.backButton);
 
-        ArrayAdapter<AccountType> spinnerArrayAdapter = new ArrayAdapter<AccountType>(this, android.R.layout.simple_spinner_item, AccountType.values());
+        ArrayAdapter<AccountType> spinnerArrayAdapter = new ArrayAdapter<AccountType>(this, android.R.layout.simple_spinner_item, AccountType.values()) {
+            @Override
+            public boolean isEnabled(int position) {
+
+                if(getItem(position).equals(AccountType.ADMIN) && adminExists) {
+                    return false;
+                }
+
+                return super.isEnabled(position);
+
+            }
+
+            @NonNull
+            @Override
+            public View getView(int position, @NonNull View convertView, @NonNull ViewGroup parent) {
+
+                View view = super.getView(position, convertView, parent);
+
+                TextView textView = (TextView) view;
+
+                if(getItem(position).equals(AccountType.ADMIN) && adminExists) {
+                    textView.setTextColor(Color.GRAY);
+                }
+
+                return view;
+
+            }
+        };
         spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         accountTypesSpinner.setAdapter(spinnerArrayAdapter);
         accountTypesSpinner.setSelection(AccountType.HOME_OWNER.ordinal());
@@ -77,14 +117,16 @@ public class SignupActivity extends AppCompatActivity {
     }
 
     private User processSignup() {
-    
-        String username = usernameTextView.getText().toString();
 
+        db = FirebaseDatabase.getInstance().getReference();
+
+        AccountType accountType = (AccountType) accountTypesSpinner.getSelectedItem();
+
+        String username = usernameTextView.getText().toString();
         String email = emailTextView.getText().toString();
         String firstName = firstNameTextView.getText().toString();
         String lastName = lastNameTextView.getText().toString();
         String password = passwordTextView.getText().toString();
-        AccountType accountType = (AccountType) accountTypesSpinner.getSelectedItem();
 
         if(email.isEmpty() || firstName.isEmpty() || lastName.isEmpty() || password.isEmpty()) {
             return null;
@@ -92,6 +134,7 @@ public class SignupActivity extends AppCompatActivity {
 
         User user = new User();
         user.setUsername(username);
+        user.setPassword(password);
         user.setEmail(email);
         user.setFirstName(firstName);
         user.setLastName(lastName);
@@ -102,7 +145,7 @@ public class SignupActivity extends AppCompatActivity {
         user.setId(id);
         
         db.child(id).setValue(user);
-        
+
         return user;
         
     }
