@@ -14,6 +14,15 @@ public class User implements Serializable {
     private String email;
     private String firstName;
     private String lastName;
+    private String password;
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
 
     private AccountType accountType;
     
