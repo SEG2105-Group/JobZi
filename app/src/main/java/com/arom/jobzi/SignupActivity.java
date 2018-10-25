@@ -1,12 +1,11 @@
 package com.arom.jobzi;
 
-import android.accounts.Account;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -82,7 +81,7 @@ public class SignupActivity extends AppCompatActivity {
         signupButton = findViewById(R.id.signupButton);
         backButton = findViewById(R.id.backButton);
 
-        ArrayAdapter<AccountType> spinnerArrayAdapter = new ArrayAdapter<AccountType>(this, android.R.layout.simple_spinner_item, AccountType.values()) {
+        ArrayAdapter<AccountType> spinnerArrayAdapter = new ArrayAdapter<AccountType>(this, android.R.layout.simple_spinner_dropdown_item, AccountType.values()) {
             @Override
             public boolean isEnabled(int position) {
 
@@ -94,20 +93,20 @@ public class SignupActivity extends AppCompatActivity {
 
             }
 
-            @NonNull
             @Override
-            public View getView(int position, @NonNull View convertView, @NonNull ViewGroup parent) {
+            public View getDropDownView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
 
-                View view = super.getView(position, convertView, parent);
+                View view = super.getDropDownView(position, convertView, parent);
 
                 TextView textView = (TextView) view;
 
                 if(getItem(position).equals(AccountType.ADMIN) && adminExists) {
                     textView.setTextColor(Color.GRAY);
+                } else {
+                    textView.setTextColor(Color.BLACK);
                 }
 
                 return view;
-
             }
         };
         spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);

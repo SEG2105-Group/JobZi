@@ -37,7 +37,7 @@ public class WelcomeActivity extends AppCompatActivity {
 	
 		user = (User) getIntent().getSerializableExtra(USER);
 
-        db = FirebaseDatabase.getInstance().getReference().child(SignupActivity.USERS);
+        db = FirebaseDatabase.getInstance().getReference().child(SignupActivity.ACCOUNTS);
 
         if (user.getAccountType().equals("Admin")) {
             addUsersListener();
