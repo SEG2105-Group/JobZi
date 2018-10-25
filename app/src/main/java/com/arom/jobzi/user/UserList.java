@@ -23,7 +23,7 @@ public class UserList extends ArrayAdapter<User> {
     private List<User> users;
     private DatabaseReference usersDatabase;
 
-    public UserList(Activity context, List<User> users, DatabaseReference usersDatabase) {
+    public UserList(Activity context, List<User> users) {
         super(context, R.layout.username_list);
 
         this.context = context;
