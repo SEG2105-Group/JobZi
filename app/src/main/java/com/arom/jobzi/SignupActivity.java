@@ -35,6 +35,7 @@ public class SignupActivity extends AppCompatActivity {
 
         db = FirebaseDatabase.getInstance().getReference();
         
+        usernameTextView = findViewById(R.id.usernameTextView);
         emailTextView = findViewById(R.id.emailTextView);
         firstNameTextView = findViewById(R.id.firstNameTextView);
         lastNameTextView = findViewById(R.id.lastNameTextView);
