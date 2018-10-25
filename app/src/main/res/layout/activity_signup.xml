@@ -27,7 +27,7 @@
 
         <LinearLayout
             android:id="@+id/linearLayout3"
-            android:layout_width="281dp"
+            android:layout_width="175dp"
             android:layout_height="136dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
@@ -42,7 +42,7 @@
 
             <Button
                 android:id="@+id/signupButton"
-                android:layout_width="wrap_content"
+                android:layout_width="@dimen/button_widths"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
@@ -59,7 +59,7 @@
 
             <Button
                 android:id="@+id/backButton"
-                android:layout_width="wrap_content"
+                android:layout_width="@dimen/button_widths"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="9dp"
@@ -77,7 +77,7 @@
 
         <LinearLayout
             android:id="@+id/linearLayout2"
-            android:layout_width="match_parent"
+            android:layout_width="288dp"
             android:layout_height="287dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
@@ -86,7 +86,7 @@
             android:orientation="vertical"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.165">
@@ -130,6 +130,20 @@
                 android:ems="10"
                 android:hint="Email"
                 android:inputType="textEmailAddress" />
+
+            <TextView
+                android:id="@+id/activityText2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:text="Sign up as:"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.032" />
 
             <Spinner
                 android:id="@+id/accountTypesSpinner"
