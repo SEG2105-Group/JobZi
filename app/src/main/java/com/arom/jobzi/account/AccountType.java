@@ -2,7 +2,7 @@ package com.arom.jobzi.account;
 
 public enum AccountType {
 
-    ADMIN("Admin"), HOME_OWNER("A Home Owner"), SERVICE_PROVIDER("A Service Provider");
+    ADMIN("Admin"), HOME_OWNER("Home Owner"), SERVICE_PROVIDER("Service Provider");
 
     private final String name;
 

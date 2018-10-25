@@ -1,58 +1,35 @@
 package com.arom.jobzi;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.TextView;
 
-import com.arom.jobzi.account.DatabaseManager;
 import com.arom.jobzi.user.User;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class WelcomeActivity extends AppCompatActivity {
-
-    private DatabaseManager databaseManager;
-
-    private FirebaseAuth authentication;
-    private FirebaseUser firebaseUser;
-
-    private TextView accountTypeTextView;
+	
+	public static final String USER = "user";
+	
+	private User user;
+	
+	private DatabaseReference db;
+    
+    private TextView welcomeBannerTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome);
+	
+		user = (User) getIntent().getSerializableExtra(USER);
 
-        databaseManager = new DatabaseManager();
-
-        authentication = FirebaseAuth.getInstance();
-        firebaseUser = authentication.getCurrentUser();
-
-        accountTypeTextView = findViewById(R.id.accountTypeTextView);
-
-        if(firebaseUser != null) {
-            databaseManager.getUser(firebaseUser.getUid(), new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    User user = (User) dataSnapshot.getValue();
-                    accountTypeTextView.setText(user.getAccountType().toString());
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                }
-            });
-        } else {
-            Intent toLoginIntent = new Intent(this, LoginActivity.class);
-            startActivity(toLoginIntent);
-        }
-
+        db = FirebaseDatabase.getInstance().getReference();
+        
+        welcomeBannerTextView = findViewById(R.id.welcomeBannerTextView);
+        welcomeBannerTextView.setText(getString(R.string.user_welcome_banner, user.getUsername(), user.getAccountType().toString()));
+        
     }
 
 }
