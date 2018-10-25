@@ -16,7 +16,7 @@ public class WelcomeActivity extends AppCompatActivity {
 	
 	private DatabaseReference db;
     
-    private TextView accountTypeTextView;
+    private TextView welcomeBannerTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,8 +27,8 @@ public class WelcomeActivity extends AppCompatActivity {
 
         db = FirebaseDatabase.getInstance().getReference();
         
-        accountTypeTextView = findViewById(R.id.accountTypeTextView);
-        accountTypeTextView.setText(getString(R.string.user_welcome_banner, user.getUsername(), user.getAccountType().toString()));
+        welcomeBannerTextView = findViewById(R.id.welcomeBannerTextView);
+        welcomeBannerTextView.setText(getString(R.string.user_welcome_banner, user.getUsername(), user.getAccountType().toString()));
         
     }
 
