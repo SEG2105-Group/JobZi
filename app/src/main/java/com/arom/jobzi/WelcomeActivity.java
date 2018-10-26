@@ -17,6 +17,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.util.LinkedList;
 import java.util.List;
 
 public class WelcomeActivity extends AppCompatActivity {
@@ -25,7 +26,7 @@ public class WelcomeActivity extends AppCompatActivity {
 	
 	private User user;
 
-	private DatabaseReference db;
+	private DatabaseReference accountsDatabase;
     
     private TextView welcomeBannerTextView;
 
@@ -40,42 +41,65 @@ public class WelcomeActivity extends AppCompatActivity {
 	
 		user = (User) getIntent().getSerializableExtra(USER);
 
-        db = FirebaseDatabase.getInstance().getReference().child(SignupActivity.ACCOUNTS);
+        accountsDatabase = FirebaseDatabase.getInstance().getReference().child(SignupActivity.ACCOUNTS);
 
         userList = findViewById(R.id.userList);
 
+        users = new LinkedList<User>();
+
         if (user.getAccountType().equals(AccountType.ADMIN)) {
             userList.setVisibility(TextView.VISIBLE);
-            addUsersListener();
             userList.setAdapter(new UserList(this, users));
+            addUsersListener();
         }
 
         welcomeBannerTextView = findViewById(R.id.welcomeBannerTextView);
         welcomeBannerTextView.setText(getString(R.string.user_welcome_banner, user.getUsername(), user.getAccountType().toString()));
     }
 
-    private void addUsersListener(){
+    private void addUsersListener() {
 
-        db.addChildEventListener(new ChildEventListener() {
+        accountsDatabase.addChildEventListener(new ChildEventListener() {
 
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
 
-                for (DataSnapshot ds : dataSnapshot.getChildren()) {
-                    User user = (User) ds.getValue();
-                    users.add(user);
-                    Log.d("firebaseDebug", "Adding user");
-                }
+                User user = dataSnapshot.getValue(User.class);
+                users.add(user);
 
             }
 
             @Override
             public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
 
+                User userChanged = dataSnapshot.getValue(User.class);
+
+                int i = 0;
+
+                for(; i < users.size(); i++) {
+                    if(users.get(i).getId().equals(userChanged.getId())) {
+                        break;
+                    }
+                }
+
+                users.set(i, userChanged);
+
             }
 
             @Override
             public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+                User userChanged = dataSnapshot.getValue(User.class);
+
+                int i = 0;
+
+                for(; i < users.size(); i++) {
+                    if(users.get(i).getId().equals(userChanged.getId())) {
+                        break;
+                    }
+                }
+
+                users.remove(i);
 
             }
 

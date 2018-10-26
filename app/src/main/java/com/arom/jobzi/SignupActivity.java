@@ -144,8 +144,8 @@ public class SignupActivity extends AppCompatActivity {
 
         AccountType accountType = (AccountType) accountTypesSpinner.getSelectedItem();
 
-        String username = usernameTextView.getText().toString();
-        String email = emailTextView.getText().toString();
+        final String username = usernameTextView.getText().toString();
+        final String email = emailTextView.getText().toString();
         String firstName = firstNameTextView.getText().toString();
         String lastName = lastNameTextView.getText().toString();
         String password = passwordTextView.getText().toString();
@@ -173,7 +173,7 @@ public class SignupActivity extends AppCompatActivity {
             return null;
         }
 
-        User user = new User();
+        final User user = new User();
         user.setUsername(username);
         user.setPassword(password);
         user.setEmail(email);
@@ -181,13 +181,39 @@ public class SignupActivity extends AppCompatActivity {
         user.setLastName(lastName);
         user.setAccountType(accountType);
 
-        DatabaseReference newUserDb = accountsDatabase.push();
+        accountsDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-        String id = newUserDb.getKey();
+                for(DataSnapshot ds: dataSnapshot.getChildren()) {
+                    
+                    User existingUser = ds.getValue(User.class);
 
-        user.setId(id);
-        
-        newUserDb.setValue(user);
+                    if(existingUser.getUsername().equals(username) || existingUser.getEmail().equals(email)) {
+
+                        Toast.makeText(SignupActivity.this, "This username or email already exists.", Toast.LENGTH_LONG).show();
+
+                    } else {
+
+                        DatabaseReference newUserDb = accountsDatabase.push();
+
+                        String id = newUserDb.getKey();
+
+                        user.setId(id);
+
+                        newUserDb.setValue(user);
+
+                    }
+
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
 
         return user;
         
