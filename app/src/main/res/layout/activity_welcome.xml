@@ -23,15 +23,17 @@
 
         <TextView
             android:id="@+id/welcomeBannerTextView"
-            android:layout_width="232dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
+            android:layout_gravity="center"
             android:text="@string/user_welcome_banner" />
 
         <ListView
             android:id="@+id/userList"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:visibility="visible"/>
     </LinearLayout>
 
 </RelativeLayout>
