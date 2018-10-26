@@ -33,6 +33,7 @@ public class WelcomeActivity extends AppCompatActivity {
     private List<User> users;
 
     private ListView userList;
+    private UserList userListAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,7 +50,8 @@ public class WelcomeActivity extends AppCompatActivity {
 
         if (user.getAccountType().equals(AccountType.ADMIN)) {
             userList.setVisibility(TextView.VISIBLE);
-            userList.setAdapter(new UserList(this, users));
+            userListAdapter = new UserList(this, users);
+            userList.setAdapter(userListAdapter);
             addUsersListener();
         }
 
