@@ -1,8 +1,8 @@
 <resources>
     <string name="app_name">JobZi</string>
     <string name="title_activity_welcome">WelcomeActivity</string>
-    <string name="username">Username:</string>
-    <string name="password">Password:</string>
+    <string name="username">Username</string>
+    <string name="password">Password</string>
     <string name="title_activity_signup">SignupActivity</string>
     <string name="user_welcome_banner">Welcome! You are signed in as %s (%s)</string>
 </resources>
