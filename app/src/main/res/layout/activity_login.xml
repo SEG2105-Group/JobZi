@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background=" #f4f6f6" >
 
     <ScrollView
         android:layout_width="match_parent"
@@ -27,7 +28,23 @@
 
             <android.support.constraint.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="562dp">
+                android:layout_height="700dp">
+
+                <ImageView
+                    android:id="@+id/imageView1"
+                    android:layout_width="122dp"
+                    android:layout_height="96dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:src="@drawable/proxy_brush"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.055" />
 
                 <LinearLayout
                     android:id="@+id/linearLayout"
@@ -36,10 +53,9 @@
                     android:orientation="vertical"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="0.171">
+                    app:layout_constraintVertical_bias="0.26">
 
                     <Space
                         android:layout_width="match_parent"
@@ -67,7 +83,7 @@
 
                 <LinearLayout
                     android:layout_width="350dp"
-                    android:layout_height="70dp"
+                    android:layout_height="65dp"
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="8dp"
                     android:layout_marginEnd="8dp"
@@ -75,10 +91,10 @@
                     android:orientation="horizontal"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintHorizontal_bias="0.482"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="0.462">
+                    app:layout_constraintVertical_bias="0.46">
 
                     <Button
                         android:id="@+id/loginButton"
@@ -101,6 +117,7 @@
                         android:textAllCaps="false"
                         app:layout_constraintLeft_toLeftOf="@id/loginButton"
                         app:layout_constraintTop_toBottomOf="@+id/loginButton" />
+
                 </LinearLayout>
 
             </android.support.constraint.ConstraintLayout>
