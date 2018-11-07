@@ -4,13 +4,14 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
+import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.arom.jobzi.account.AccountType;
 import com.arom.jobzi.user.User;
-import com.arom.jobzi.user.UserList;
+import com.arom.jobzi.user.UserArrayAdapter;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -32,9 +33,6 @@ public class WelcomeActivity extends AppCompatActivity {
 
     private List<User> users;
 
-    private ListView userList;
-    private UserList userListAdapter;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,15 +42,23 @@ public class WelcomeActivity extends AppCompatActivity {
 
         accountsDatabase = FirebaseDatabase.getInstance().getReference().child(SignupActivity.ACCOUNTS);
 
-        userList = findViewById(R.id.userList);
+        LinearLayout welcomeLinearLayout = findViewById(R.id.welcomeLinearLayout);
 
         users = new LinkedList<User>();
 
         if (user.getAccountType().equals(AccountType.ADMIN)) {
-            userList.setVisibility(TextView.VISIBLE);
-            userListAdapter = new UserList(this, users);
-            userList.setAdapter(userListAdapter);
+
+            ListView userList = new ListView(this);
+            Button addServiceButton = new Button(this);
+            addServiceButton.setText(R.string.add_service);
+
+            welcomeLinearLayout.addView(userList);
+            welcomeLinearLayout.addView(addServiceButton);
+
+            UserArrayAdapter userArrayAdapter = new UserArrayAdapter(this, users);
+            userList.setAdapter(userArrayAdapter);
             addUsersListener();
+
         }
 
         welcomeBannerTextView = findViewById(R.id.welcomeBannerTextView);
