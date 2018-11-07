@@ -100,7 +100,6 @@
                         android:id="@+id/loginButton"
                         android:layout_width="@dimen/button_widths"
                         android:layout_height="50dp"
-                        android:onClick="login"
                         android:text="Log in"
                         android:textAllCaps="false"
                         app:layout_constraintBottom_toBottomOf="parent"
