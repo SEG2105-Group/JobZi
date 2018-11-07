@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -22,6 +23,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.concurrent.Semaphore;
 import java.util.regex.Pattern;
 
 public class SignupActivity extends AppCompatActivity {
@@ -113,19 +115,94 @@ public class SignupActivity extends AppCompatActivity {
         accountTypesSpinner.setAdapter(spinnerArrayAdapter);
         accountTypesSpinner.setSelection(AccountType.HOME_OWNER.ordinal());
 
+        signupButton.setEnabled(true);
+        backButton.setEnabled(true);
+
         signupButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                User user = SignupActivity.this.processSignup();
-                
-                if(user != null) {
-                    Intent toWelcomeIntent = new Intent(SignupActivity.this, WelcomeActivity.class);
-                    toWelcomeIntent.putExtra(WelcomeActivity.USER, user);
-                    startActivity(toWelcomeIntent);
-                } else {
-                    Toast.makeText(SignupActivity.this, "You are missing some info.", Toast.LENGTH_LONG).show();
-                }
+                signupButton.setEnabled(false);
+                backButton.setEnabled(false);
+
+                accountsDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                        AccountType accountType = (AccountType) accountTypesSpinner.getSelectedItem();
+
+                        String username = usernameTextView.getText().toString();
+                        String email = emailTextView.getText().toString();
+                        String firstName = firstNameTextView.getText().toString();
+                        String lastName = lastNameTextView.getText().toString();
+                        String password = passwordTextView.getText().toString();
+
+                        if(email.isEmpty() || firstName.isEmpty() || lastName.isEmpty() || password.isEmpty() || username.isEmpty()) {
+                            Toast.makeText(SignupActivity.this, "You are missing some info.", Toast.LENGTH_LONG).show();
+                            return;
+                        }
+
+                        Pattern pat = Pattern.compile(EMAIL_REGEX);
+                        if (!pat.matcher(email).matches()) {
+                            Toast.makeText(SignupActivity.this, "Email is not valid.", Toast.LENGTH_LONG).show();
+                            return;
+                        }
+
+                        pat = Pattern.compile(VALID_LETTERS);
+
+                        if(!pat.matcher(firstName).matches()){
+                            Toast.makeText(SignupActivity.this, "First name is not valid.", Toast.LENGTH_LONG).show();
+                            return;
+                        }
+
+                        if(!pat.matcher(lastName).matches()){
+                            Toast.makeText(SignupActivity.this, "First name is not valid.", Toast.LENGTH_LONG).show();
+                            return;
+                        }
+
+
+                        for(DataSnapshot ds: dataSnapshot.getChildren()) {
+                            User existingUser = ds.getValue(User.class);
+
+                            if (existingUser.getUsername().equals(username) || existingUser.getEmail().equals(email)) {
+
+                                Toast.makeText(SignupActivity.this, "This username or email already exists.", Toast.LENGTH_LONG).show();
+
+                                signupButton.setEnabled(true);
+                                backButton.setEnabled(true);
+
+                                return;
+
+                            }
+                        }
+
+                        User user = new User();
+
+                        user.setUsername(username);
+                        user.setPassword(password);
+                        user.setEmail(email);
+                        user.setFirstName(firstName);
+                        user.setLastName(lastName);
+                        user.setAccountType(accountType);
+                        DatabaseReference newUserDb = accountsDatabase.push();
+
+                        String id = newUserDb.getKey();
+
+                        user.setId(id);
+
+                        newUserDb.setValue(user);
+
+                        Intent toWelcomeIntent = new Intent(SignupActivity.this, WelcomeActivity.class);
+                        toWelcomeIntent.putExtra(WelcomeActivity.USER, user);
+                        startActivity(toWelcomeIntent);
+
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
 
             }
         });
@@ -138,85 +215,6 @@ public class SignupActivity extends AppCompatActivity {
             }
         });
 
-    }
-
-    private User processSignup() {
-
-        AccountType accountType = (AccountType) accountTypesSpinner.getSelectedItem();
-
-        final String username = usernameTextView.getText().toString();
-        final String email = emailTextView.getText().toString();
-        String firstName = firstNameTextView.getText().toString();
-        String lastName = lastNameTextView.getText().toString();
-        String password = passwordTextView.getText().toString();
-
-        if(email.isEmpty() || firstName.isEmpty() || lastName.isEmpty() || password.isEmpty() || username.isEmpty()) {
-            Toast.makeText(SignupActivity.this, "You are missing some info.", Toast.LENGTH_LONG).show();
-            return null;
-        }
-
-        Pattern pat = Pattern.compile(EMAIL_REGEX);
-        if (!pat.matcher(email).matches()) {
-            Toast.makeText(SignupActivity.this, "Email is not valid.", Toast.LENGTH_LONG).show();
-            return null;
-        }
-
-        pat = Pattern.compile(VALID_LETTERS);
-
-        if(!pat.matcher(firstName).matches()){
-            Toast.makeText(SignupActivity.this, "First name is not valid.", Toast.LENGTH_LONG).show();
-            return null;
-        }
-
-        if(!pat.matcher(lastName).matches()){
-            Toast.makeText(SignupActivity.this, "First name is not valid.", Toast.LENGTH_LONG).show();
-            return null;
-        }
-
-        final User user = new User();
-        user.setUsername(username);
-        user.setPassword(password);
-        user.setEmail(email);
-        user.setFirstName(firstName);
-        user.setLastName(lastName);
-        user.setAccountType(accountType);
-
-        accountsDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
-                for(DataSnapshot ds: dataSnapshot.getChildren()) {
-                    
-                    User existingUser = ds.getValue(User.class);
-
-                    if(existingUser.getUsername().equals(username) || existingUser.getEmail().equals(email)) {
-
-                        Toast.makeText(SignupActivity.this, "This username or email already exists.", Toast.LENGTH_LONG).show();
-
-                    } else {
-
-                        DatabaseReference newUserDb = accountsDatabase.push();
-
-                        String id = newUserDb.getKey();
-
-                        user.setId(id);
-
-                        newUserDb.setValue(user);
-
-                    }
-
-                }
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-
-        return user;
-        
     }
 
 }
