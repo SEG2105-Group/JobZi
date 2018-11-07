@@ -195,7 +195,7 @@ public class SignupActivity extends AppCompatActivity {
 
                                 } else {
 
-                                    Toast.makeText(SignupActivity.this, "There was an error signing up.", Toast.LENGTH_LONG).show();
+                                    Toast.makeText(SignupActivity.this, task.getException().getMessage(), Toast.LENGTH_LONG).show();
                                     Log.w("firebaseAuth", "createUserWithEmail: Failed", task.getException());
 
                                 }
