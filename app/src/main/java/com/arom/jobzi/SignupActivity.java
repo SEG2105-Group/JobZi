@@ -17,13 +17,17 @@ import android.widget.Toast;
 
 import com.arom.jobzi.account.AccountType;
 import com.arom.jobzi.user.User;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.util.concurrent.Semaphore;
 import java.util.regex.Pattern;
 
 public class SignupActivity extends AppCompatActivity {
@@ -44,6 +48,7 @@ public class SignupActivity extends AppCompatActivity {
     private Button signupButton;
     private Button backButton;
 
+    private FirebaseAuth auth;
     private DatabaseReference accountsDatabase;
 
     private boolean adminExists;
@@ -53,6 +58,7 @@ public class SignupActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
 
+        auth = FirebaseAuth.getInstance();
         accountsDatabase = FirebaseDatabase.getInstance().getReference().child(ACCOUNTS);
 
         accountsDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -63,6 +69,7 @@ public class SignupActivity extends AppCompatActivity {
                     User user = userSnapshot.getValue(User.class);
                     if(user.getAccountType().equals(AccountType.ADMIN)) {
                         adminExists = true;
+                        break;
                     }
                 }
 
@@ -129,13 +136,13 @@ public class SignupActivity extends AppCompatActivity {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-                        AccountType accountType = (AccountType) accountTypesSpinner.getSelectedItem();
+                        final AccountType accountType = (AccountType) accountTypesSpinner.getSelectedItem();
 
-                        String username = usernameTextView.getText().toString();
-                        String email = emailTextView.getText().toString();
-                        String firstName = firstNameTextView.getText().toString();
-                        String lastName = lastNameTextView.getText().toString();
-                        String password = passwordTextView.getText().toString();
+                        final String username = usernameTextView.getText().toString();
+                        final String email = emailTextView.getText().toString();
+                        final String firstName = firstNameTextView.getText().toString();
+                        final String lastName = lastNameTextView.getText().toString();
+                        final String password = passwordTextView.getText().toString();
 
                         if(email.isEmpty() || firstName.isEmpty() || lastName.isEmpty() || password.isEmpty() || username.isEmpty()) {
                             Toast.makeText(SignupActivity.this, "You are missing some info.", Toast.LENGTH_LONG).show();
@@ -160,41 +167,44 @@ public class SignupActivity extends AppCompatActivity {
                             return;
                         }
 
+                        auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                            @Override
+                            public void onComplete(@NonNull Task<AuthResult> task) {
+                                if(task.isSuccessful()) {
 
-                        for(DataSnapshot ds: dataSnapshot.getChildren()) {
-                            User existingUser = ds.getValue(User.class);
+                                    FirebaseUser newUser = task.getResult().getUser();
 
-                            if (existingUser.getUsername().equals(username) || existingUser.getEmail().equals(email)) {
+                                    String id = newUser.getUid();
 
-                                Toast.makeText(SignupActivity.this, "This username or email already exists.", Toast.LENGTH_LONG).show();
+                                    User user = new User();
+
+                                    user.setId(id);
+                                    user.setUsername(username);
+                                    user.setEmail(email);
+                                    user.setFirstName(firstName);
+                                    user.setLastName(lastName);
+                                    user.setAccountType(accountType);
+
+                                    DatabaseReference newUserDb = accountsDatabase.child(id);
+
+                                    newUserDb.setValue(user);
+
+                                    Intent toWelcomeIntent = new Intent(SignupActivity.this, WelcomeActivity.class);
+                                    toWelcomeIntent.putExtra(WelcomeActivity.USER, user);
+                                    startActivity(toWelcomeIntent);
+
+                                } else {
+
+                                    Toast.makeText(SignupActivity.this, "There was an error signing up.", Toast.LENGTH_LONG).show();
+                                    Log.w("firebaseAuth", "createUserWithEmail: Failed", task.getException());
+
+                                }
 
                                 signupButton.setEnabled(true);
                                 backButton.setEnabled(true);
 
-                                return;
-
                             }
-                        }
-
-                        User user = new User();
-
-                        user.setUsername(username);
-                        user.setPassword(password);
-                        user.setEmail(email);
-                        user.setFirstName(firstName);
-                        user.setLastName(lastName);
-                        user.setAccountType(accountType);
-                        DatabaseReference newUserDb = accountsDatabase.push();
-
-                        String id = newUserDb.getKey();
-
-                        user.setId(id);
-
-                        newUserDb.setValue(user);
-
-                        Intent toWelcomeIntent = new Intent(SignupActivity.this, WelcomeActivity.class);
-                        toWelcomeIntent.putExtra(WelcomeActivity.USER, user);
-                        startActivity(toWelcomeIntent);
+                        });
 
                     }
 

@@ -12,6 +12,8 @@ import android.widget.TextView;
 import com.arom.jobzi.account.AccountType;
 import com.arom.jobzi.user.User;
 import com.arom.jobzi.user.UserArrayAdapter;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -22,11 +24,13 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class WelcomeActivity extends AppCompatActivity {
-	
+
 	public static final String USER = "user";
-	
+
+	private FirebaseUser firebaseUser;
 	private User user;
 
+	private FirebaseAuth auth;
 	private DatabaseReference accountsDatabase;
     
     private TextView welcomeBannerTextView;
@@ -37,10 +41,12 @@ public class WelcomeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome);
-	
-		user = (User) getIntent().getSerializableExtra(USER);
 
+		auth = FirebaseAuth.getInstance();
         accountsDatabase = FirebaseDatabase.getInstance().getReference().child(SignupActivity.ACCOUNTS);
+
+		user = (User) getIntent().getSerializableExtra(USER);
+        firebaseUser = auth.getCurrentUser();
 
         LinearLayout welcomeLinearLayout = findViewById(R.id.welcomeLinearLayout);
 
