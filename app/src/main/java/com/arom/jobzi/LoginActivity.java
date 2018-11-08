@@ -100,32 +100,7 @@ public class LoginActivity extends AppCompatActivity {
 
             }
         });
-/*
-        accountsDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-                for(DataSnapshot userSnapshot: dataSnapshot.getChildren()) {
-
-                    User user = userSnapshot.getValue(User.class);
-
-                    if(user.getUsername().equals(username) && user.getPassword().equals(password)) {
-                        Intent toWelcomeIntent = new Intent(LoginActivity.this, WelcomeActivity.class);
-                        toWelcomeIntent.putExtra(WelcomeActivity.USER, user);
-                        startActivity(toWelcomeIntent);
-                        return;
-                    }
-                }
-
-                Toast.makeText(LoginActivity.this, "Invalid username or password or user does not exist.", Toast.LENGTH_LONG).show();
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-*/
     }
 
     private void userLoggedIn(final FirebaseUser firebaseUser) {
