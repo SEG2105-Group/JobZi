@@ -37,5 +37,4 @@ dependencies {
     implementation 'com.google.firebase:firebase-database:16.0.4'
     implementation 'com.google.firebase:firebase-auth:16.0.5'
 
-    compile 'com.google.firebase:firebase-auth:9.2.1'
 }
