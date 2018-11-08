@@ -60,12 +60,12 @@ public class ServiceEditorActivity extends AppCompatActivity {
                         }
 
                         if (!VALID_PRICE_PATTERN.matcher(rate).matches()) {
-                            Toast.makeText(ServiceEditorActivity.this, "Email is not valid.", Toast.LENGTH_LONG).show();
+                            Toast.makeText(ServiceEditorActivity.this, "Price is not valid.", Toast.LENGTH_LONG).show();
                             return;
                         }
 
                         if(!VALID_PATTERN.matcher(name).matches()){
-                            Toast.makeText(ServiceEditorActivity.this, "First name is not valid.", Toast.LENGTH_LONG).show();
+                            Toast.makeText(ServiceEditorActivity.this, "Name is not valid.", Toast.LENGTH_LONG).show();
                             return;
                         }
 
