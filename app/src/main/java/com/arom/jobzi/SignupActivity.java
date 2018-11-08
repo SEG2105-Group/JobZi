@@ -164,7 +164,7 @@ public class SignupActivity extends AppCompatActivity {
                         }
 
                         if(!pat.matcher(lastName).matches()){
-                            Toast.makeText(SignupActivity.this, "First name is not valid.", Toast.LENGTH_LONG).show();
+                            Toast.makeText(SignupActivity.this, "Last name is not valid.", Toast.LENGTH_LONG).show();
                             return;
                         }
 
