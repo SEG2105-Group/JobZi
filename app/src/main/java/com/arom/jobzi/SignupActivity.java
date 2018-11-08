@@ -33,6 +33,7 @@ import java.util.regex.Pattern;
 public class SignupActivity extends AppCompatActivity {
 
     public static final String ACCOUNTS = "accounts";
+    public static final String ACCOUNTS_TEST = "accounts-test";
 
     private static final String EMAIL_REGEX = "^[a-zA-Z0-9_+&*-]+(?:\\."+
             "[a-zA-Z0-9_+&*-]+)*@" +
@@ -59,7 +60,7 @@ public class SignupActivity extends AppCompatActivity {
         setContentView(R.layout.activity_signup);
 
         auth = FirebaseAuth.getInstance();
-        accountsDatabase = FirebaseDatabase.getInstance().getReference().child(ACCOUNTS);
+        accountsDatabase = FirebaseDatabase.getInstance().getReference().child(ACCOUNTS_TEST);
 
         accountsDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
