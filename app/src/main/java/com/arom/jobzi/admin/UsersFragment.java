@@ -29,7 +29,7 @@ public class UsersFragment extends Fragment{
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.user_item, container, false);
 
-        ListView listView = view.findViewById(R.id.SerciesListView);
+        ListView listView = view.findViewById(R.id.servicesListView);
 
         //ListView userList = new ListView();
 
