@@ -28,7 +28,7 @@ public class AdminActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_adminviewlist);
+        setContentView(R.layout.activity_admin);
 
         ServicesFragment servicesFragment = new ServicesFragment();
         getSupportFragmentManager().beginTransaction().add(R.id.container, servicesFragment).commit();
