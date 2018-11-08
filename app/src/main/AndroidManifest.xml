@@ -29,7 +29,7 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".ServiceEditorActivity" />
         <activity
-            android:name=".Admin.adminMainActivity"
+            android:name=".AdminActivity"
             android:label="@string/title_activity_adminviewlist"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
