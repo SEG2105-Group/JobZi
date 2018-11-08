@@ -30,7 +30,7 @@
         <activity android:name=".ServiceEditorActivity" />
         <activity
             android:name=".AdminActivity"
-            android:label="@string/title_activity_adminviewlist"
+            android:label="@string/title_activity_admin"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
