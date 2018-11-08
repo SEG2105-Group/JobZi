@@ -34,12 +34,12 @@ public class SignupActivity extends AppCompatActivity {
 
     public static final String ACCOUNTS = "accounts";
 
-    private static final String EMAIL_REGEX = "^[a-zA-Z0-9_+&*-]+(?:\\."+
+    private static final Pattern EMAIL_PATTERN = Pattern.compile("^[a-zA-Z0-9_+&*-]+(?:\\."+
             "[a-zA-Z0-9_+&*-]+)*@" +
             "(?:[a-zA-Z0-9-]+\\.)+[a-z" +
-            "A-Z]{2,7}$";
-    private static String VALID_LETTERS = "^[a-zA-Z]+";
-    
+            "A-Z]{2,7}$");
+    private static final Pattern VALID_PATTERN = Pattern.compile("^[a-zA-Z]+");
+
     private TextView usernameTextView;
     private TextView passwordTextView;
     private TextView emailTextView;
@@ -150,20 +150,17 @@ public class SignupActivity extends AppCompatActivity {
                             return;
                         }
 
-                        Pattern pat = Pattern.compile(EMAIL_REGEX);
-                        if (!pat.matcher(email).matches()) {
+                        if (!EMAIL_PATTERN.matcher(email).matches()) {
                             Toast.makeText(SignupActivity.this, "Email is not valid.", Toast.LENGTH_LONG).show();
                             return;
                         }
 
-                        pat = Pattern.compile(VALID_LETTERS);
-
-                        if(!pat.matcher(firstName).matches()){
+                        if(!VALID_PATTERN.matcher(firstName).matches()){
                             Toast.makeText(SignupActivity.this, "First name is not valid.", Toast.LENGTH_LONG).show();
                             return;
                         }
 
-                        if(!pat.matcher(lastName).matches()){
+                        if(!VALID_PATTERN.matcher(lastName).matches()){
                             Toast.makeText(SignupActivity.this, "Last name is not valid.", Toast.LENGTH_LONG).show();
                             return;
                         }

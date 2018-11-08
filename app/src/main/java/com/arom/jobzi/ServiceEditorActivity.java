@@ -12,6 +12,7 @@ import com.arom.jobzi.service.Service;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.regex.Pattern;
@@ -20,13 +21,13 @@ public class ServiceEditorActivity extends AppCompatActivity {
 
     public static final String SERVICE = "service";
 
-    private static final String VALID_PRICE = "^[0-9]+";
-    private static String VALID_LETTERS = "^[a-zA-Z]+";
+    private static final Pattern VALID_PRICE_PATTERN = Pattern.compile("^[0-9]+");
+    private static final Pattern VALID_PATTERN = Pattern.compile("^[a-zA-Z]+");
 
     private EditText serviceNameTextEdit;
     private EditText serviceRateTextEdit;
 
-    private Button save;
+    private Button saveButton;
     private DatabaseReference accountsDatabase;
 
     @Override
@@ -36,12 +37,16 @@ public class ServiceEditorActivity extends AppCompatActivity {
 
         serviceNameTextEdit = findViewById(R.id.serviceNameTextEdit);
         serviceRateTextEdit = findViewById(R.id.serviceRateTextEdit);
-        save.setEnabled(true);
-        save.setOnClickListener(new View.OnClickListener() {
+        saveButton          = findViewById(R.id.backButton);
+
+        accountsDatabase = FirebaseDatabase.getInstance().getReference().child(SERVICE);
+
+
+        saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                save.setEnabled(false);
+                saveButton.setEnabled(false);
                 accountsDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -54,15 +59,12 @@ public class ServiceEditorActivity extends AppCompatActivity {
                             return;
                         }
 
-                        Pattern pat = Pattern.compile(VALID_PRICE);
-                        if (!pat.matcher(rate).matches()) {
+                        if (!VALID_PRICE_PATTERN.matcher(rate).matches()) {
                             Toast.makeText(ServiceEditorActivity.this, "Email is not valid.", Toast.LENGTH_LONG).show();
                             return;
                         }
 
-                        pat = Pattern.compile(VALID_LETTERS);
-
-                        if(!pat.matcher(name).matches()){
+                        if(!VALID_PATTERN.matcher(name).matches()){
                             Toast.makeText(ServiceEditorActivity.this, "First name is not valid.", Toast.LENGTH_LONG).show();
                             return;
                         }
