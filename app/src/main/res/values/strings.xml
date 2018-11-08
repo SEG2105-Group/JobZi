@@ -6,11 +6,5 @@
     <string name="title_activity_signup">SignupActivity</string>
     <string name="user_welcome_banner">Welcome! You are signed in as %s (%s)</string>
     <string name="add_service">Add Service</string>
-    <string name="title_activity_acitivity_adminlistview">acitivity_adminlistview</string>
-    <string name="action_settings">Settings</string>
-    <string name="section_format">Hello World from section: %1$d</string>
-    <string name="title_activity_adminviewlist">activity_adminviewlist</string>
-    <string name="tab_text_1">Tab 1</string>
-    <string name="tab_text_2">Tab 2</string>
-    <string name="tab_text_3">Tab 3</string>
+	<string name="logout">Logout</string>
 </resources>

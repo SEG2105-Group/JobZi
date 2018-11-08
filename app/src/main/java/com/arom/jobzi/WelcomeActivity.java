@@ -1,9 +1,11 @@
 package com.arom.jobzi;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -12,6 +14,8 @@ import android.widget.TextView;
 import com.arom.jobzi.account.AccountType;
 import com.arom.jobzi.user.User;
 import com.arom.jobzi.user.UserArrayAdapter;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -22,11 +26,13 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class WelcomeActivity extends AppCompatActivity {
-	
+
 	public static final String USER = "user";
-	
+
+	private FirebaseUser firebaseUser;
 	private User user;
 
+	private FirebaseAuth auth;
 	private DatabaseReference accountsDatabase;
     
     private TextView welcomeBannerTextView;
@@ -37,10 +43,12 @@ public class WelcomeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome);
-	
-		user = (User) getIntent().getSerializableExtra(USER);
 
+		auth = FirebaseAuth.getInstance();
         accountsDatabase = FirebaseDatabase.getInstance().getReference().child(SignupActivity.ACCOUNTS);
+
+		user = (User) getIntent().getSerializableExtra(USER);
+        firebaseUser = auth.getCurrentUser();
 
         LinearLayout welcomeLinearLayout = findViewById(R.id.welcomeLinearLayout);
 
@@ -63,6 +71,17 @@ public class WelcomeActivity extends AppCompatActivity {
 
         welcomeBannerTextView = findViewById(R.id.welcomeBannerTextView);
         welcomeBannerTextView.setText(getString(R.string.user_welcome_banner, user.getUsername(), user.getAccountType().toString()));
+        
+        Button logoutButton = findViewById(R.id.logoutButton);
+        logoutButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                auth.signOut();
+                Intent toLoginIntent = new Intent(WelcomeActivity.this, LoginActivity.class);
+                startActivity(toLoginIntent);
+            }
+        });
+        
     }
 
     private void addUsersListener() {
