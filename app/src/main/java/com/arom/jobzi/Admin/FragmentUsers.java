@@ -35,7 +35,7 @@ public class FragmentUsers extends Fragment{
         view = inflater.inflate(R.layout.user_item, container, false);
 
         ListView listView = view.findViewById(R.id.SerciesListView);
-        users = WelcomeActivity.;
+
         //ListView userList = new ListView();
 
         return view;

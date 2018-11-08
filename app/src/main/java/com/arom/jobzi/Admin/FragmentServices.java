@@ -22,7 +22,7 @@ import java.util.List;
 public class FragmentServices extends Fragment {
 
     View view;
-    private List<Services> services;
+    //private List<Services> services;
     private DatabaseReference accountsDatabase;
 
     public FragmentServices(){
@@ -36,62 +36,4 @@ public class FragmentServices extends Fragment {
 
         return view;
     }
-
-    private void addUsersListener() {
-
-        accountsDatabase.addChildEventListener(new ChildEventListener() {
-
-            @Override
-            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-                User user = dataSnapshot.getValue(User.class);
-                users.add(user);
-
-            }
-
-            @Override
-            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-                User userChanged = dataSnapshot.getValue(User.class);
-
-                int i = 0;
-
-                for(; i < users.size(); i++) {
-                    if(users.get(i).getId().equals(userChanged.getId())) {
-                        break;
-                    }
-                }
-
-                users.set(i, userChanged);
-
-            }
-
-            @Override
-            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-
-                User userChanged = dataSnapshot.getValue(User.class);
-
-                int i = 0;
-
-                for(; i < users.size(); i++) {
-                    if(users.get(i).getId().equals(userChanged.getId())) {
-                        break;
-                    }
-                }
-
-                users.remove(i);
-
-            }
-
-            @Override
-            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-
 }
