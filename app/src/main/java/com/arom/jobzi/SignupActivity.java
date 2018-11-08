@@ -4,7 +4,9 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -15,13 +17,29 @@ import android.widget.Toast;
 
 import com.arom.jobzi.account.AccountType;
 import com.arom.jobzi.user.User;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.regex.Pattern;
 
 public class SignupActivity extends AppCompatActivity {
 
-    public static final String USERS = "users";
+    public static final String ACCOUNTS = "accounts";
 
+    private static final String EMAIL_REGEX = "^[a-zA-Z0-9_+&*-]+(?:\\."+
+            "[a-zA-Z0-9_+&*-]+)*@" +
+            "(?:[a-zA-Z0-9-]+\\.)+[a-z" +
+            "A-Z]{2,7}$";
+    private static String VALID_LETTERS = "^[a-zA-Z]+";
+    
     private TextView usernameTextView;
     private TextView passwordTextView;
     private TextView emailTextView;
@@ -31,7 +49,8 @@ public class SignupActivity extends AppCompatActivity {
     private Button signupButton;
     private Button backButton;
 
-    private DatabaseReference db;
+    private FirebaseAuth auth;
+    private DatabaseReference accountsDatabase;
 
     private boolean adminExists;
 
@@ -40,7 +59,28 @@ public class SignupActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
 
-        db = FirebaseDatabase.getInstance().getReference();
+        auth = FirebaseAuth.getInstance();
+        accountsDatabase = FirebaseDatabase.getInstance().getReference().child(ACCOUNTS);
+
+        accountsDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                for(DataSnapshot userSnapshot: dataSnapshot.getChildren()) {
+                    User user = userSnapshot.getValue(User.class);
+                    if(user.getAccountType().equals(AccountType.ADMIN)) {
+                        adminExists = true;
+                        break;
+                    }
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
 
         usernameTextView = findViewById(R.id.usernameTextView);
         emailTextView = findViewById(R.id.emailTextView);
@@ -51,7 +91,7 @@ public class SignupActivity extends AppCompatActivity {
         signupButton = findViewById(R.id.signupButton);
         backButton = findViewById(R.id.backButton);
 
-        ArrayAdapter<AccountType> spinnerArrayAdapter = new ArrayAdapter<AccountType>(this, android.R.layout.simple_spinner_item, AccountType.values()) {
+        ArrayAdapter<AccountType> spinnerArrayAdapter = new ArrayAdapter<AccountType>(this, android.R.layout.simple_spinner_dropdown_item, AccountType.values()) {
             @Override
             public boolean isEnabled(int position) {
 
@@ -63,39 +103,117 @@ public class SignupActivity extends AppCompatActivity {
 
             }
 
-            @NonNull
             @Override
-            public View getView(int position, @NonNull View convertView, @NonNull ViewGroup parent) {
+            public View getDropDownView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
 
-                View view = super.getView(position, convertView, parent);
+                View view = super.getDropDownView(position, convertView, parent);
 
                 TextView textView = (TextView) view;
 
                 if(getItem(position).equals(AccountType.ADMIN) && adminExists) {
                     textView.setTextColor(Color.GRAY);
+                } else {
+                    textView.setTextColor(Color.BLACK);
                 }
 
                 return view;
-
             }
         };
         spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         accountTypesSpinner.setAdapter(spinnerArrayAdapter);
         accountTypesSpinner.setSelection(AccountType.HOME_OWNER.ordinal());
 
+        signupButton.setEnabled(true);
+        backButton.setEnabled(true);
+
         signupButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                User user = SignupActivity.this.processSignup();
-                
-                if(user != null) {
-                    Intent toWelcomeIntent = new Intent(SignupActivity.this, WelcomeActivity.class);
-                    toWelcomeIntent.putExtra(WelcomeActivity.USER, user);
-                    startActivity(toWelcomeIntent);
-                } else {
-                    Toast.makeText(SignupActivity.this, "You are missing some info.", Toast.LENGTH_LONG).show();
-                }
+                signupButton.setEnabled(false);
+                backButton.setEnabled(false);
+
+                accountsDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                        final AccountType accountType = (AccountType) accountTypesSpinner.getSelectedItem();
+
+                        final String username = usernameTextView.getText().toString();
+                        final String email = emailTextView.getText().toString();
+                        final String firstName = firstNameTextView.getText().toString();
+                        final String lastName = lastNameTextView.getText().toString();
+                        final String password = passwordTextView.getText().toString();
+
+                        if(email.isEmpty() || firstName.isEmpty() || lastName.isEmpty() || password.isEmpty() || username.isEmpty()) {
+                            Toast.makeText(SignupActivity.this, "You are missing some info.", Toast.LENGTH_LONG).show();
+                            return;
+                        }
+
+                        Pattern pat = Pattern.compile(EMAIL_REGEX);
+                        if (!pat.matcher(email).matches()) {
+                            Toast.makeText(SignupActivity.this, "Email is not valid.", Toast.LENGTH_LONG).show();
+                            return;
+                        }
+
+                        pat = Pattern.compile(VALID_LETTERS);
+
+                        if(!pat.matcher(firstName).matches()){
+                            Toast.makeText(SignupActivity.this, "First name is not valid.", Toast.LENGTH_LONG).show();
+                            return;
+                        }
+
+                        if(!pat.matcher(lastName).matches()){
+                            Toast.makeText(SignupActivity.this, "Last name is not valid.", Toast.LENGTH_LONG).show();
+                            return;
+                        }
+
+                        auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                            @Override
+                            public void onComplete(@NonNull Task<AuthResult> task) {
+                                if(task.isSuccessful()) {
+
+                                    FirebaseUser newUser = task.getResult().getUser();
+
+                                    String id = newUser.getUid();
+
+                                    User user = new User();
+
+                                    user.setId(id);
+                                    user.setUsername(username);
+                                    user.setEmail(email);
+                                    user.setFirstName(firstName);
+                                    user.setLastName(lastName);
+                                    user.setAccountType(accountType);
+
+                                    DatabaseReference newUserDb = accountsDatabase.child(id);
+
+                                    newUserDb.setValue(user);
+
+                                    Intent toWelcomeIntent = new Intent(SignupActivity.this, WelcomeActivity.class);
+                                    toWelcomeIntent.putExtra(WelcomeActivity.USER, user);
+                                    startActivity(toWelcomeIntent);
+
+                                } else {
+
+                                    Toast.makeText(SignupActivity.this, task.getException().getMessage(), Toast.LENGTH_LONG).show();
+                                    Log.w("firebaseDebug", "createUserWithEmail: Failed", task.getException());
+    
+                                    signupButton.setEnabled(true);
+                                    backButton.setEnabled(true);
+
+                                }
+
+                            }
+                        });
+
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
 
             }
         });
@@ -108,40 +226,6 @@ public class SignupActivity extends AppCompatActivity {
             }
         });
 
-    }
-
-    private User processSignup() {
-
-        db = FirebaseDatabase.getInstance().getReference();
-
-        AccountType accountType = (AccountType) accountTypesSpinner.getSelectedItem();
-
-        String username = usernameTextView.getText().toString();
-        String email = emailTextView.getText().toString();
-        String firstName = firstNameTextView.getText().toString();
-        String lastName = lastNameTextView.getText().toString();
-        String password = passwordTextView.getText().toString();
-
-        if(email.isEmpty() || firstName.isEmpty() || lastName.isEmpty() || password.isEmpty()) {
-            return null;
-        }
-
-        User user = new User();
-        user.setUsername(username);
-        user.setPassword(password);
-        user.setEmail(email);
-        user.setFirstName(firstName);
-        user.setLastName(lastName);
-        user.setAccountType(accountType);
-
-        String id = db.push().getKey();
-        
-        user.setId(id);
-        
-        db.child(id).setValue(user);
-
-        return user;
-        
     }
 
 }

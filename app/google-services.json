@@ -1,0 +1,63 @@
+{
+  "project_info": {
+    "project_number": "578110801860",
+    "firebase_url": "https://jobzi-arom.firebaseio.com",
+    "project_id": "jobzi-arom",
+    "storage_bucket": "jobzi-arom.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:578110801860:android:ed1029c56bdc51d6",
+        "android_client_info": {
+          "package_name": "com.arom.jobzi"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "578110801860-hshbr5liobh77chcb6c9dlet8aknu69v.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.arom.jobzi",
+            "certificate_hash": "8b942eadb7552359dce951961e8fa78b513447f0"
+          }
+        },
+        {
+          "client_id": "578110801860-iob9n2b8nfk0a59telm22ucmcih0t22q.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.arom.jobzi",
+            "certificate_hash": "8c516314bf44a56cf6c534a5934c6b3366e09795"
+          }
+        },
+        {
+          "client_id": "578110801860-k8a722979e21hu6b1hdh8o4lbehiogll.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCPVuiYJO9CRS_cB1Jg5k9CYrW2bB2YeHA"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "578110801860-k8a722979e21hu6b1hdh8o4lbehiogll.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
