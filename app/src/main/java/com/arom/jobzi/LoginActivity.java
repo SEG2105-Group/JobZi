@@ -38,14 +38,16 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
         auth = FirebaseAuth.getInstance();
-        accountsDatabase = FirebaseDatabase.getInstance().getReference().child(SignupActivity.ACCOUNTS_TEST);
+        accountsDatabase = FirebaseDatabase.getInstance().getReference().child(SignupActivity.ACCOUNTS);
         
         emailTextView = findViewById(R.id.loginEmailTextView);
         passwordTextView = findViewById(R.id.loginPasswordTextView);
 
-        signupButton = findViewById(R.id.gotoSignupButton);
-
         loginButton = findViewById(R.id.loginButton);
+        signupButton = findViewById(R.id.gotoSignupButton);
+	
+		loginButton.setEnabled(true);
+		signupButton.setEnabled(true);
 
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -90,10 +92,11 @@ public class LoginActivity extends AppCompatActivity {
                     LoginActivity.this.userLoggedIn(task.getResult().getUser());
                 } else {
                     Toast.makeText(LoginActivity.this, "Invalid username or password or user does not exist.", Toast.LENGTH_LONG).show();
-                }
-
-                loginButton.setEnabled(true);
-                signupButton.setEnabled(true);
+	
+					loginButton.setEnabled(true);
+					signupButton.setEnabled(true);
+	
+				}
 
             }
         });

@@ -33,13 +33,13 @@ import java.util.regex.Pattern;
 public class SignupActivity extends AppCompatActivity {
 
     public static final String ACCOUNTS = "accounts";
-    public static final String ACCOUNTS_TEST = "accounts-test";
 
     private static final String EMAIL_REGEX = "^[a-zA-Z0-9_+&*-]+(?:\\."+
             "[a-zA-Z0-9_+&*-]+)*@" +
             "(?:[a-zA-Z0-9-]+\\.)+[a-z" +
             "A-Z]{2,7}$";
     private static String VALID_LETTERS = "^[a-zA-Z]+";
+    
     private TextView usernameTextView;
     private TextView passwordTextView;
     private TextView emailTextView;
@@ -60,7 +60,7 @@ public class SignupActivity extends AppCompatActivity {
         setContentView(R.layout.activity_signup);
 
         auth = FirebaseAuth.getInstance();
-        accountsDatabase = FirebaseDatabase.getInstance().getReference().child(ACCOUNTS_TEST);
+        accountsDatabase = FirebaseDatabase.getInstance().getReference().child(ACCOUNTS);
 
         accountsDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -198,11 +198,11 @@ public class SignupActivity extends AppCompatActivity {
 
                                     Toast.makeText(SignupActivity.this, task.getException().getMessage(), Toast.LENGTH_LONG).show();
                                     Log.w("firebaseDebug", "createUserWithEmail: Failed", task.getException());
+    
+                                    signupButton.setEnabled(true);
+                                    backButton.setEnabled(true);
 
                                 }
-
-                                signupButton.setEnabled(true);
-                                backButton.setEnabled(true);
 
                             }
                         });
