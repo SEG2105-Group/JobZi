@@ -115,8 +115,8 @@ public class LoginActivity extends AppCompatActivity {
                 User user = dataSnapshot.child(firebaseUser.getUid()).getValue(User.class);
 
                 if(user != null) {
-                    Intent toWelcomeIntent = new Intent(LoginActivity.this, WelcomeActivity.class);
-                    toWelcomeIntent.putExtra(WelcomeActivity.USER, user);
+                    Intent toWelcomeIntent = new Intent(LoginActivity.this, LandingActivity.class);
+                    toWelcomeIntent.putExtra(LandingActivity.USER, user);
                     startActivity(toWelcomeIntent);
                     finish();
                 }

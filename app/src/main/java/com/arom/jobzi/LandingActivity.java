@@ -25,7 +25,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import java.util.LinkedList;
 import java.util.List;
 
-public class WelcomeActivity extends AppCompatActivity {
+public class LandingActivity extends AppCompatActivity {
 
 	public static final String USER = "user";
 
@@ -76,7 +76,7 @@ public class WelcomeActivity extends AppCompatActivity {
         logoutButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                WelcomeActivity.this.logout();
+                LandingActivity.this.logout();
             }
         });
         
@@ -143,7 +143,7 @@ public class WelcomeActivity extends AppCompatActivity {
 
     private void logout() {
         auth.signOut();
-        Intent toLoginIntent = new Intent(WelcomeActivity.this, LoginActivity.class);
+        Intent toLoginIntent = new Intent(LandingActivity.this, LoginActivity.class);
         startActivity(toLoginIntent);
         finish();
     }

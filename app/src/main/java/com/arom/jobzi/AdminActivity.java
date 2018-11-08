@@ -1,13 +1,12 @@
 package com.arom.jobzi;
 
-import android.support.v7.app.AppCompatActivity;
-
+import android.os.Bundle;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 
 import com.arom.jobzi.service.ServicesFragment;
-import com.arom.jobzi.admin.UsersFragment;
+import com.arom.jobzi.user.UsersFragment;
 
 public class AdminActivity extends AppCompatActivity {
 

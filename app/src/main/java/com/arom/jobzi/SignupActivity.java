@@ -190,8 +190,8 @@ public class SignupActivity extends AppCompatActivity {
 
                                     newUserDb.setValue(user);
 
-                                    Intent toWelcomeIntent = new Intent(SignupActivity.this, WelcomeActivity.class);
-                                    toWelcomeIntent.putExtra(WelcomeActivity.USER, user);
+                                    Intent toWelcomeIntent = new Intent(SignupActivity.this, LandingActivity.class);
+                                    toWelcomeIntent.putExtra(LandingActivity.USER, user);
                                     startActivity(toWelcomeIntent);
 
                                 } else {

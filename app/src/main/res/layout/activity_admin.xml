@@ -35,6 +35,12 @@
             app:tabTextAppearance="@android:style/TextAppearance.DeviceDefault.Widget.ActionMode.Subtitle.Inverse"
             app:tabTextColor="@color/textColor">
 
+            <fragment
+                android:id="@+id/fragment"
+                android:name="com.arom.jobzi.user.UsersFragment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
             <android.support.design.widget.TabItem
                 android:id="@+id/usersTab"
                 android:layout_width="wrap_content"
@@ -43,12 +49,13 @@
                 app:tabSelectedTextColor="#566573"
                 app:tabTextColor="#566573" >
 
+<!--
                 <ListView
                     android:id="@+id/userListView"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="1" />
-
+-->
             </android.support.design.widget.TabItem>
 
             <android.support.design.widget.TabItem
@@ -57,12 +64,13 @@
                 android:layout_height="wrap_content"
                 android:text="Services" >
 
+<!--
                 <ListView
                     android:id="@+id/servicesListView"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="1" />
-
+-->
             </android.support.design.widget.TabItem>
 
         </android.support.design.widget.TabLayout>
