@@ -27,7 +27,11 @@
             android:name=".SignupActivity"
             android:label="@string/title_activity_signup"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".ServiceEditorActivity"></activity>
+        <activity android:name=".ServiceEditorActivity" />
+        <activity
+            android:name=".Admin.adminMainActivity"
+            android:label="@string/title_activity_adminviewlist"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>
