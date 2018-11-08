@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.arom.jobzi.R;
@@ -16,6 +17,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 
+import java.util.LinkedList;
 import java.util.List;
 
 public class UsersFragment extends Fragment{
@@ -28,10 +30,15 @@ public class UsersFragment extends Fragment{
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.user_item, container, false);
+        addUsersListener();
+        users = new LinkedList<User>();
 
-        ListView listView = view.findViewById(R.id.servicesListView);
+        ListView listView = view.findViewById(R.id.fragmentuUserList);
 
-        //ListView userList = new ListView();
+        ArrayAdapter<User> listViewUsersAdapter = new ArrayAdapter<User>(getActivity(),
+                android.R.layout.simple_expandable_list_item_1,
+                users);
+        listView.setAdapter(listViewUsersAdapter);
 
         return view;
     }
