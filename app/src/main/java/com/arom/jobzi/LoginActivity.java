@@ -103,6 +103,10 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * This is called when it is detected that the user has logged in (either when starting this activity with a user already logged in or when a user manually logs in).
+     * @param firebaseUser
+     */
     private void userLoggedIn(final FirebaseUser firebaseUser) {
         accountsDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -114,6 +118,7 @@ public class LoginActivity extends AppCompatActivity {
                     Intent toWelcomeIntent = new Intent(LoginActivity.this, WelcomeActivity.class);
                     toWelcomeIntent.putExtra(WelcomeActivity.USER, user);
                     startActivity(toWelcomeIntent);
+                    finish();
                 }
                 
             }

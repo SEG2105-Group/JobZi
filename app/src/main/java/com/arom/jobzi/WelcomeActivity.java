@@ -76,9 +76,7 @@ public class WelcomeActivity extends AppCompatActivity {
         logoutButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                auth.signOut();
-                Intent toLoginIntent = new Intent(WelcomeActivity.this, LoginActivity.class);
-                startActivity(toLoginIntent);
+                WelcomeActivity.this.logout();
             }
         });
         
@@ -141,6 +139,13 @@ public class WelcomeActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    private void logout() {
+        auth.signOut();
+        Intent toLoginIntent = new Intent(WelcomeActivity.this, LoginActivity.class);
+        startActivity(toLoginIntent);
+        finish();
     }
 
 }
