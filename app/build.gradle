@@ -21,6 +21,12 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
+    // Unit testing dependencies
+    testCompile 'junit:junit:4.12'
+    // Set this dependency if you want to use the Hamcrest matcher library
+    testCompile 'org.hamcrest:hamcrest-library:1.3'
+    // more stuff, e.g., Mockito
+
     implementation 'com.android.support:appcompat-v7:28.0.0'
     implementation 'com.android.support:support-v13:28.0.0'
     implementation 'com.android.support.constraint:constraint-layout:1.1.3'
