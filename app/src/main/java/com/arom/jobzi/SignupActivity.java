@@ -197,7 +197,7 @@ public class SignupActivity extends AppCompatActivity {
                                 } else {
 
                                     Toast.makeText(SignupActivity.this, task.getException().getMessage(), Toast.LENGTH_LONG).show();
-                                    Log.w("firebaseAuth", "createUserWithEmail: Failed", task.getException());
+                                    Log.w("firebaseDebug", "createUserWithEmail: Failed", task.getException());
 
                                 }
 

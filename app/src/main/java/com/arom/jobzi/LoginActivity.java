@@ -135,10 +135,9 @@ public class LoginActivity extends AppCompatActivity {
                 if(user != null) {
                     Intent toWelcomeIntent = new Intent(LoginActivity.this, WelcomeActivity.class);
                     toWelcomeIntent.putExtra(WelcomeActivity.USER, user);
+                    startActivity(toWelcomeIntent);
                 }
                 
-                //Toast.makeText(LoginActivity.this,"The authenticated user was not found.", Toast.LENGTH_LONG).show
-
             }
 
             @Override

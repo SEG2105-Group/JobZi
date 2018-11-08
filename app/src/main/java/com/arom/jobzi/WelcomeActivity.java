@@ -1,9 +1,11 @@
 package com.arom.jobzi;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -69,6 +71,17 @@ public class WelcomeActivity extends AppCompatActivity {
 
         welcomeBannerTextView = findViewById(R.id.welcomeBannerTextView);
         welcomeBannerTextView.setText(getString(R.string.user_welcome_banner, user.getUsername(), user.getAccountType().toString()));
+        
+        Button logoutButton = findViewById(R.id.logoutButton);
+        logoutButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                auth.signOut();
+                Intent toLoginIntent = new Intent(WelcomeActivity.this, LoginActivity.class);
+                startActivity(toLoginIntent);
+            }
+        });
+        
     }
 
     private void addUsersListener() {
