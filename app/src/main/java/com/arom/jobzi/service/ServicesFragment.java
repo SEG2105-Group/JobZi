@@ -21,18 +21,19 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class ServicesFragment extends Fragment {
+    
     private View view;
-    private DatabaseReference accountsDatabase;
+    
     private Service service;
     private List<Service> services;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.user_item, container, false);
+        view = inflater.inflate(R.layout.fragment_service_list, container, false);
         services = new LinkedList<Service>();
 
-        ListView listView = view.findViewById(R.id.fragmentuServiceList);
+        ListView listView = view.findViewById(R.id.serviceListView);
 
         ServiceArrayAdapter listViewServiceAdapter = new ServiceArrayAdapter(getActivity(), services);
         listView.setAdapter(listViewServiceAdapter);
