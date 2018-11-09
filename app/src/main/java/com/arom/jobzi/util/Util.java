@@ -9,11 +9,15 @@ import com.arom.jobzi.HomeOwnerActivity;
 import com.arom.jobzi.ServiceProviderActivity;
 import com.arom.jobzi.user.User;
 
-public class AuthUtil {
+public final class Util {
 
     public static final String ARG_USER = "user";
 
-    public static void gotoLanding(Activity activity, User user) {
+    private static Util instance;
+
+    private Util() {}
+
+    public void gotoLanding(Activity activity, User user) {
 
         Class<?> landingActivity = null;
 
@@ -38,6 +42,16 @@ public class AuthUtil {
 
         activity.startActivity(toLandingIntent);
         activity.finish();
+
+    }
+
+    public static Util getInstance() {
+
+        if(instance == null) {
+            instance = new Util();
+        }
+
+        return instance;
 
     }
 

@@ -10,7 +10,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.arom.jobzi.user.User;
-import com.arom.jobzi.util.AuthUtil;
+import com.arom.jobzi.util.Util;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -116,7 +116,7 @@ public class LoginActivity extends AppCompatActivity {
                 User user = dataSnapshot.child(firebaseUser.getUid()).getValue(User.class);
 
                 if(user != null) {
-                    AuthUtil.gotoLanding(LoginActivity.this, user);
+                    Util.getInstance().gotoLanding(LoginActivity.this, user);
                 }
                 
             }
