@@ -23,6 +23,13 @@
                 android:layout_marginTop="30dp"
                 android:text="@string/user_welcome_banner" />
 
+            <fragment
+                android:id="@+id/adminFragment"
+                android:name="com.arom.jobzi.fragment.AdminFragment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:layout="@layout/fragment_admin" />
+
             <ListView
                 android:id="@+id/userList"
                 android:layout_width="wrap_content"
