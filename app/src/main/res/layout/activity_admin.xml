@@ -1,96 +1,118 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main_content"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
-    tools:context=".AdminActivity">
+                                                 xmlns:app="http://schemas.android.com/apk/res-auto"
+                                                 xmlns:tools="http://schemas.android.com/tools"
+                                                 android:layout_width="match_parent"
+                                                 android:layout_height="match_parent"
+                                                 android:fitsSystemWindows="true"
+                                                 tools:context=".AdminActivity">
+	<!--
+	<fragment
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:name="com.arom.jobzi.fragment.UserListFragment"
+		tools:layout="@layout/fragment_user_list"/>
 
-    <android.support.design.widget.AppBarLayout
-        android:id="@+id/appbar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingTop="@dimen/appbar_padding_top"
-        android:theme="@style/AppTheme.AppBarOverlay">
+	<android.support.v4.widget.NestedScrollView
+		android:id="@+id/container"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:layout_weight="1"
-            android:background="?attr/colorPrimary"
-            app:layout_scrollFlags="scroll|enterAlways"
-            app:popupTheme="@style/AppTheme.PopupOverlay"
-            app:title="@string/app_name">
+	</android.support.v4.widget.NestedScrollView>
 
-        </android.support.v7.widget.Toolbar>
+	<android.support.design.widget.AppBarLayout
+		android:id="@+id/appbar"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:paddingTop="@dimen/appbar_padding_top"
+		android:theme="@style/AppTheme.AppBarOverlay">
 
-        <android.support.design.widget.TabLayout
-            android:id="@+id/tabs"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:tabIndicatorColor="@color/colorAccent"
-            app:tabTextAppearance="@android:style/TextAppearance.DeviceDefault.Widget.ActionMode.Subtitle.Inverse"
-            app:tabTextColor="@color/textColor">
+		<android.support.v7.widget.Toolbar
+			android:id="@+id/toolbar"
+			android:layout_width="match_parent"
+			android:layout_height="?attr/actionBarSize"
+			android:layout_weight="1"
+			android:background="?attr/colorPrimary"
+			app:layout_scrollFlags="scroll|enterAlways"
+			app:popupTheme="@style/AppTheme.PopupOverlay"
+			app:title="@string/app_name">
 
-            <fragment
-                android:id="@+id/fragment"
-                android:name="com.arom.jobzi.user.UsersFragment"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+		</android.support.v7.widget.Toolbar>
 
-            <android.support.design.widget.TabItem
-                android:id="@+id/usersTab"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Users"
-                app:tabSelectedTextColor="#566573"
-                app:tabTextColor="#566573" >
+		<android.support.design.widget.TabLayout
+			android:id="@+id/tabLayout"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			app:tabIndicatorColor="@color/colorAccent"
+			app:tabTextAppearance="@android:style/TextAppearance.DeviceDefault.Widget.ActionMode.Subtitle.Inverse"
+			app:tabTextColor="@color/textColor">
 
-<!--
-                <ListView
-                    android:id="@+id/userListView"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1" />
+			<android.support.design.widget.TabItem
+				android:id="@+id/usersTab"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:text="@string/users_label"
+				app:tabSelectedTextColor="#566573"
+				app:tabTextColor="#566573">
+
+			</android.support.design.widget.TabItem>
+
+			<android.support.design.widget.TabItem
+				android:id="@+id/servicesTab"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:text="@string/services_label">
+
+			</android.support.design.widget.TabItem>
+
+		</android.support.design.widget.TabLayout>
+
+	</android.support.design.widget.AppBarLayout>
 -->
-            </android.support.design.widget.TabItem>
 
-            <android.support.design.widget.TabItem
-                android:id="@+id/servicesTab"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Services" >
+	<!---->
+	<android.support.design.widget.AppBarLayout
+		android:id="@+id/appbar"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:paddingTop="@dimen/appbar_padding_top"
+		android:theme="@style/AppTheme.AppBarOverlay">
 
-<!--
-                <ListView
-                    android:id="@+id/servicesListView"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1" />
--->
-            </android.support.design.widget.TabItem>
+		<android.support.v7.widget.Toolbar
+			android:id="@+id/toolbar"
+			android:layout_width="match_parent"
+			android:layout_height="?attr/actionBarSize"
+			android:layout_weight="1"
+			android:background="?attr/colorPrimary"
+			app:layout_scrollFlags="scroll|enterAlways"
+			app:popupTheme="@style/AppTheme.PopupOverlay"
+			app:title="@string/app_name"/>
 
-        </android.support.design.widget.TabLayout>
+	</android.support.design.widget.AppBarLayout>
+	<!---->
 
-    </android.support.design.widget.AppBarLayout>
+	<android.support.v4.view.ViewPager
+		android:id="@+id/viewPager"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-    <android.support.v4.widget.NestedScrollView
-        android:id="@+id/container"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+		<android.support.design.widget.TabLayout
+			android:id="@+id/tabLayout"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			app:tabMode="fixed"
+			app:tabGravity="fill"/>
 
-    </android.support.v4.widget.NestedScrollView>
+	</android.support.v4.view.ViewPager>
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="end|bottom"
-        android:layout_margin="@dimen/fab_margin"
-        app:srcCompat="@android:drawable/ic_input_add" />
+	<android.support.design.widget.FloatingActionButton
+		android:id="@+id/fab"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_gravity="end|bottom"
+		android:layout_margin="@dimen/fab_margin"
+		app:srcCompat="@android:drawable/ic_input_add"/>
 
 </android.support.design.widget.CoordinatorLayout>

@@ -1,18 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/fragmentUserList"
-    android:name="com.arom.jobzi.fragment.UserFragment"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_marginLeft="16dp"
-    android:layout_marginRight="16dp"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
               android:orientation="vertical"
-    tools:context=".fragment.UserListFragment"
-    tools:listitem="@layout/user_item" >
+              tools:context=".fragment.ServiceListFragment">
 
 	<TextView
-		android:id="@+id/userSectionTextView"
+		android:id="@+id/serviceSectionTextView"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		android:layout_marginStart="@dimen/activity_horizontal_margin"
@@ -21,10 +16,10 @@
 		android:layout_marginBottom="@dimen/activity_vertical_margin"
 		tools:layout_constraintLeft_creator="1"
 		tools:layout_constraintTop_creator="1"
-		tools:text="@string/users_label"/>
+		tools:text="@string/services_label"/>
 
 	<ListView
-		android:id="@+id/userListView"
+		android:id="@+id/serviceListView"
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"/>
 
