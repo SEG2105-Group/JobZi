@@ -17,6 +17,7 @@ import android.widget.Toast;
 
 import com.arom.jobzi.account.AccountType;
 import com.arom.jobzi.user.User;
+import com.arom.jobzi.util.Util;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -25,14 +26,11 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.regex.Pattern;
 
 public class SignupActivity extends AppCompatActivity {
-
-    public static final String ACCOUNTS = "accounts";
 
     private static final Pattern EMAIL_PATTERN = Pattern.compile("^[a-zA-Z0-9_+&*-]+(?:\\."+
             "[a-zA-Z0-9_+&*-]+)*@" +
@@ -50,7 +48,6 @@ public class SignupActivity extends AppCompatActivity {
     private Button backButton;
 
     private FirebaseAuth auth;
-    private DatabaseReference accountsDatabase;
 
     private boolean adminExists;
 
@@ -60,15 +57,14 @@ public class SignupActivity extends AppCompatActivity {
         setContentView(R.layout.activity_signup);
 
         auth = FirebaseAuth.getInstance();
-        accountsDatabase = FirebaseDatabase.getInstance().getReference().child(ACCOUNTS);
 
-        accountsDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
+        Util.getInstance().addSingleValueAccountsListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-                for(DataSnapshot userSnapshot: dataSnapshot.getChildren()) {
+                for (DataSnapshot userSnapshot : dataSnapshot.getChildren()) {
                     User user = userSnapshot.getValue(User.class);
-                    if(user.getAccountType().equals(AccountType.ADMIN)) {
+                    if (user.getAccountType().equals(AccountType.ADMIN)) {
                         adminExists = true;
                         break;
                     }
@@ -119,6 +115,7 @@ public class SignupActivity extends AppCompatActivity {
                 return view;
             }
         };
+
         spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         accountTypesSpinner.setAdapter(spinnerArrayAdapter);
         accountTypesSpinner.setSelection(AccountType.HOME_OWNER.ordinal());
@@ -133,7 +130,7 @@ public class SignupActivity extends AppCompatActivity {
                 signupButton.setEnabled(false);
                 backButton.setEnabled(false);
 
-                accountsDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
+                Util.getInstance().addSingleValueAccountsListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
@@ -183,7 +180,7 @@ public class SignupActivity extends AppCompatActivity {
                                     user.setLastName(lastName);
                                     user.setAccountType(accountType);
 
-                                    DatabaseReference newUserDb = accountsDatabase.child(id);
+                                    DatabaseReference newUserDb = Util.getInstance().getAccountsById(id);
 
                                     newUserDb.setValue(user);
 

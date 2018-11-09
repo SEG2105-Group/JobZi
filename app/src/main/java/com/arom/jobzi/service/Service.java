@@ -1,9 +1,23 @@
 package com.arom.jobzi.service;
 
-public class Service {
+import java.io.Serializable;
+
+public class Service implements Serializable {
+
+    private static final float serialVersionUID = 1L;
+
+    private String id;
 
     private String name;
     private double rate;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public String getName() {
         return name;

@@ -10,7 +10,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.arom.jobzi.user.User;
-import com.arom.jobzi.util.AuthUtil;
+import com.arom.jobzi.util.Util;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -18,8 +18,6 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 public class LoginActivity extends AppCompatActivity {
@@ -31,7 +29,6 @@ public class LoginActivity extends AppCompatActivity {
     private Button signupButton;
 
     private FirebaseAuth auth;
-    private DatabaseReference accountsDatabase;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,16 +36,15 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
         auth = FirebaseAuth.getInstance();
-        accountsDatabase = FirebaseDatabase.getInstance().getReference().child(SignupActivity.ACCOUNTS);
-        
+
         emailTextView = findViewById(R.id.loginEmailTextView);
         passwordTextView = findViewById(R.id.loginPasswordTextView);
 
         loginButton = findViewById(R.id.loginButton);
         signupButton = findViewById(R.id.gotoSignupButton);
 	
-		loginButton.setEnabled(true);
-		signupButton.setEnabled(true);
+		loginButton.setEnabled(false);
+		signupButton.setEnabled(false);
 
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -75,6 +71,9 @@ public class LoginActivity extends AppCompatActivity {
         if(currentUser != null) {
             userLoggedIn(currentUser);
         }
+
+        loginButton.setEnabled(true);
+        signupButton.setEnabled(true);
 
     }
 
@@ -105,18 +104,18 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     /**
-     * This is called when it is detected that the user has logged in (either when starting this activity with a user already logged in or when a user manually logs in).
+     * This method is called when it has been detected that the user has logged in (either when starting this activity with a user already logged in or when a user manually logs in).
      * @param firebaseUser
      */
     private void userLoggedIn(final FirebaseUser firebaseUser) {
-        accountsDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
+        Util.getInstance().addSingleValueAccountsListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
                 User user = dataSnapshot.child(firebaseUser.getUid()).getValue(User.class);
 
                 if(user != null) {
-                    AuthUtil.gotoLanding(LoginActivity.this, user);
+                    Util.getInstance().gotoLanding(LoginActivity.this, user);
                 }
                 
             }
