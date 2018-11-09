@@ -10,6 +10,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.arom.jobzi.user.User;
+import com.arom.jobzi.util.AuthUtil;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -115,10 +116,7 @@ public class LoginActivity extends AppCompatActivity {
                 User user = dataSnapshot.child(firebaseUser.getUid()).getValue(User.class);
 
                 if(user != null) {
-                    Intent toWelcomeIntent = new Intent(LoginActivity.this, WelcomeActivity.class);
-                    toWelcomeIntent.putExtra(WelcomeActivity.USER, user);
-                    startActivity(toWelcomeIntent);
-                    finish();
+                    AuthUtil.gotoLanding(LoginActivity.this, user);
                 }
                 
             }

@@ -2,7 +2,6 @@
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main_content"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
@@ -28,7 +27,7 @@
         </android.support.v7.widget.Toolbar>
 
         <android.support.design.widget.TabLayout
-            android:id="@+id/tabs"
+            android:id="@+id/tabLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:tabIndicatorColor="@color/colorAccent"
@@ -41,28 +40,34 @@
                 android:layout_height="wrap_content"
                 android:text="Users"
                 app:tabSelectedTextColor="#566573"
-                app:tabTextColor="#566573" >
+                app:tabTextColor="#566573">
 
+                <include layout="@layout/fragment_users"/>
+
+                <!--
                 <ListView
                     android:id="@+id/userListView"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="1" />
-
+-->
             </android.support.design.widget.TabItem>
 
             <android.support.design.widget.TabItem
                 android:id="@+id/servicesTab"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Services" >
+                android:text="Services">
 
+                <include layout="@layout/fragment_services"/>
+
+                <!--
                 <ListView
                     android:id="@+id/servicesListView"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="1" />
-
+-->
             </android.support.design.widget.TabItem>
 
         </android.support.design.widget.TabLayout>
