@@ -2,8 +2,6 @@ package com.arom.jobzi;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
 import android.view.View;
 import android.widget.Button;
@@ -16,11 +14,6 @@ import com.arom.jobzi.user.User;
 import com.arom.jobzi.user.UserArrayAdapter;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.ChildEventListener;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -33,7 +26,6 @@ public class LandingActivity extends FragmentActivity {
 	private User user;
 
 	private FirebaseAuth auth;
-	private DatabaseReference accountsDatabase;
     
     private TextView welcomeBannerTextView;
 
@@ -45,7 +37,6 @@ public class LandingActivity extends FragmentActivity {
         setContentView(R.layout.activity_landing);
 
 		auth = FirebaseAuth.getInstance();
-        accountsDatabase = FirebaseDatabase.getInstance().getReference().child(SignupActivity.ACCOUNTS);
 
 		user = (User) getIntent().getSerializableExtra(BUNDLE_ARG_USER);
         firebaseUser = auth.getCurrentUser();
@@ -83,61 +74,6 @@ public class LandingActivity extends FragmentActivity {
     }
 
     private void addUsersListener() {
-
-        accountsDatabase.addChildEventListener(new ChildEventListener() {
-
-            @Override
-            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-                User user = dataSnapshot.getValue(User.class);
-                users.add(user);
-
-            }
-
-            @Override
-            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-                User userChanged = dataSnapshot.getValue(User.class);
-
-                int i = 0;
-
-                for(; i < users.size(); i++) {
-                    if(users.get(i).getId().equals(userChanged.getId())) {
-                        break;
-                    }
-                }
-
-                users.set(i, userChanged);
-
-            }
-
-            @Override
-            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-
-                User userChanged = dataSnapshot.getValue(User.class);
-
-                int i = 0;
-
-                for(; i < users.size(); i++) {
-                    if(users.get(i).getId().equals(userChanged.getId())) {
-                        break;
-                    }
-                }
-
-                users.remove(i);
-
-            }
-
-            @Override
-            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
 
     }
 

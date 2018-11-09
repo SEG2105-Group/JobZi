@@ -21,7 +21,7 @@ public class AdminPagerAdapter extends FragmentPagerAdapter {
 		FRAGMENT_LIST.add(fragment);
 		FRAGMENT_NAME_LIST.add(name);
 	}
-	
+
 	@Nullable
 	@Override
 	public CharSequence getPageTitle(int position) {
