@@ -25,7 +25,6 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.regex.Pattern;
@@ -162,7 +161,7 @@ public class SignupActivity extends AppCompatActivity {
                             return;
                         }
 
-                        auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                        Util.getInstance().createUser(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                             @Override
                             public void onComplete(@NonNull Task<AuthResult> task) {
                                 if(task.isSuccessful()) {
@@ -180,13 +179,9 @@ public class SignupActivity extends AppCompatActivity {
                                     user.setLastName(lastName);
                                     user.setAccountType(accountType);
 
-                                    DatabaseReference newUserDb = Util.getInstance().getAccountsById(id);
+                                    Util.getInstance().updateUser(user);
 
-                                    newUserDb.setValue(user);
-
-                                    Intent toWelcomeIntent = new Intent(SignupActivity.this, LandingActivity.class);
-                                    toWelcomeIntent.putExtra(LandingActivity.BUNDLE_ARG_USER, user);
-                                    startActivity(toWelcomeIntent);
+                                    Util.getInstance().gotoLanding(SignupActivity.this, user);
 
                                 } else {
 

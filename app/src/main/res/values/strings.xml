@@ -7,11 +7,15 @@
     <string name="username">Username</string>
     <string name="password">Password</string>
     <string name="user_welcome_banner">Welcome! You are signed in as %s (%s)</string>
-    <string name="add_service">Add Service</string>
+    <string name="add_service_label">Add a Service</string>
     <string name="logout">Logout</string>
     <string name="action_settings">Action Settings</string>
     <string name="services_label">Services</string>
     <string name="users_label">Users</string>
+    <string name="save">Save</string>
+    <string name="cancel">Cancel</string>
+    <string name="rate_hint_text">Rate ($/hour)</string>
+    <string name="service_name_hint_text">Service Name</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

@@ -12,6 +12,8 @@ import com.arom.jobzi.ServiceProviderActivity;
 import com.arom.jobzi.service.Service;
 import com.arom.jobzi.user.User;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -30,12 +32,17 @@ public final class Util {
 
     private static Util instance;
 
+    private FirebaseAuth firebaseAuth;
+
     private DatabaseReference accountsDatabase;
     private DatabaseReference servicesDatabase;
 
     private Util() {}
 
-    public void createUser() {
+    public Task<AuthResult> createUser(String email, String password) {
+
+        firebaseAuth = FirebaseAuth.getInstance();
+        return firebaseAuth.createUserWithEmailAndPassword(email, password);
 
     }
 
@@ -135,19 +142,27 @@ public final class Util {
 
     }
 
-    public DatabaseReference getAccountsById(String id) {
+    private DatabaseReference getAccountsById(String id) {
         return FirebaseDatabase.getInstance().getReference().child(ACCOUNTS_NODE).child(id);
     }
 
-    public Task<Void> addService(Service service) {
+    public void updateUser(User user) {
 
-        servicesDatabase = FirebaseDatabase.getInstance().getReference().child(SERVICES_NODE);
-        return servicesDatabase.push().setValue(service);
+        accountsDatabase = FirebaseDatabase.getInstance().getReference().child(ACCOUNTS_NODE);
+        accountsDatabase.child(user.getId()).setValue(user);
 
     }
 
     public void updateService(Service service) {
-        FirebaseDatabase.getInstance().getReference().child(SERVICES_NODE).child(service.getId()).setValue(service);
+
+        servicesDatabase = FirebaseDatabase.getInstance().getReference().child(SERVICES_NODE);
+
+        if(service.getId() == null) {
+            service.setId(servicesDatabase.push().getKey());
+        }
+
+        servicesDatabase.child(service.getId()).setValue(service);
+
     }
 
     public static Util getInstance() {
