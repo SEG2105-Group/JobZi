@@ -1,15 +1,24 @@
 package com.arom.jobzi.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.arom.jobzi.R;
+import com.arom.jobzi.ServiceEditorActivity;
 import com.arom.jobzi.service.Service;
 import com.arom.jobzi.service.ServiceArrayAdapter;
+import com.arom.jobzi.util.Util;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,7 +27,9 @@ public class ServiceListFragment extends Fragment {
 
     private List<Service> serviceList;
 
-	public ServiceListFragment() {
+    private FloatingActionButton addServiceFloatingButton;
+
+    public ServiceListFragment() {
 	
 	}
 	
@@ -27,7 +38,7 @@ public class ServiceListFragment extends Fragment {
 		super.onCreate(savedInstanceState);
 
 		serviceList = new ArrayList<Service>();
-		
+
 	}
 	
 	@Override
@@ -42,8 +53,59 @@ public class ServiceListFragment extends Fragment {
 
         serviceListView.setAdapter(serviceArrayAdapter);
 
+        serviceListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                Service service = serviceList.get(position);
+
+                Intent toServiceEditorIntent = new Intent(ServiceListFragment.this.getActivity(), ServiceEditorActivity.class);
+                toServiceEditorIntent.putExtra(ServiceEditorActivity.SERVICE_BUNDLE_ARG, service);
+                ServiceListFragment.this.startActivity(toServiceEditorIntent);
+
+            }
+        });
+
+		addServiceFloatingButton = view.findViewById(R.id.addServiceFloatingButton);
+
+		addServiceFloatingButton.setEnabled(true);
+
+		addServiceFloatingButton.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				ServiceListFragment.this.addService();
+			}
+		});
+
 		return view;
 
 	}
+
+    private void addService() {
+
+        addServiceFloatingButton.setEnabled(false);
+
+        final Service service = new Service();
+
+        service.setName("");
+        service.setRate(0);
+
+        Util.getInstance().addService(service).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task task) {
+                if(task.isSuccessful()) {
+
+                    Intent toServiceEditorIntent = new Intent(ServiceListFragment.this.getActivity(), ServiceEditorActivity.class);
+                    toServiceEditorIntent.putExtra(ServiceEditorActivity.SERVICE_BUNDLE_ARG, service);
+                    ServiceListFragment.this.startActivity(toServiceEditorIntent);
+
+                } else {
+                    Toast.makeText(ServiceListFragment.this.getContext(), "A new service could not be added.", Toast.LENGTH_LONG).show();
+                    addServiceFloatingButton.setEnabled(true);
+                }
+            }
+        });
+
+    }
 	
 }

@@ -10,31 +10,31 @@ import java.util.List;
 
 public class AdminPagerAdapter extends FragmentPagerAdapter {
 	
-	private static final List<Fragment> FRAGMENT_LIST = new ArrayList<Fragment>();
-	private static final List<CharSequence> FRAGMENT_NAME_LIST = new ArrayList<CharSequence>();
+	private final List<Fragment> fragmentList = new ArrayList<Fragment>();
+	private final List<CharSequence> fragmentNamesList = new ArrayList<CharSequence>();
 	
 	public AdminPagerAdapter(FragmentManager fm) {
 		super(fm);
 	}
 	
 	public void addFragment(Fragment fragment, CharSequence name) {
-		FRAGMENT_LIST.add(fragment);
-		FRAGMENT_NAME_LIST.add(name);
+		fragmentList.add(fragment);
+		fragmentNamesList.add(name);
 	}
 
 	@Nullable
 	@Override
 	public CharSequence getPageTitle(int position) {
-		return FRAGMENT_NAME_LIST.get(position);
+		return fragmentNamesList.get(position);
 	}
 	
 	@Override
 	public Fragment getItem(int i) {
-		return FRAGMENT_LIST.get(i);
+		return fragmentList.get(i);
 	}
 	
 	@Override
 	public int getCount() {
-		return FRAGMENT_LIST.size();
+		return fragmentList.size();
 	}
 }

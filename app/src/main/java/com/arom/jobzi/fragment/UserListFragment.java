@@ -17,8 +17,6 @@ import java.util.List;
 
 public class UserListFragment extends Fragment {
 
-    public static final String ARG_USER_LIST = "user_list";
-
     private List<User> userList;
 
     /**
@@ -32,10 +30,6 @@ public class UserListFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        userList = new ArrayList<User>();
-
-        Util.getInstance().addUserListListener(userList);
-
     }
 
     @Override
@@ -45,6 +39,10 @@ public class UserListFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_user_list, container, false);
 
         ListView userListView = view.findViewById(R.id.userListView);
+
+        userList = new ArrayList<User>();
+
+        Util.getInstance().addUserListListener(userList);
 
         UserArrayAdapter userArrayAdapter = new UserArrayAdapter(getActivity(), userList);
 

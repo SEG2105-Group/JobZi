@@ -9,14 +9,12 @@ import android.widget.Toast;
 
 import com.arom.jobzi.service.Service;
 import com.arom.jobzi.util.Util;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.regex.Pattern;
 
 public class ServiceEditorActivity extends AppCompatActivity {
 
-    public static final String SERVICE = "service";
+    public static final String SERVICE_BUNDLE_ARG = "service";
 
     private static final Pattern VALID_PRICE_PATTERN = Pattern.compile("^[0-9]+");
     private static final Pattern VALID_PATTERN = Pattern.compile("^[a-zA-Z]+");
@@ -27,20 +25,19 @@ public class ServiceEditorActivity extends AppCompatActivity {
     private EditText serviceRateTextEdit;
 
     private Button saveButton;
-    private DatabaseReference accountsDatabase;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_service_editor);
 
-        service = (Service) savedInstanceState.get(SERVICE);
+        Bundle extras = getIntent().getExtras();
+
+        service = (Service) extras.get(SERVICE_BUNDLE_ARG);
 
         serviceNameTextEdit = findViewById(R.id.serviceNameTextEdit);
         serviceRateTextEdit = findViewById(R.id.serviceRateTextEdit);
-        saveButton = findViewById(R.id.backButton);
-
-        accountsDatabase = FirebaseDatabase.getInstance().getReference().child(Util.SERVICES_NODE);
+        saveButton = findViewById(R.id.saveButton);
 
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -66,7 +63,9 @@ public class ServiceEditorActivity extends AppCompatActivity {
                     return;
                 }
 
-                accountsDatabase.child(service.getId()).setValue(service);
+                Util.getInstance().updateService(service);
+
+                ServiceEditorActivity.this.finish();
 
             }
         });

@@ -43,8 +43,8 @@ public class LoginActivity extends AppCompatActivity {
         loginButton = findViewById(R.id.loginButton);
         signupButton = findViewById(R.id.gotoSignupButton);
 	
-		loginButton.setEnabled(true);
-		signupButton.setEnabled(true);
+		loginButton.setEnabled(false);
+		signupButton.setEnabled(false);
 
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -65,9 +65,6 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     public void onStart() {
         super.onStart();
-
-        loginButton.setEnabled(false);
-        signupButton.setEnabled(false);
 
         final FirebaseUser currentUser = auth.getCurrentUser();
 

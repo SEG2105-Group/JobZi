@@ -11,7 +11,7 @@ import com.arom.jobzi.HomeOwnerActivity;
 import com.arom.jobzi.ServiceProviderActivity;
 import com.arom.jobzi.service.Service;
 import com.arom.jobzi.user.User;
-import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -34,6 +34,10 @@ public final class Util {
     private DatabaseReference servicesDatabase;
 
     private Util() {}
+
+    public void createUser() {
+
+    }
 
     public void gotoLanding(Activity activity, User user) {
 
@@ -135,11 +139,15 @@ public final class Util {
         return FirebaseDatabase.getInstance().getReference().child(ACCOUNTS_NODE).child(id);
     }
 
-    public void addService(Service service, OnCompleteListener onCompleteListener) {
+    public Task<Void> addService(Service service) {
 
         servicesDatabase = FirebaseDatabase.getInstance().getReference().child(SERVICES_NODE);
-        servicesDatabase.push().setValue(service).addOnCompleteListener(onCompleteListener);
+        return servicesDatabase.push().setValue(service);
 
+    }
+
+    public void updateService(Service service) {
+        FirebaseDatabase.getInstance().getReference().child(SERVICES_NODE).child(service.getId()).setValue(service);
     }
 
     public static Util getInstance() {
