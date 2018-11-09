@@ -11,5 +11,6 @@
     <string name="logout">Logout</string>
     <string name="action_settings">Action Settings</string>
     <string name="services_label">Services</string>
+    <string name="users_label">Users</string>
 
 </resources>

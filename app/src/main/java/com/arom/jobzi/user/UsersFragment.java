@@ -10,11 +10,14 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import com.arom.jobzi.LoginActivity;
 import com.arom.jobzi.R;
+import com.arom.jobzi.SignupActivity;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -28,11 +31,17 @@ public class UsersFragment extends Fragment{
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.user_item, container, false);
+        super.onCreateView(inflater, container, savedInstanceState);
+        
+        // TODO: Move this to a helper method in the AuthUtil class.
+        accountsDatabase = FirebaseDatabase.getInstance().getReference().child(SignupActivity.ACCOUNTS);
         addUsersListener();
+        
+        view = inflater.inflate(R.layout.fragment_user_list, container, false);
+        
         users = new LinkedList<User>();
 
-        ListView listView = view.findViewById(R.id.fragmentuUserList);
+        ListView listView = view.findViewById(R.id.userListView);
 
         ArrayAdapter<User> listViewUsersAdapter = new ArrayAdapter<User>(getActivity(),
                 android.R.layout.simple_expandable_list_item_1,
