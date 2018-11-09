@@ -14,6 +14,7 @@ import com.arom.jobzi.R;
 import com.arom.jobzi.ServiceEditorActivity;
 import com.arom.jobzi.service.Service;
 import com.arom.jobzi.service.ServiceArrayAdapter;
+import com.arom.jobzi.util.Util;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,6 +34,8 @@ public class ServiceListFragment extends Fragment {
 		super.onCreate(savedInstanceState);
 
 		serviceList = new ArrayList<Service>();
+
+        Util.getInstance().addServiceListListener(serviceList);
 
 	}
 	
