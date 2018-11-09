@@ -33,7 +33,7 @@ public class ServiceEditorActivity extends AppCompatActivity {
 
         Bundle extras = getIntent().getExtras();
 
-        service = (Service) extras.get(SERVICE_BUNDLE_ARG);
+        service = (Service) extras.getSerializable(SERVICE_BUNDLE_ARG);
 
         serviceNameTextEdit = findViewById(R.id.serviceNameTextEdit);
         serviceRateTextEdit = findViewById(R.id.serviceRateTextEdit);
@@ -69,6 +69,16 @@ public class ServiceEditorActivity extends AppCompatActivity {
 
             }
         });
+
+        Button cancelButton = findViewById(R.id.cancelButton);
+
+        cancelButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
     }
 }
 

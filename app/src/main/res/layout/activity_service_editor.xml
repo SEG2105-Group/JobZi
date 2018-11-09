@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -16,7 +15,7 @@
         android:layout_marginStart="116dp"
         android:layout_marginLeft="116dp"
         android:layout_marginTop="26dp"
-        android:text="Add a Service"
+        android:text="@string/add_service_label"
         android:textSize="24sp" />
 
     <EditText
@@ -25,10 +24,10 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="163dp"
+        android:layout_marginTop="160dp"
         android:ems="10"
-        android:inputType="textPersonName"
-        tools:text="Service Name" />
+        android:hint="@string/service_name_hint_text"
+        android:inputType="textPersonName" />
 
     <EditText
         android:id="@+id/serviceRateTextEdit"
@@ -38,8 +37,8 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="215dp"
         android:ems="10"
-        android:inputType="numberDecimal"
-        tools:text="Rate ($/hour)" />
+        android:hint="@string/rate_hint_text"
+        android:inputType="numberDecimal"/>
 
     <Button
         android:id="@+id/saveButton"
@@ -48,7 +47,17 @@
         android:layout_below="@+id/serviceRateTextEdit"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="95dp"
-        android:text="Save"
+        android:text="@string/save"
+        android:textAllCaps="false" />
+
+    <Button
+        android:id="@+id/cancelButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/saveButton"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="0dp"
+        android:text="@string/cancel"
         android:textAllCaps="false" />
 
 </RelativeLayout>
