@@ -1,4 +1,4 @@
-package com.arom.jobzi.admin;
+package com.arom.jobzi.user;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -11,7 +11,6 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.arom.jobzi.R;
-import com.arom.jobzi.user.User;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;

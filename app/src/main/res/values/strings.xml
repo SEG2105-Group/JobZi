@@ -8,6 +8,9 @@
     <string name="title_activity_admin">AdminActivity</string>
     <string name="user_welcome_banner">Welcome! You are signed in as %s (%s)</string>
     <string name="add_service">Add Service</string>
-	<string name="logout">Logout</string>
+    <string name="logout">Logout</string>
     <string name="action_settings">Action Settings</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
