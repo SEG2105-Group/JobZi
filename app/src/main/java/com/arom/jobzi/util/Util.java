@@ -9,6 +9,7 @@ import android.widget.Toast;
 
 import com.arom.jobzi.AdminActivity;
 import com.arom.jobzi.HomeOwnerActivity;
+import com.arom.jobzi.LoginActivity;
 import com.arom.jobzi.ServiceProviderActivity;
 import com.arom.jobzi.service.Service;
 import com.arom.jobzi.user.User;
@@ -72,6 +73,17 @@ public final class Util {
 		toLandingIntent.putExtra(ARG_USER, user);
 		
 		activity.startActivity(toLandingIntent);
+		activity.finish();
+		
+	}
+	
+	public void logout(Activity activity) {
+		
+		firebaseAuth = FirebaseAuth.getInstance();
+		firebaseAuth.signOut();
+		
+		Intent toLoginIntent = new Intent(activity, LoginActivity.class);
+		activity.startActivity(toLoginIntent);
 		activity.finish();
 		
 	}
