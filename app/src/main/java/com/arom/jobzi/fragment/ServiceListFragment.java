@@ -57,6 +57,7 @@ public class ServiceListFragment extends Fragment {
 				
 				Intent toServiceEditorIntent = new Intent(ServiceListFragment.this.getActivity(), ServiceEditorActivity.class);
 				toServiceEditorIntent.putExtra(ServiceEditorActivity.SERVICE_BUNDLE_ARG, service);
+				toServiceEditorIntent.putExtra(ServiceEditorActivity.NEW_SERVICE_MODE_BUNDLE_ARG, false);
 				
 				ServiceListFragment.this.startActivity(toServiceEditorIntent);
 				
@@ -86,8 +87,6 @@ public class ServiceListFragment extends Fragment {
 		
 		addServiceFloatingButton = view.findViewById(R.id.addServiceFloatingButton);
 		
-		addServiceFloatingButton.setEnabled(true);
-		
 		addServiceFloatingButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -96,6 +95,14 @@ public class ServiceListFragment extends Fragment {
 		});
 		
 		return view;
+		
+	}
+	
+	@Override
+	public void onResume() {
+		super.onResume();
+		
+		addServiceFloatingButton.setEnabled(true);
 		
 	}
 	
@@ -110,6 +117,7 @@ public class ServiceListFragment extends Fragment {
 		
 		Intent toServiceEditorIntent = new Intent(ServiceListFragment.this.getActivity(), ServiceEditorActivity.class);
 		toServiceEditorIntent.putExtra(ServiceEditorActivity.SERVICE_BUNDLE_ARG, service);
+		toServiceEditorIntent.putExtra(ServiceEditorActivity.NEW_SERVICE_MODE_BUNDLE_ARG, true);
 		ServiceListFragment.this.startActivity(toServiceEditorIntent);
 		
 	}
