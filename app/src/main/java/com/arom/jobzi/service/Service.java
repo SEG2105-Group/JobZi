@@ -1,5 +1,7 @@
 package com.arom.jobzi.service;
 
+import android.support.annotation.Nullable;
+
 import java.io.Serializable;
 
 public class Service implements Serializable {
@@ -35,4 +37,19 @@ public class Service implements Serializable {
         this.rate = rate;
     }
 
+    @Override
+    public boolean equals(@Nullable Object obj) {
+
+        if(obj instanceof Service) {
+
+            Service service = (Service) obj;
+
+            return this.getId().equals(service.getId());
+
+        }
+
+        return false;
+
+
+    }
 }

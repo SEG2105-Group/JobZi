@@ -93,15 +93,7 @@ public final class Util {
 
                 User userChanged = dataSnapshot.getValue(User.class);
 
-                int i = 0;
-
-                for(; i < userList.size(); i++) {
-                    if(userList.get(i).getId().equals(userChanged.getId())) {
-                        break;
-                    }
-                }
-
-                userList.set(i, userChanged);
+                userList.set(userList.indexOf(userChanged), userChanged);
 
             }
 
@@ -110,15 +102,52 @@ public final class Util {
 
                 User userChanged = dataSnapshot.getValue(User.class);
 
-                int i = 0;
+                userList.remove(userChanged);
 
-                for(; i < userList.size(); i++) {
-                    if(userList.get(i).getId().equals(userChanged.getId())) {
-                        break;
-                    }
-                }
+            }
 
-                userList.remove(i);
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+    }
+
+    public void addServiceListListener(final List<Service> serviceList) {
+
+        servicesDatabase = FirebaseDatabase.getInstance().getReference().child(SERVICES_NODE);
+
+        servicesDatabase.addChildEventListener(new ChildEventListener() {
+
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+                Service service = dataSnapshot.getValue(Service.class);
+                serviceList.add(service);
+
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+                Service serviceChanged = dataSnapshot.getValue(Service.class);
+
+                serviceList.set(serviceList.indexOf(serviceChanged), serviceChanged);
+
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+                Service serviceChanged = dataSnapshot.getValue(Service.class);
+
+                serviceList.remove(serviceChanged);
 
             }
 
@@ -140,10 +169,6 @@ public final class Util {
         accountsDatabase = FirebaseDatabase.getInstance().getReference().child(ACCOUNTS_NODE);
         accountsDatabase.addListenerForSingleValueEvent(accountsListener);
 
-    }
-
-    private DatabaseReference getAccountsById(String id) {
-        return FirebaseDatabase.getInstance().getReference().child(ACCOUNTS_NODE).child(id);
     }
 
     public void updateUser(User user) {

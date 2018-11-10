@@ -16,7 +16,6 @@ public class ServiceEditorActivity extends AppCompatActivity {
 
     public static final String SERVICE_BUNDLE_ARG = "service";
 
-    private static final Pattern VALID_PRICE_PATTERN = Pattern.compile("^[0-9]+");
     private static final Pattern VALID_PATTERN = Pattern.compile("^[a-zA-Z]+");
 
     private Service service;
@@ -48,21 +47,38 @@ public class ServiceEditorActivity extends AppCompatActivity {
                 String name = serviceNameTextEdit.getText().toString();
                 String rate = serviceRateTextEdit.getText().toString();
 
-                if (name.isEmpty() || rate.isEmpty()) {
-                    Toast.makeText(ServiceEditorActivity.this, "You are missing some info.", Toast.LENGTH_LONG).show();
+                if (name.isEmpty()) {
+                    Toast.makeText(ServiceEditorActivity.this, "Please enter a name for this service.", Toast.LENGTH_LONG).show();
+                    return;
+                }
+                
+                if(rate.isEmpty()) {
+                    Toast.makeText(ServiceEditorActivity.this, "Please enter a rate for this activity.", Toast.LENGTH_LONG).show();
                     return;
                 }
 
-                if (!VALID_PRICE_PATTERN.matcher(rate).matches()) {
-                    Toast.makeText(ServiceEditorActivity.this, "Email is not valid.", Toast.LENGTH_LONG).show();
+                double rateDouble;
+                
+                try {
+                    rateDouble = Double.parseDouble(rate);
+                } catch(NumberFormatException ex) {
+                    Toast.makeText(ServiceEditorActivity.this, "Please make sure the rate is a decimal number.", Toast.LENGTH_LONG).show();
                     return;
                 }
-
+                
+                if(rateDouble <= 0) {
+                    Toast.makeText(ServiceEditorActivity.this, "Please make sure the rate is some price greaater than zero.", Toast.LENGTH_LONG).show();
+                    return;
+                }
+                
                 if (!VALID_PATTERN.matcher(name).matches()) {
                     Toast.makeText(ServiceEditorActivity.this, "First name is not valid.", Toast.LENGTH_LONG).show();
                     return;
                 }
 
+                service.setName(name);
+                service.setRate(rateDouble);
+                
                 Util.getInstance().updateService(service);
 
                 ServiceEditorActivity.this.finish();
