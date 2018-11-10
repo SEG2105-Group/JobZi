@@ -38,6 +38,12 @@ public class ServiceEditorActivity extends AppCompatActivity {
         serviceRateTextEdit = findViewById(R.id.serviceRateTextEdit);
         saveButton = findViewById(R.id.saveButton);
 
+        serviceNameTextEdit.setText(service.getName());
+        
+        if(service.getRate() > 0) {
+            serviceRateTextEdit.setText(String.format("%.2f", service.getRate()));
+        }
+        
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
