@@ -53,7 +53,7 @@ public class ServiceArrayAdapter extends ArrayAdapter<Service> {
 
         serviceNameTextView.setText(service.getName());
         serviceDescriptionTextView.setText(service.getName() + " is a service.");
-        hourlyRateTextView.setText(String.format("%f", service.getRate()));
+        hourlyRateTextView.setText(String.format("%.2f $/hour", service.getRate()));
 
         return view;
 
