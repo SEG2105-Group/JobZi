@@ -57,6 +57,7 @@ public class ServiceListFragment extends Fragment {
 
                 Intent toServiceEditorIntent = new Intent(ServiceListFragment.this.getActivity(), ServiceEditorActivity.class);
                 toServiceEditorIntent.putExtra(ServiceEditorActivity.SERVICE_BUNDLE_ARG, service);
+                
                 ServiceListFragment.this.startActivity(toServiceEditorIntent);
 
             }
