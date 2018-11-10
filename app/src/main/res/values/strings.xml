@@ -8,6 +8,7 @@
     <string name="password">Password</string>
     <string name="user_welcome_banner">Welcome! You are signed in as %s (%s)</string>
     <string name="add_service_label">Add a Service</string>
+    <string name="update_service_label">Update %s</string>
     <string name="logout">Logout</string>
     <string name="action_settings">Action Settings</string>
     <string name="services_label">Services</string>
@@ -16,9 +17,5 @@
     <string name="cancel">Cancel</string>
     <string name="rate_hint_text">Rate ($/hour)</string>
     <string name="service_name_hint_text">Service Name</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="title_activity_test_acvtivity">TestAcvtivity</string>
 
 </resources>

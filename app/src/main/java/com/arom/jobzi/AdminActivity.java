@@ -27,7 +27,6 @@ public class AdminActivity extends AppCompatActivity {
         adminPagerAdapter.addFragment(serviceListFragment, getText(R.string.services_label));
 
         viewPager.setAdapter(adminPagerAdapter);
-        viewPager.setOffscreenPageLimit(2);
         
         TabLayout tabLayout = findViewById(R.id.tabLayout);
         tabLayout.setupWithViewPager(viewPager);
