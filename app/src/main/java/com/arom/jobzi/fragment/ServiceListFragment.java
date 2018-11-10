@@ -35,8 +35,6 @@ public class ServiceListFragment extends Fragment {
 
 		serviceList = new ArrayList<Service>();
 
-        Util.getInstance().addServiceListListener(serviceList);
-
 	}
 	
 	@Override
@@ -50,7 +48,7 @@ public class ServiceListFragment extends Fragment {
         ServiceArrayAdapter serviceArrayAdapter = new ServiceArrayAdapter(getActivity(), serviceList);
 
         serviceListView.setAdapter(serviceArrayAdapter);
-
+		
         serviceListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -63,6 +61,8 @@ public class ServiceListFragment extends Fragment {
 
             }
         });
+		
+		Util.getInstance().addServiceListListener(serviceArrayAdapter, serviceList);
 
 		addServiceFloatingButton = view.findViewById(R.id.addServiceFloatingButton);
 
@@ -87,7 +87,7 @@ public class ServiceListFragment extends Fragment {
 
         service.setName("");
         service.setRate(0);
-
+        
         Intent toServiceEditorIntent = new Intent(ServiceListFragment.this.getActivity(), ServiceEditorActivity.class);
         toServiceEditorIntent.putExtra(ServiceEditorActivity.SERVICE_BUNDLE_ARG, service);
         ServiceListFragment.this.startActivity(toServiceEditorIntent);

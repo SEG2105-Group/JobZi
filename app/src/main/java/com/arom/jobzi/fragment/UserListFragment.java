@@ -32,8 +32,6 @@ public class UserListFragment extends Fragment {
 
         userList = new ArrayList<User>();
 
-        Util.getInstance().addUserListListener(userList);
-
     }
 
     @Override
@@ -47,6 +45,8 @@ public class UserListFragment extends Fragment {
         UserArrayAdapter userArrayAdapter = new UserArrayAdapter(getActivity(), userList);
 
         userListView.setAdapter(userArrayAdapter);
+    
+        Util.getInstance().addUserListListener(userArrayAdapter, userList);
 
         return view;
 
