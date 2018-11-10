@@ -20,79 +20,98 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ServiceListFragment extends Fragment {
-
-    private List<Service> serviceList;
-
-    private FloatingActionButton addServiceFloatingButton;
-
-    public ServiceListFragment() {
+	
+	private List<Service> serviceList;
+	
+	private FloatingActionButton addServiceFloatingButton;
+	
+	public ServiceListFragment() {
 	
 	}
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
+		
 		serviceList = new ArrayList<Service>();
-
+		
 	}
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 							 Bundle savedInstanceState) {
-
-		View view = inflater.inflate(R.layout.fragment_service_list, container, false);
-
-        ListView serviceListView = view.findViewById(R.id.serviceListView);
-
-        ServiceArrayAdapter serviceArrayAdapter = new ServiceArrayAdapter(getActivity(), serviceList);
-
-        serviceListView.setAdapter(serviceArrayAdapter);
 		
-        serviceListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-                Service service = serviceList.get(position);
-
-                Intent toServiceEditorIntent = new Intent(ServiceListFragment.this.getActivity(), ServiceEditorActivity.class);
-                toServiceEditorIntent.putExtra(ServiceEditorActivity.SERVICE_BUNDLE_ARG, service);
-                
-                ServiceListFragment.this.startActivity(toServiceEditorIntent);
-
-            }
-        });
+		View view = inflater.inflate(R.layout.fragment_service_list, container, false);
+		
+		ListView serviceListView = view.findViewById(R.id.serviceListView);
+		
+		ServiceArrayAdapter serviceArrayAdapter = new ServiceArrayAdapter(getActivity(), serviceList);
+		
+		serviceListView.setAdapter(serviceArrayAdapter);
+		
+		serviceListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+				
+				Service service = serviceList.get(position);
+				
+				Intent toServiceEditorIntent = new Intent(ServiceListFragment.this.getActivity(), ServiceEditorActivity.class);
+				toServiceEditorIntent.putExtra(ServiceEditorActivity.SERVICE_BUNDLE_ARG, service);
+				
+				ServiceListFragment.this.startActivity(toServiceEditorIntent);
+				
+			}
+		});
+		
+		serviceListView.setLongClickable(true);
+		serviceListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+			@Override
+			public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
+				
+				DeleteServiceDialogFragment deleteServiceDialogFragment = new DeleteServiceDialogFragment();
+				
+				Bundle bundle = new Bundle();
+				bundle.putSerializable(DeleteServiceDialogFragment.SERVICE_BUNDLE_ARG, serviceList.get(i));
+				
+				deleteServiceDialogFragment.setArguments(bundle);
+				
+				deleteServiceDialogFragment.show(ServiceListFragment.this.getActivity().getSupportFragmentManager(), "");
+				
+				return true;
+				
+			}
+		});
 		
 		Util.getInstance().addServiceListListener(serviceArrayAdapter, serviceList);
-
+		
 		addServiceFloatingButton = view.findViewById(R.id.addServiceFloatingButton);
-
+		
 		addServiceFloatingButton.setEnabled(true);
-
+		
 		addServiceFloatingButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				ServiceListFragment.this.addService();
 			}
 		});
-
+		
 		return view;
-
+		
 	}
-
-    private void addService() {
-
-        addServiceFloatingButton.setEnabled(false);
-
-        Service service = new Service();
-
-        service.setName("");
-        service.setRate(0);
-        
-        Intent toServiceEditorIntent = new Intent(ServiceListFragment.this.getActivity(), ServiceEditorActivity.class);
-        toServiceEditorIntent.putExtra(ServiceEditorActivity.SERVICE_BUNDLE_ARG, service);
-        ServiceListFragment.this.startActivity(toServiceEditorIntent);
-
-    }
+	
+	private void addService() {
+		
+		addServiceFloatingButton.setEnabled(false);
+		
+		Service service = new Service();
+		
+		service.setName("");
+		service.setRate(0);
+		
+		Intent toServiceEditorIntent = new Intent(ServiceListFragment.this.getActivity(), ServiceEditorActivity.class);
+		toServiceEditorIntent.putExtra(ServiceEditorActivity.SERVICE_BUNDLE_ARG, service);
+		ServiceListFragment.this.startActivity(toServiceEditorIntent);
+		
+	}
 	
 }

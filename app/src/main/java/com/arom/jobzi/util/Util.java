@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.widget.BaseAdapter;
 import android.widget.Toast;
 
@@ -177,6 +176,11 @@ public final class Util {
 			}
 		});
 		
+	}
+	
+	public void deleteService(Service service) {
+		servicesDatabase = FirebaseDatabase.getInstance().getReference().child(SERVICES_NODE);
+		servicesDatabase.child(service.getId()).removeValue();
 	}
 	
 	public void addSingleValueAccountsListener(ValueEventListener accountsListener) {
