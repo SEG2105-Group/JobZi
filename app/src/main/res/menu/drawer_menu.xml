@@ -1,12 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    tools:showIn="navigation_view">
-    <item android:title="User Preferences">
-        <menu>
-            <item android:id="@+id/logout_drawer"
-                android:icon="@drawable/ic_person_black_24dp"
-                android:title="Logout"/>
-        </menu>
-    </item>
+      xmlns:tools="http://schemas.android.com/tools"
+      tools:showIn="navigation_view">
+	<item android:title="@string/user_preferences">
+		<menu>
+			<item
+				android:id="@+id/usernameMenuItem"
+				android:title="@string/username_menu_label"
+				android:icon="@drawable/ic_person_black_24dp"/>
+
+			<item
+				android:id="@+id/accountTypeMenuItem"
+				android:title="@string/account_type_menu_label"/>
+
+			<item
+				android:id="@+id/logoutMenuItem"
+				android:title="@string/logout"/>
+		</menu>
+	</item>
 </menu>

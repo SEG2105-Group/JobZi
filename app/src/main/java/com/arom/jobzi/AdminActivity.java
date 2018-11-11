@@ -10,8 +10,8 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.arom.jobzi.fragment.AdminPagerAdapter;
@@ -19,13 +19,10 @@ import com.arom.jobzi.fragment.ServiceListFragment;
 import com.arom.jobzi.fragment.UserListFragment;
 import com.arom.jobzi.user.User;
 import com.arom.jobzi.util.Util;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
 
-public class AdminActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class AdminActivity extends AppCompatActivity {
 
     private DrawerLayout drawerLayout;
-    private User user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,8 +50,33 @@ public class AdminActivity extends AppCompatActivity implements NavigationView.O
         drawerLayout = findViewById(R.id.drawer_layout);
 
         NavigationView navigationView = findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
-
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+                switch (menuItem.getItemId()){
+                    case R.id.logoutMenuItem:
+                        Util.getInstance().logout(AdminActivity.this);
+                        Toast.makeText(AdminActivity.this, "Logging out", Toast.LENGTH_SHORT);
+        
+                }
+                
+                drawerLayout.closeDrawer(GravityCompat.START);
+                return true;
+            }
+        });
+    
+        Bundle bundle = getIntent().getExtras();
+        
+        User user = (User) bundle.getSerializable(Util.ARG_USER);
+        
+        Menu menu = navigationView.getMenu();
+        
+        MenuItem usernameMenuItem = menu.findItem(R.id.usernameMenuItem);
+        MenuItem accountTypeMenuItem = menu.findItem(R.id.accountTypeMenuItem);
+        
+        usernameMenuItem.setTitle(getString(R.string.username_menu_label, user.getUsername()));
+        accountTypeMenuItem.setTitle(getString(R.string.account_type_menu_label, user.getAccountType().toString()));
+        
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar,
                 R.string.navigation_drawer_open, R.string.navigation_drawer_close);
 
@@ -73,15 +95,4 @@ public class AdminActivity extends AppCompatActivity implements NavigationView.O
         }
     }
 
-    @Override
-    public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-        switch (menuItem.getItemId()){
-            case R.id.logout_drawer:
-                Util.getInstance().logout(this);
-                Toast.makeText(this, "Loging out", Toast.LENGTH_SHORT);
-
-        }
-        drawerLayout.closeDrawer(GravityCompat.START);
-        return true;
-    }
 }
