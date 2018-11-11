@@ -6,7 +6,7 @@
                                         android:layout_width="match_parent"
                                         android:layout_height="match_parent"
                                         android:fitsSystemWindows="true"
-                                        tools:context=".AdminActivity"
+                                        tools:context=".UserActivity"
                                         tools:openDrawyer="start">
 
 	<android.support.design.widget.CoordinatorLayout
