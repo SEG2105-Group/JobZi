@@ -11,16 +11,21 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.arom.jobzi.fragment.AdminPagerAdapter;
 import com.arom.jobzi.fragment.ServiceListFragment;
 import com.arom.jobzi.fragment.UserListFragment;
+import com.arom.jobzi.user.User;
 import com.arom.jobzi.util.Util;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
 
 public class AdminActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private DrawerLayout drawerLayout;
+    private User user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,13 +53,15 @@ public class AdminActivity extends AppCompatActivity implements NavigationView.O
         drawerLayout = findViewById(R.id.drawer_layout);
 
         NavigationView navigationView = findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this); 
+        navigationView.setNavigationItemSelectedListener(this);
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar,
                 R.string.navigation_drawer_open, R.string.navigation_drawer_close);
 
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
+
+
 
     }
 

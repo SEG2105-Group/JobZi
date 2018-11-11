@@ -7,13 +7,14 @@
     android:orientation="vertical"
     android:padding="15dp"
     android:theme="@style/ThemeOverlay.AppCompat">
-
+<!--
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingTop="10dp"
         android:text="userEmail"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-        android:textColor="@color/textColor" />
-
+        android:textColor="@color/textColor"
+        android:id="@+id/userEmail_drawer"/>
+-->
 </LinearLayout>
