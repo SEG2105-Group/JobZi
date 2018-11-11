@@ -83,8 +83,6 @@ public class AdminActivity extends AppCompatActivity {
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
 
-
-
     }
 
     public void onBackPressed(){
