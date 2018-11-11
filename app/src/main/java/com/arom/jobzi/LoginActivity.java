@@ -43,9 +43,6 @@ public class LoginActivity extends AppCompatActivity {
         loginButton = findViewById(R.id.loginButton);
         signupButton = findViewById(R.id.gotoSignupButton);
 	
-		loginButton.setEnabled(false);
-		signupButton.setEnabled(false);
-
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {processLogin();
@@ -62,21 +59,6 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-
-        final FirebaseUser currentUser = auth.getCurrentUser();
-
-        if(currentUser != null) {
-            userLoggedIn(currentUser);
-        }
-
-        loginButton.setEnabled(true);
-        signupButton.setEnabled(true);
-
-    }
-
     public void processLogin() {
 
         loginButton.setEnabled(false);
@@ -89,7 +71,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if(task.isSuccessful()) {
-                    LoginActivity.this.userLoggedIn(task.getResult().getUser());
+                    Util.getInstance().onUserLogin(LoginActivity.this, task.getResult().getUser());
                 } else {
                     Toast.makeText(LoginActivity.this, "Invalid username or password or user does not exist.", Toast.LENGTH_LONG).show();
 	
@@ -101,30 +83,6 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-    }
-
-    /**
-     * This method is called when it has been detected that the user has logged in (either when starting this activity with a user already logged in or when a user manually logs in).
-     * @param firebaseUser
-     */
-    private void userLoggedIn(final FirebaseUser firebaseUser) {
-        Util.getInstance().addSingleValueAccountsListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
-                User user = dataSnapshot.child(firebaseUser.getUid()).getValue(User.class);
-
-                if(user != null) {
-                    Util.getInstance().gotoLanding(LoginActivity.this, user);
-                }
-                
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
     }
 
 }

@@ -16,6 +16,7 @@ import com.arom.jobzi.user.User;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -42,10 +43,41 @@ public final class Util {
 	private Util() {
 	}
 	
+	public FirebaseUser getCurrentUser() {
+		firebaseAuth = FirebaseAuth.getInstance();
+		return firebaseAuth.getCurrentUser();
+	}
+	
 	public Task<AuthResult> createUser(String email, String password) {
 		
 		firebaseAuth = FirebaseAuth.getInstance();
 		return firebaseAuth.createUserWithEmailAndPassword(email, password);
+		
+	}
+	
+	/**
+	 * This method is called when it has been detected that the user has logged in (either when starting the application with a user already logged in or when a user manually logs in).
+	 * @param firebaseUser
+	 */
+	public void onUserLogin(final Activity activity, final FirebaseUser firebaseUser) {
+		
+		addSingleValueAccountsListener(new ValueEventListener() {
+			@Override
+			public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+				
+				User user = dataSnapshot.child(firebaseUser.getUid()).getValue(User.class);
+				
+				if(user != null) {
+					gotoLanding(activity, user);
+				}
+				
+			}
+			
+			@Override
+			public void onCancelled(@NonNull DatabaseError databaseError) {
+			
+			}
+		});
 		
 	}
 	
