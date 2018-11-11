@@ -36,8 +36,10 @@
 			android:name=".AdminActivity"
 			android:label="@string/title_activity_admin"
 			android:theme="@style/AppTheme.NoActionBar"/>
-		<activity android:name=".HomeOwnerActivity"/>
-		<activity android:name=".ServiceProviderActivity"/>
+		<activity android:name=".HomeOwnerActivity"
+		          android:theme="@style/AppTheme.NoActionBar"/>
+		<activity android:name=".ServiceProviderActivity"
+		          android:theme="@style/AppTheme.NoActionBar"/>
 
 	</application>
 

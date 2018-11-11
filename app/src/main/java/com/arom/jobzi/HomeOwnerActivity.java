@@ -18,7 +18,7 @@ import com.arom.jobzi.util.Util;
 public class HomeOwnerActivity extends AppCompatActivity {
 
     private DrawerLayout drawerLayout;
-
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -26,7 +26,7 @@ public class HomeOwnerActivity extends AppCompatActivity {
 
         Toolbar toolbar = findViewById(R.id.toolbar_HomeOwner);
         setSupportActionBar(toolbar);
-
+    
         drawerLayout = findViewById(R.id.drawer_layout);
 
         NavigationView navigationView = findViewById(R.id.nav_view);
