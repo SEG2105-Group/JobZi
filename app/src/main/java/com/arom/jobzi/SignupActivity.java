@@ -17,24 +17,26 @@ import android.widget.Toast;
 
 import com.arom.jobzi.account.AccountType;
 import com.arom.jobzi.user.User;
+import com.arom.jobzi.util.Util;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.util.concurrent.Semaphore;
 import java.util.regex.Pattern;
 
 public class SignupActivity extends AppCompatActivity {
 
-    public static final String ACCOUNTS = "accounts";
-
-    private static final String EMAIL_REGEX = "^[a-zA-Z0-9_+&*-]+(?:\\."+
+    private static final Pattern EMAIL_PATTERN = Pattern.compile("^[a-zA-Z0-9_+&*-]+(?:\\."+
             "[a-zA-Z0-9_+&*-]+)*@" +
             "(?:[a-zA-Z0-9-]+\\.)+[a-z" +
-            "A-Z]{2,7}$";
-    private static String VALID_LETTERS = "^[a-zA-Z]+";
+            "A-Z]{2,7}$");
+    private static final Pattern VALID_PATTERN = Pattern.compile("^[a-zA-Z]+");
+
     private TextView usernameTextView;
     private TextView passwordTextView;
     private TextView emailTextView;
@@ -44,7 +46,7 @@ public class SignupActivity extends AppCompatActivity {
     private Button signupButton;
     private Button backButton;
 
-    private DatabaseReference accountsDatabase;
+    private FirebaseAuth auth;
 
     private boolean adminExists;
 
@@ -53,16 +55,17 @@ public class SignupActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
 
-        accountsDatabase = FirebaseDatabase.getInstance().getReference().child(ACCOUNTS);
+        auth = FirebaseAuth.getInstance();
 
-        accountsDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
+        Util.getInstance().addSingleValueAccountsListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-                for(DataSnapshot userSnapshot: dataSnapshot.getChildren()) {
+                for (DataSnapshot userSnapshot : dataSnapshot.getChildren()) {
                     User user = userSnapshot.getValue(User.class);
-                    if(user.getAccountType().equals(AccountType.ADMIN)) {
+                    if (user.getAccountType().equals(AccountType.ADMIN)) {
                         adminExists = true;
+                        break;
                     }
                 }
 
@@ -111,6 +114,7 @@ public class SignupActivity extends AppCompatActivity {
                 return view;
             }
         };
+
         spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         accountTypesSpinner.setAdapter(spinnerArrayAdapter);
         accountTypesSpinner.setSelection(AccountType.HOME_OWNER.ordinal());
@@ -125,76 +129,72 @@ public class SignupActivity extends AppCompatActivity {
                 signupButton.setEnabled(false);
                 backButton.setEnabled(false);
 
-                accountsDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
+                Util.getInstance().addSingleValueAccountsListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-                        AccountType accountType = (AccountType) accountTypesSpinner.getSelectedItem();
+                        final AccountType accountType = (AccountType) accountTypesSpinner.getSelectedItem();
 
-                        String username = usernameTextView.getText().toString();
-                        String email = emailTextView.getText().toString();
-                        String firstName = firstNameTextView.getText().toString();
-                        String lastName = lastNameTextView.getText().toString();
-                        String password = passwordTextView.getText().toString();
+                        final String username = usernameTextView.getText().toString();
+                        final String email = emailTextView.getText().toString();
+                        final String firstName = firstNameTextView.getText().toString();
+                        final String lastName = lastNameTextView.getText().toString();
+                        final String password = passwordTextView.getText().toString();
 
                         if(email.isEmpty() || firstName.isEmpty() || lastName.isEmpty() || password.isEmpty() || username.isEmpty()) {
                             Toast.makeText(SignupActivity.this, "You are missing some info.", Toast.LENGTH_LONG).show();
                             return;
                         }
 
-                        Pattern pat = Pattern.compile(EMAIL_REGEX);
-                        if (!pat.matcher(email).matches()) {
+                        if (!EMAIL_PATTERN.matcher(email).matches()) {
                             Toast.makeText(SignupActivity.this, "Email is not valid.", Toast.LENGTH_LONG).show();
                             return;
                         }
 
-                        pat = Pattern.compile(VALID_LETTERS);
-
-                        if(!pat.matcher(firstName).matches()){
+                        if(!VALID_PATTERN.matcher(firstName).matches()){
                             Toast.makeText(SignupActivity.this, "First name is not valid.", Toast.LENGTH_LONG).show();
                             return;
                         }
 
-                        if(!pat.matcher(lastName).matches()){
-                            Toast.makeText(SignupActivity.this, "First name is not valid.", Toast.LENGTH_LONG).show();
+                        if(!VALID_PATTERN.matcher(lastName).matches()){
+                            Toast.makeText(SignupActivity.this, "Last name is not valid.", Toast.LENGTH_LONG).show();
                             return;
                         }
 
+                        Util.getInstance().createUser(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                            @Override
+                            public void onComplete(@NonNull Task<AuthResult> task) {
+                                if(task.isSuccessful()) {
 
-                        for(DataSnapshot ds: dataSnapshot.getChildren()) {
-                            User existingUser = ds.getValue(User.class);
+                                    FirebaseUser newUser = task.getResult().getUser();
 
-                            if (existingUser.getUsername().equals(username) || existingUser.getEmail().equals(email)) {
+                                    String id = newUser.getUid();
 
-                                Toast.makeText(SignupActivity.this, "This username or email already exists.", Toast.LENGTH_LONG).show();
+                                    User user = new User();
 
-                                signupButton.setEnabled(true);
-                                backButton.setEnabled(true);
+                                    user.setId(id);
+                                    user.setUsername(username);
+                                    user.setEmail(email);
+                                    user.setFirstName(firstName);
+                                    user.setLastName(lastName);
+                                    user.setAccountType(accountType);
 
-                                return;
+                                    Util.getInstance().updateUser(user);
+
+                                    Util.getInstance().gotoLanding(SignupActivity.this, user);
+
+                                } else {
+
+                                    Toast.makeText(SignupActivity.this, task.getException().getMessage(), Toast.LENGTH_LONG).show();
+                                    Log.w("firebaseDebug", "createUserWithEmail: Failed", task.getException());
+    
+                                    signupButton.setEnabled(true);
+                                    backButton.setEnabled(true);
+
+                                }
 
                             }
-                        }
-
-                        User user = new User();
-
-                        user.setUsername(username);
-                        user.setPassword(password);
-                        user.setEmail(email);
-                        user.setFirstName(firstName);
-                        user.setLastName(lastName);
-                        user.setAccountType(accountType);
-                        DatabaseReference newUserDb = accountsDatabase.push();
-
-                        String id = newUserDb.getKey();
-
-                        user.setId(id);
-
-                        newUserDb.setValue(user);
-
-                        Intent toWelcomeIntent = new Intent(SignupActivity.this, WelcomeActivity.class);
-                        toWelcomeIntent.putExtra(WelcomeActivity.USER, user);
-                        startActivity(toWelcomeIntent);
+                        });
 
                     }
 

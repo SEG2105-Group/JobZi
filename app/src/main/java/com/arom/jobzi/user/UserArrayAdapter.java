@@ -12,12 +12,12 @@ import com.arom.jobzi.R;
 
 import java.util.List;
 
-public class UserList extends ArrayAdapter<User> {
+public class UserArrayAdapter extends ArrayAdapter<User> {
 
     private Activity context;
     private List<User> users;
 
-    public UserList(Activity context, List<User> users) {
+    public UserArrayAdapter(Activity context, List<User> users) {
         super(context, R.layout.user_item);
 
         this.context = context;
@@ -46,9 +46,11 @@ public class UserList extends ArrayAdapter<User> {
 
         TextView usernameTextView = usernameListLayout.findViewById(R.id.usernameDisplayTextView);
         TextView emailTextView = usernameListLayout.findViewById(R.id.emailDisplayTextView);
-
+        TextView accountTypeTextView = usernameListLayout.findViewById(R.id.accountTypeTextView);
+        
         usernameTextView.setText(user.getUsername());
         emailTextView.setText(user.getEmail());
+        accountTypeTextView.setText(user.getAccountType().toString());
 
         return usernameListLayout;
     }
