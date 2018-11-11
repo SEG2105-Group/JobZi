@@ -4,7 +4,7 @@
     tools:showIn="navigation_view">
     <item android:title="User Preferences">
         <menu>
-            <item android:id="@+id/logOut"
+            <item android:id="@+id/logout_drawer"
                 android:icon="@drawable/ic_person_black_24dp"
                 android:title="Logout"/>
         </menu>

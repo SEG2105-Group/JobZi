@@ -1,6 +1,8 @@
 package com.arom.jobzi;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
@@ -8,12 +10,15 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.arom.jobzi.fragment.AdminPagerAdapter;
 import com.arom.jobzi.fragment.ServiceListFragment;
 import com.arom.jobzi.fragment.UserListFragment;
+import com.arom.jobzi.util.Util;
 
-public class AdminActivity extends AppCompatActivity {
+public class AdminActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private DrawerLayout drawerLayout;
 
@@ -42,11 +47,15 @@ public class AdminActivity extends AppCompatActivity {
 
         drawerLayout = findViewById(R.id.drawer_layout);
 
+        NavigationView navigationView = findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this); 
+
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar,
                 R.string.navigation_drawer_open, R.string.navigation_drawer_close);
 
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
+
     }
 
     public void onBackPressed(){
@@ -57,4 +66,15 @@ public class AdminActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+        switch (menuItem.getItemId()){
+            case R.id.logout_drawer:
+                Util.getInstance().logout(this);
+                Toast.makeText(this, "Loging out", Toast.LENGTH_SHORT);
+
+        }
+        drawerLayout.closeDrawer(GravityCompat.START);
+        return true;
+    }
 }
