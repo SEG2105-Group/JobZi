@@ -7,10 +7,8 @@ import android.support.annotation.Nullable;
 import android.widget.BaseAdapter;
 import android.widget.Toast;
 
-import com.arom.jobzi.AdminActivity;
-import com.arom.jobzi.HomeOwnerActivity;
 import com.arom.jobzi.LoginActivity;
-import com.arom.jobzi.ServiceProviderActivity;
+import com.arom.jobzi.UserActivity;
 import com.arom.jobzi.service.Service;
 import com.arom.jobzi.user.User;
 import com.google.android.gms.tasks.Task;
@@ -83,28 +81,11 @@ public final class Util {
 	
 	public void gotoLanding(Activity activity, User user) {
 		
-		Class<?> landingActivity = null;
+		Intent toUserIntent = new Intent(activity, UserActivity.class);
 		
-		switch (user.getAccountType()) {
-			case ADMIN:
-				landingActivity = AdminActivity.class;
-				break;
-			case HOME_OWNER:
-				landingActivity = HomeOwnerActivity.class;
-				break;
-			case SERVICE_PROVIDER:
-				landingActivity = ServiceProviderActivity.class;
-				break;
-			default:
-				Toast.makeText(activity, "The account type does not have a corresponding activity.", Toast.LENGTH_LONG).show();
-				return;
-		}
+		toUserIntent.putExtra(ARG_USER, user);
 		
-		Intent toLandingIntent = new Intent(activity, landingActivity);
-		
-		toLandingIntent.putExtra(ARG_USER, user);
-		
-		activity.startActivity(toLandingIntent);
+		activity.startActivity(toUserIntent);
 		activity.finish();
 		
 	}
