@@ -25,7 +25,7 @@ public class HomeOwnerActivity extends AppCompatActivity {
         setContentView(R.layout.activity_home_owner);
 
         Toolbar toolbar = findViewById(R.id.toolbar_HomeOwner);
-//        setSupportActionBar(toolbar);
+        setSupportActionBar(toolbar);
     
         drawerLayout = findViewById(R.id.drawer_layout);
 

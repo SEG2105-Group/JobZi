@@ -25,7 +25,7 @@ public class ServiceProviderActivity extends AppCompatActivity {
         setContentView(R.layout.activity_service_provider);
     
         Toolbar toolbar = findViewById(R.id.toolbar_ServiceProvider);
-//        setSupportActionBar(toolbar);
+        setSupportActionBar(toolbar);
     
         drawerLayout = findViewById(R.id.drawer_layout);
     
