@@ -10,7 +10,7 @@
 	<string name="username_menu_label">Username: %s</string>
 	<string name="account_type_menu_label">Account Type: %s</string>
 	<string name="add_service_label">Add a Service</string>
-	<string name="update_service_label">Update %s</string>
+	<string name="update_service_label">Editing: "%s"</string>
 	<string name="dialog_delete_service">Are you sure you want to delete %s?</string>
 	<string name="delete">Delete</string>
 	<string name="logout">Logout</string>
