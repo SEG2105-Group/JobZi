@@ -33,10 +33,7 @@
 		<activity
 			android:name=".ServiceEditorActivity"
 			android:label="@string/title_activity_service_editor"/>
-		<activity
-			android:theme="@style/AppTheme.NoActionBar"/>
-			<activity android:name=".HomeOwnerActivity"
-		          android:theme="@style/AppTheme.NoActionBar"/>
+
 		<activity android:name=".ServiceProviderActivity"
 		          android:theme="@style/AppTheme.NoActionBar"/>
 		<activity android:name=".ServiceAvailibility"/>

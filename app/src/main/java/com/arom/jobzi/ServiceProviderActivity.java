@@ -16,8 +16,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
-import com.arom.jobzi.fragment.ServiceListFragment;
-import com.arom.jobzi.service.Service;
 import com.arom.jobzi.user.User;
 import com.arom.jobzi.util.Util;
 
@@ -30,7 +28,7 @@ public class ServiceProviderActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_service_provider);
+        setContentView(R.layout.fragment_service_provider);
         context = this;
     
         Toolbar toolbar = findViewById(R.id.toolbar_ServiceProvider);
