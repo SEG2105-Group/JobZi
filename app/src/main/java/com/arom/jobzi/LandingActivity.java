@@ -20,7 +20,7 @@ import com.arom.jobzi.fragment.ServiceProviderFragment;
 import com.arom.jobzi.user.User;
 import com.arom.jobzi.util.Util;
 
-public class UserActivity extends AppCompatActivity {
+public class LandingActivity extends AppCompatActivity {
 	
 	protected DrawerLayout drawerLayout;
 	
@@ -31,7 +31,7 @@ public class UserActivity extends AppCompatActivity {
 	@Override
 	protected void onCreate(@Nullable Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_user);
+		setContentView(R.layout.activity_landing);
 		
 		drawerLayout = findViewById(R.id.drawer_layout);
 		
@@ -50,7 +50,7 @@ public class UserActivity extends AppCompatActivity {
 				switch (menuItem.getItemId()){
 					
 					case R.id.logoutMenuItem:
-						Util.getInstance().logout(UserActivity.this);
+						Util.getInstance().logout(LandingActivity.this);
 						break;
 				}
 				

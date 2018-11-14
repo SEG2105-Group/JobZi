@@ -5,10 +5,9 @@ import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.widget.BaseAdapter;
-import android.widget.Toast;
 
 import com.arom.jobzi.LoginActivity;
-import com.arom.jobzi.UserActivity;
+import com.arom.jobzi.LandingActivity;
 import com.arom.jobzi.service.Service;
 import com.arom.jobzi.user.User;
 import com.google.android.gms.tasks.Task;
@@ -81,7 +80,7 @@ public final class Util {
 	
 	public void gotoLanding(Activity activity, User user) {
 		
-		Intent toUserIntent = new Intent(activity, UserActivity.class);
+		Intent toUserIntent = new Intent(activity, LandingActivity.class);
 		
 		toUserIntent.putExtra(ARG_USER, user);
 		
