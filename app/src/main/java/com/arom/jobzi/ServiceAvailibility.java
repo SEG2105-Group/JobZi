@@ -1,7 +1,6 @@
 package com.arom.jobzi;
 
 import android.app.DatePickerDialog;
-import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -86,7 +85,6 @@ public class ServiceAvailibility extends AppCompatActivity {
     }
 
     public void save (){
-        Intent intent = new Intent(this, ServiceProviderActivity.class);
-        startActivity(intent);
+
     }
 }
