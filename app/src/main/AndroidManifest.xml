@@ -31,7 +31,8 @@
             android:theme="@style/AppTheme.NoActionBar"/>
         <activity
             android:name=".ServiceEditorActivity"
-            android:label="@string/title_activity_service_editor"/>
+            android:label="@string/title_activity_service_editor"
+            android:windowSoftInputMode="stateVisible|adjustPan"/>
         <activity
             android:name=".LandingActivity"
             android:theme="@style/AppTheme.NoActionBar"/>
