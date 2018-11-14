@@ -11,12 +11,22 @@
         android:id="@+id/usernameNavHeader"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:textSize="24sp"
         tools:text="SomeUsername123"/>
+
+    <TextView
+        android:id="@+id/accountTypeNavHeader"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textStyle="italic"
+        android:textSize="18sp"
+        tools:text="Account Type"/>
 
     <TextView
         android:id="@+id/emailNavHeader"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textSize="20sp"
         tools:text="test@gmail.com"/>
 
 </LinearLayout>

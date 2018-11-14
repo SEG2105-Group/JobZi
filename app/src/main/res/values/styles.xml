@@ -9,10 +9,8 @@
     </style>
 
     <style name="AppTheme.NavHeader">
-        <item name="android:textColorPrimary">@color/textColor</item>
-        <item name="android:textAppearance">@color/textColor</item>
-        <item name="android:textColor">@color/textColor</item>
         <item name="android:background">@color/colorPrimary</item>
+        <item name="android:textColor">@color/textColor</item>
     </style>
 
     <style name="AppTheme.NoActionBar">

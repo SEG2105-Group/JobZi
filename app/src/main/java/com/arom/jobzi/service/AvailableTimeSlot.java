@@ -4,14 +4,22 @@ import java.util.Date;
 
 public class AvailableTimeSlot {
 
-    private Date date;
-
-    public Date getDate() {
-        return date;
+    private Date startTime;
+    private Date endTime;
+    
+    public Date getStartTime() {
+        return startTime;
     }
-
-    public void setDate(Date date) {
-        this.date = date;
+    
+    public void setStartTime(Date startTime) {
+        this.startTime = startTime;
     }
-
+    
+    public Date getEndTime() {
+        return endTime;
+    }
+    
+    public void setEndTime(Date endTime) {
+        this.endTime = endTime;
+    }
 }

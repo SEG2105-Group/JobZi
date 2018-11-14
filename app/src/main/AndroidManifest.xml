@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.arom.jobzi">
+          package="com.arom.jobzi">
 
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
 
     <application
         android:allowBackup="true"
@@ -16,26 +16,28 @@
             android:name=".MainActivity"
             android:noHistory="true">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <action android:name="android.intent.action.VIEW" />
+                <action android:name="android.intent.action.MAIN"/>
+                <action android:name="android.intent.action.VIEW"/>
 
-                <category android:name="android.intent.category.LAUNCHER" />
+                <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
         <activity
             android:name=".LoginActivity"
-            android:label="@string/title_activity_login"></activity>
+            android:label="@string/title_activity_login"/>
         <activity
             android:name=".SignupActivity"
             android:label="@string/title_activity_signup"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity
             android:name=".ServiceEditorActivity"
-            android:label="@string/title_activity_service_editor" />
+            android:label="@string/title_activity_service_editor"/>
         <activity
-            android:name=".UserActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".ProfileActivity"></activity>
+            android:name=".LandingActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity android:name=".ProfileActivity"/>
+        <activity android:name=".AvailableTimeSlotEditorActivity">
+        </activity>
     </application>
 
 </manifest>

@@ -3,12 +3,13 @@ package com.arom.jobzi.user;
 import android.support.annotation.Nullable;
 
 import com.arom.jobzi.account.AccountType;
+import com.arom.jobzi.profile.UserProfile;
 
 import java.io.Serializable;
 
 public class User implements Serializable {
 
-    private static final long serialVersionUID = 2L;
+    private static final long serialVersionUID = 3L;
     
     private String id;
     
@@ -18,6 +19,8 @@ public class User implements Serializable {
     private String lastName;
 
     private AccountType accountType;
+    
+    private UserProfile userProfile;
     
     public String getId() {
         return id;
@@ -66,7 +69,15 @@ public class User implements Serializable {
     public AccountType getAccountType() {
         return accountType;
     }
-
+    
+    public UserProfile getUserProfile() {
+        return userProfile;
+    }
+    
+    public void setUserProfile(UserProfile userProfile) {
+        this.userProfile = userProfile;
+    }
+    
     @Override
     public boolean equals(@Nullable Object obj) {
 
