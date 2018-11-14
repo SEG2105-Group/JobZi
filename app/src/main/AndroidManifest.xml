@@ -33,9 +33,10 @@
 		<activity
 			android:name=".ServiceEditorActivity"
 			android:label="@string/title_activity_service_editor"/>
-		<activity
-			android:name=".UserActivity"
-			android:theme="@style/AppTheme.NoActionBar"/>
+
+		<activity android:name=".ServiceProviderActivity"
+		          android:theme="@style/AppTheme.NoActionBar"/>
+		<activity android:name=".ServiceAvailibility"/>
 	</application>
 
 </manifest>
