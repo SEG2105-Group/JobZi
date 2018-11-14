@@ -8,6 +8,13 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="AppTheme.NavHeader">
+        <item name="android:textColorPrimary">@color/textColor</item>
+        <item name="android:textAppearance">@color/textColor</item>
+        <item name="android:textColor">@color/textColor</item>
+        <item name="android:background">@color/colorPrimary</item>
+    </style>
+
     <style name="AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
