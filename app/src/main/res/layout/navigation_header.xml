@@ -1,32 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="90dp"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:gravity="center|start"
-    android:orientation="vertical"
-    android:theme="@style/AppTheme.NavHeader">
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:fitsSystemWindows="true"
+              android:gravity="bottom"
+              android:theme="@style/NavHeader"
+              tools:theme="@style/NavHeader">
 
-    <TextView
-        android:id="@+id/usernameNavHeader"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="24sp"
-        tools:text="SomeUsername123"/>
+	<LinearLayout
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:orientation="vertical"
+		android:padding="16dp">
 
-    <TextView
-        android:id="@+id/accountTypeNavHeader"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textStyle="italic"
-        android:textSize="18sp"
-        tools:text="Account Type"/>
+		<TextView
+			android:id="@+id/usernameNavHeader"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:textSize="24sp"
+			tools:text="SomeUsername123"/>
 
-    <TextView
-        android:id="@+id/emailNavHeader"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="20sp"
-        tools:text="test@gmail.com"/>
+		<TextView
+			android:id="@+id/accountTypeNavHeader"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:textSize="16sp"
+			android:textStyle="italic"
+			tools:text="Account Type"/>
 
-</LinearLayout>
+		<TextView
+			android:id="@+id/emailNavHeader"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:textSize="18sp"
+			tools:text="test@gmail.com"/>
+
+	</LinearLayout>
+
+</FrameLayout>

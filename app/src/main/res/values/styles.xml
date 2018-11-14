@@ -8,7 +8,7 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
-    <style name="AppTheme.NavHeader">
+    <style name="NavHeader">
         <item name="android:background">@color/colorPrimary</item>
         <item name="android:textColor">@color/textColor</item>
     </style>
