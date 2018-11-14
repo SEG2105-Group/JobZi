@@ -17,6 +17,7 @@
 			android:noHistory="true">
 			<intent-filter>
 				<action android:name="android.intent.action.MAIN"/>
+				<action android:name="android.intent.action.VIEW"/>
 
 				<category android:name="android.intent.category.LAUNCHER"/>
 			</intent-filter>
@@ -33,10 +34,8 @@
 			android:name=".ServiceEditorActivity"
 			android:label="@string/title_activity_service_editor"/>
 		<activity
-			android:name=".AdminActivity"
-			android:label="@string/title_activity_admin"
 			android:theme="@style/AppTheme.NoActionBar"/>
-		<activity android:name=".HomeOwnerActivity"
+			<activity android:name=".HomeOwnerActivity"
 		          android:theme="@style/AppTheme.NoActionBar"/>
 		<activity android:name=".ServiceProviderActivity"
 		          android:theme="@style/AppTheme.NoActionBar"/>
