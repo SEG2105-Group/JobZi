@@ -79,36 +79,46 @@ public class LandingActivity extends AppCompatActivity {
 		usernameNavHeader.setText(user.getUsername());
 		accountTypeNavHeader.setText(user.getAccountType().toString());
 		emailNavHeader.setText(user.getEmail());
-		
-		FragmentManager fragmentManager = getSupportFragmentManager();
-		
-		Fragment fragment;
-		
-		switch(user.getAccountType()) {
-			case ADMIN:
-				
-				fragment = new AdminFragment();
-				break;
-				
-			case HOME_OWNER:
-				
-				fragment = new HomeOwnerFragment();
-				break;
-				
-			case SERVICE_PROVIDER:
-				
-				fragment = new ServiceProviderFragment();
-				break;
-			
-			default:
-				throw new IllegalStateException(String.format("The account type (%s) does not have a defined fragment.", user.getAccountType()));
-			
-		}
-		
-		fragment.setArguments(bundle);
-		
-		fragmentManager.beginTransaction().add(R.id.fragmentContainer, fragment).commit();
-		
+
+		setupFragment(savedInstanceState, user);
+
 	}
-	
+
+	private void setupFragment(Bundle savedInstanceBundle, User user) {
+
+        FragmentManager fragmentManager = getSupportFragmentManager();
+
+        Fragment fragment;
+
+	    if(savedInstanceBundle == null) {
+
+            switch(user.getAccountType()) {
+                case ADMIN:
+
+                    fragment = new AdminFragment();
+                    break;
+
+                case HOME_OWNER:
+
+                    fragment = new HomeOwnerFragment();
+                    break;
+
+                case SERVICE_PROVIDER:
+
+                    fragment = new ServiceProviderFragment();
+                    break;
+
+                default:
+                    throw new IllegalStateException(String.format("The account type (%s) does not have a defined fragment.", user.getAccountType()));
+
+            }
+
+            fragment.setArguments(getIntent().getExtras());
+
+            fragmentManager.beginTransaction().add(R.id.fragmentContainer, fragment).commit();
+
+        }
+
+    }
+
 }
