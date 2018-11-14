@@ -21,6 +21,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public final class Util {
@@ -240,7 +241,13 @@ public final class Util {
 		}
 		
 		return instance;
-		
 	}
-	
+
+	public List<String> getServiceList() {
+		List<String> serviceList = new ArrayList<>();
+		serviceList.add((servicesDatabase.child(SERVICES_NODE).child("name")).toString());
+		return serviceList;
+	}
+
+
 }

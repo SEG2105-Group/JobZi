@@ -8,12 +8,12 @@ import android.support.v4.app.FragmentPagerAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AdminPagerAdapter extends FragmentPagerAdapter {
+public class CustomPagerAdapter extends FragmentPagerAdapter {
 	
 	private final List<Fragment> fragmentList = new ArrayList<Fragment>();
 	private final List<CharSequence> fragmentNamesList = new ArrayList<CharSequence>();
 	
-	public AdminPagerAdapter(FragmentManager fm) {
+	public CustomPagerAdapter(FragmentManager fm) {
 		super(fm);
 	}
 	

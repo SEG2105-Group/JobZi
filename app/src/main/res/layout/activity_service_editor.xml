@@ -40,17 +40,17 @@
 
     <Button
         android:id="@+id/saveButton"
-        android:layout_width="wrap_content"
+        android:layout_width="137dp"
         android:layout_height="wrap_content"
         android:layout_below="@+id/serviceRateTextEdit"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="95dp"
+        android:layout_marginTop="59dp"
         android:text="@string/save"
         android:textAllCaps="false" />
 
     <Button
         android:id="@+id/cancelButton"
-        android:layout_width="wrap_content"
+        android:layout_width="137dp"
         android:layout_height="wrap_content"
         android:layout_below="@+id/saveButton"
         android:layout_centerHorizontal="true"

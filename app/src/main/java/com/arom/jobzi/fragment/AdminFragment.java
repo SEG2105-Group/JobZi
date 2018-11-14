@@ -21,15 +21,15 @@ public class AdminFragment extends Fragment {
 		
 		ViewPager viewPager = view.findViewById(R.id.viewPager);
 		
-		AdminPagerAdapter adminPagerAdapter = new AdminPagerAdapter(getActivity().getSupportFragmentManager());
+		CustomPagerAdapter customPagerAdapter = new CustomPagerAdapter(getActivity().getSupportFragmentManager());
 		
 		UserListFragment userListFragment = new UserListFragment();
 		ServiceListFragment serviceListFragment = new ServiceListFragment();
 		
-		adminPagerAdapter.addFragment(userListFragment, getText(R.string.users_label));
-		adminPagerAdapter.addFragment(serviceListFragment, getText(R.string.services_label));
+		customPagerAdapter.addFragment(userListFragment, getText(R.string.users_label));
+		customPagerAdapter.addFragment(serviceListFragment, getText(R.string.services_label));
 		
-		viewPager.setAdapter(adminPagerAdapter);
+		viewPager.setAdapter(customPagerAdapter);
 		
 		return view;
 		
