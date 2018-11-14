@@ -11,8 +11,10 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
+import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 
 import com.arom.jobzi.fragment.AdminFragment;
 import com.arom.jobzi.fragment.HomeOwnerFragment;
@@ -52,6 +54,11 @@ public class LandingActivity extends AppCompatActivity {
 					case R.id.logoutMenuItem:
 						Util.getInstance().logout(LandingActivity.this);
 						break;
+						
+					case R.id.profileMenuItem:
+						Log.d("TODO", "Implement profile viewer/editor activity.");
+						return false;
+						
 				}
 				
 				drawerLayout.closeDrawer(GravityCompat.START);
@@ -63,13 +70,15 @@ public class LandingActivity extends AppCompatActivity {
 		
 		User user = (User) bundle.getSerializable(Util.ARG_USER);
 		
-		Menu menu = navigationView.getMenu();
+		View headerView = navigationView.getHeaderView(0);
 		
-		MenuItem usernameMenuItem = menu.findItem(R.id.usernameMenuItem);
-		MenuItem accountTypeMenuItem = menu.findItem(R.id.accountTypeMenuItem);
+		TextView usernameNavHeader = headerView.findViewById(R.id.usernameNavHeader);
+		TextView accountTypeNavHeader = headerView.findViewById(R.id.accountTypeNavHeader);
+		TextView emailNavHeader = headerView.findViewById(R.id.emailNavHeader);
 		
-		usernameMenuItem.setTitle(getString(R.string.username_menu_label, user.getUsername()));
-		accountTypeMenuItem.setTitle(getString(R.string.account_type_menu_label, user.getAccountType().toString()));
+		usernameNavHeader.setText(user.getUsername());
+		accountTypeNavHeader.setText(user.getAccountType().toString());
+		emailNavHeader.setText(user.getEmail());
 		
 		FragmentManager fragmentManager = getSupportFragmentManager();
 		
