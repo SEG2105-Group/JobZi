@@ -6,7 +6,7 @@
                                         android:layout_width="match_parent"
                                         android:layout_height="match_parent"
                                         android:fitsSystemWindows="true"
-                                        tools:context=".HomeOwnerActivity"
+                                        tools:context=".UserActivity"
                                         tools:openDrawyer="start">
 
 	<android.support.design.widget.CoordinatorLayout
@@ -21,23 +21,24 @@
 			android:theme="@style/AppTheme.AppBarOverlay">
 
 			<android.support.v7.widget.Toolbar
-				android:id="@+id/toolbar_HomeOwner"
+				android:id="@+id/toolbar"
 				android:layout_width="match_parent"
-				android:layout_height="wrap_content"
+				android:layout_height="?attr/actionBarSize"
 				android:layout_weight="1"
 				android:background="?attr/colorPrimary"
-				app:layout_scrollFlags="scroll|enterAlways"
 				app:popupTheme="@style/AppTheme.PopupOverlay"
 				app:title="@string/app_name"/>
 
-			<FrameLayout
-				android:id="@+id/fragment_container"
-				android:layout_width="match_parent"
-				android:layout_height="match_parent">
-
-			</FrameLayout>
-
 		</android.support.design.widget.AppBarLayout>
+
+		<FrameLayout
+			android:id="@+id/fragmentContainer"
+			android:layout_width="match_parent"
+			android:layout_height="match_parent"
+			app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+		</FrameLayout>
+
 	</android.support.design.widget.CoordinatorLayout>
 
 	<android.support.design.widget.NavigationView
