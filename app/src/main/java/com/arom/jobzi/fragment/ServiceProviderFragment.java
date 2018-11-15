@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 import com.arom.jobzi.R;
 
 public class ServiceProviderFragment extends Fragment {
-	
+
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 							 Bundle savedInstanceState) {
@@ -31,5 +31,5 @@ public class ServiceProviderFragment extends Fragment {
         return view;
 
     }
-	
+
 }
