@@ -3,7 +3,7 @@ package com.arom.jobzi.service;
 import java.io.Serializable;
 import java.sql.Time;
 
-public class AvailableTimeSlot implements Serializable {
+public class Availabilities implements Serializable {
 
     private static float serialVersionUID = 1F;
 

@@ -27,39 +27,9 @@
 
 
             <ExpandableListView
-                android:id="@+id/mondayListView"
+                android:id="@+id/expandableListView"
                 android:layout_width="match_parent"
-                android:layout_height="75dp" />
-
-            <ExpandableListView
-                android:id="@+id/tuesdayListView"
-                android:layout_width="match_parent"
-                android:layout_height="75dp" />
-
-            <ExpandableListView
-                android:id="@+id/wednesdayListView"
-                android:layout_width="match_parent"
-                android:layout_height="75dp" />
-
-            <ExpandableListView
-                android:id="@+id/thursdayListView"
-                android:layout_width="match_parent"
-                android:layout_height="75dp" />
-
-            <ExpandableListView
-                android:id="@+id/fridayListView"
-                android:layout_width="match_parent"
-                android:layout_height="75dp" />
-
-            <ExpandableListView
-                android:id="@+id/SaturdayListView"
-                android:layout_width="match_parent"
-                android:layout_height="75dp" />
-
-            <ExpandableListView
-                android:id="@+id/sundayListView"
-                android:layout_width="match_parent"
-                android:layout_height="75dp" />
+                android:layout_height="match_parent" />
 
         </LinearLayout>
 

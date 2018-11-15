@@ -38,7 +38,6 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".ProfileActivity" />
         <activity android:name=".AvailableTimeSlotEditorActivity" />
-        <activity android:name=".AvailibilitiesPopupActivity"></activity>
     </application>
 
 </manifest>
