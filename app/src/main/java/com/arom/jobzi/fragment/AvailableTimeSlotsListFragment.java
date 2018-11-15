@@ -1,23 +1,19 @@
 package com.arom.jobzi.fragment;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
-import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
+import android.widget.ExpandableListView;
 import android.widget.TextView;
-import android.widget.TimePicker;
 
 import com.arom.jobzi.AvailableTimeSlotEditorActivity;
+import com.arom.jobzi.AvailibilitiesPopupActivity;
 import com.arom.jobzi.R;
 import com.arom.jobzi.service.AvailableTimeSlot;
-import com.arom.jobzi.util.TimePickerActivity;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -28,18 +24,31 @@ import com.arom.jobzi.util.TimePickerActivity;
  * create an instance of this fragment.
  */
 public class AvailableTimeSlotsListFragment extends Fragment {
-    private TextView mondayTextView;
+    private ExpandableListView mondayListView;
+    private Button testButton;
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view =  inflater.inflate(R.layout.fragment_available_time_slots_list, container, false);
 
-        mondayTextView = view.findViewById(R.id.mondayTextView);
-        mondayTextView.setOnClickListener(new View.OnClickListener() {
+        mondayListView = view.findViewById(R.id.mondayListView);
+        testButton = view.findViewById(R.id.testbutton);
+
+        testButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(AvailableTimeSlotsListFragment.this.getActivity(), AvailableTimeSlotEditorActivity.class);
                 startActivity(intent);
             }
         });
+
+        /*
+        mondayListView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(AvailableTimeSlotsListFragment.this.getActivity(), AvailibilitiesPopupActivity.class);
+                intent.putExtra(AvailableTimeSlotEditorActivity.TIMESLOT_BUNDLE_ARG, new AvailableTimeSlot());
+                startActivity(intent);
+            }
+        });*/
 
         return view;
     }

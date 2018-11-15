@@ -1,25 +1,28 @@
 package com.arom.jobzi.service;
 
-import java.util.Date;
+import java.io.Serializable;
+import java.sql.Time;
 
-public class AvailableTimeSlot {
+public class AvailableTimeSlot implements Serializable {
 
-    private Date startTime;
-    private Date endTime;
-    
-    public Date getStartTime() {
+    private static float serialVersionUID = 1F;
+
+    private Time startTime;
+    private Time endTime;
+
+    public Time getStartTime() {
         return startTime;
     }
-    
-    public void setStartTime(Date startTime) {
+
+    public void setStartTime(Time startTime) {
         this.startTime = startTime;
     }
-    
-    public Date getEndTime() {
+
+    public Time getEndTime() {
         return endTime;
     }
-    
-    public void setEndTime(Date endTime) {
+
+    public void setEndTime(Time endTime) {
         this.endTime = endTime;
     }
 }

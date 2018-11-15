@@ -37,8 +37,8 @@
             android:name=".LandingActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".ProfileActivity" />
-        <activity android:name=".AvailableTimeSlotEditorActivity"></activity>
-        <activity android:name=".util.TimePickerActivity"></activity>
+        <activity android:name=".AvailableTimeSlotEditorActivity" />
+        <activity android:name=".AvailibilitiesPopupActivity"></activity>
     </application>
 
 </manifest>

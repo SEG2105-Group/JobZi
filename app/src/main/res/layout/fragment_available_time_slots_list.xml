@@ -25,92 +25,42 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-            <TextView
-                android:id="@+id/mondayTextView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Monday"
-                tools:layout_editor_absoluteX="0dp"
-                tools:layout_editor_absoluteY="82dp"
-                android:clickable="true"/>
 
-            <Space
+            <ExpandableListView
+                android:id="@+id/mondayListView"
                 android:layout_width="match_parent"
-                android:layout_height="15dp" />
-
-            <TextView
-                android:id="@+id/tuesdayTextView"
+                android:layout_height="match_parent" />
+            <ExpandableListView
+                android:id="@+id/tuesdayListView"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Tuesday"
-                tools:layout_editor_absoluteX="0dp"
-                tools:layout_editor_absoluteY="102dp" />
-
-            <Space
+                android:layout_height="match_parent" />
+            <ExpandableListView
+                android:id="@+id/wednesdayListView"
                 android:layout_width="match_parent"
-                android:layout_height="15dp" />
-
-            <TextView
-                android:id="@+id/wednesdayTextView"
+                android:layout_height="match_parent" />
+            <ExpandableListView
+                android:id="@+id/thursdayListView"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Wednesday"
-                tools:layout_editor_absoluteX="0dp"
-                tools:layout_editor_absoluteY="120dp" />
-
-            <Space
+                android:layout_height="match_parent" />
+            <ExpandableListView
+                android:id="@+id/fridayListView"
                 android:layout_width="match_parent"
-                android:layout_height="15dp" />
-
-            <TextView
-                android:id="@+id/thursdayTextView"
+                android:layout_height="match_parent" />
+            <ExpandableListView
+                android:id="@+id/SaturdayListView"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Thursday"
-                tools:layout_editor_absoluteX="0dp"
-                tools:layout_editor_absoluteY="137dp" />
-
-            <Space
+                android:layout_height="match_parent" />
+            <ExpandableListView
+                android:id="@+id/sundayListView"
                 android:layout_width="match_parent"
-                android:layout_height="15dp" />
-
-            <TextView
-                android:id="@+id/friday_textView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Friday"
-                tools:layout_editor_absoluteX="0dp"
-                tools:layout_editor_absoluteY="156dp" />
-
-            <Space
-                android:layout_width="match_parent"
-                android:layout_height="15dp" />
-
-            <TextView
-                android:id="@+id/saturdayTextView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Saturday"
-                tools:layout_editor_absoluteX="0dp"
-                tools:layout_editor_absoluteY="175dp" />
-
-            <Space
-                android:layout_width="match_parent"
-                android:layout_height="15dp" />
-
-            <TextView
-                android:id="@+id/sundayTextView3"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Sunday"
-                tools:layout_editor_absoluteX="0dp"
-                tools:layout_editor_absoluteY="194dp" />
-
-            <Spinner
-                android:id="@+id/spinner3"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="match_parent" />
 
         </LinearLayout>
+
+        <Button
+            android:id="@+id/testbutton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Button" />
     </android.support.constraint.ConstraintLayout>
 </ScrollView>

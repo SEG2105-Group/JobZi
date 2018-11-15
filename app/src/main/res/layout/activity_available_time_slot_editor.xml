@@ -47,7 +47,7 @@
 				android:clickable="true"/>
 
 			<TextView
-				android:id="@+id/startTimeSelector"
+				android:id="@+id/startTimeViewer"
 				android:layout_width="280dp"
 				android:layout_height="45dp"
 				android:layout_marginStart="8dp"
@@ -85,7 +85,7 @@
 				android:clickable="true"/>
 
 			<TextView
-				android:id="@+id/timeSelector"
+				android:id="@+id/endTimeViewer"
 				android:layout_width="280dp"
 				android:layout_height="45dp"
 				android:layout_marginStart="8dp"
