@@ -2,6 +2,7 @@ package com.arom.jobzi.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -24,6 +25,8 @@ public class ServiceListFragment extends Fragment {
 	private List<Service> serviceList;
 	
 	private FloatingActionButton addServiceFloatingButton;
+
+	private ServiceItemListener listener;
 	
 	public ServiceListFragment() {
 	
@@ -36,9 +39,9 @@ public class ServiceListFragment extends Fragment {
 		serviceList = new ArrayList<Service>();
 		
 	}
-	
+
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+	public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
 							 Bundle savedInstanceState) {
 		
 		View view = inflater.inflate(R.layout.fragment_service_list, container, false);
@@ -121,5 +124,11 @@ public class ServiceListFragment extends Fragment {
 		ServiceListFragment.this.startActivity(toServiceEditorIntent);
 		
 	}
-	
+
+	public interface ServiceItemListener {
+
+	    void onClick(Service service);
+
+    }
+
 }
