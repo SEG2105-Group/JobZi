@@ -25,31 +25,21 @@ import com.arom.jobzi.service.AvailableTimeSlot;
  */
 public class AvailableTimeSlotsListFragment extends Fragment {
     private ExpandableListView mondayListView;
-    private Button testButton;
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view =  inflater.inflate(R.layout.fragment_available_time_slots_list, container, false);
 
         mondayListView = view.findViewById(R.id.mondayListView);
-        testButton = view.findViewById(R.id.testbutton);
 
-        testButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(AvailableTimeSlotsListFragment.this.getActivity(), AvailableTimeSlotEditorActivity.class);
-                startActivity(intent);
-            }
-        });
 
-        /*
-        mondayListView.setOnClickListener(new View.OnClickListener() {
+/*        mondayListView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(AvailableTimeSlotsListFragment.this.getActivity(), AvailibilitiesPopupActivity.class);
                 intent.putExtra(AvailableTimeSlotEditorActivity.TIMESLOT_BUNDLE_ARG, new AvailableTimeSlot());
                 startActivity(intent);
             }
-        });*/
-
+        });
+*/
         return view;
     }
 

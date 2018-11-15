@@ -1,17 +1,17 @@
 package com.arom.jobzi;
 
 import android.app.TimePickerDialog;
-import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
-import com.arom.jobzi.service.AvailableTimeSlot;
+import com.arom.jobzi.util.TimePickerFragment;
 
-public class AvailableTimeSlotEditorActivity extends AppCompatActivity {
+public class AvailableTimeSlotEditorActivity extends AppCompatActivity implements TimePickerDialog.OnTimeSetListener {
 
     public static final String TIMESLOT_BUNDLE_ARG = "timeslot";
 
@@ -19,33 +19,32 @@ public class AvailableTimeSlotEditorActivity extends AppCompatActivity {
 	private TextView startTimeViewer, endTimeViewer;
 	private Button saveButton, cancelButton;
 	private TimePickerDialog timePickerDialog;
+	private int hour, minute;
+	private boolean startFlag, endFlag;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_available_time_slot_editor);
+        startTimeViewer = findViewById(R.id.startTimeViewer);
+        endTimeViewer = findViewById(R.id.endTimeViewer);
 
-		final AvailableTimeSlot availableTimeSlot = (AvailableTimeSlot) getIntent().getSerializableExtra(TIMESLOT_BUNDLE_ARG);
 
 		selectStartTime = findViewById(R.id.selectStartTime);
 		selectStartTime.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-                final TimePickerDialog timePickerDialog = new TimePickerDialog(AvailableTimeSlotEditorActivity.this, new TimePickerDialog.OnTimeSetListener() {
-                    @Override
-                    public void onTimeSet(TimePicker timePicker, int i, int i1) {
-                    }
-                }, 0, 0, true);
-                timePickerDialog.show();
-			}
+                showTimePickerDialog();
+                startFlag = true;
+            }
 		});
 
 		selectEndTime = findViewById(R.id.selectEndTime);
 		selectEndTime.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View view) {
-				//Intent intent = new Intent(AvailableTimeSlotEditorActivity.this, TimePickerActivity.class);
-				//startActivity(intent);
+                showTimePickerDialog();
+                endFlag = true;
 			}
 		});
 
@@ -53,8 +52,6 @@ public class AvailableTimeSlotEditorActivity extends AppCompatActivity {
 		saveButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View view) {
-
-
 				AvailableTimeSlotEditorActivity.this.finish();
 			}
 		});
@@ -63,18 +60,30 @@ public class AvailableTimeSlotEditorActivity extends AppCompatActivity {
 		cancelButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View view) {
-				//AvailableTimeSlotsListFragment is fragment not activity, so cannot start an activity next line
 				AvailableTimeSlotEditorActivity.this.finish();
 			}
 		});
 
-		//startTimeViewer = findViewById(R.id.startTimeViewer);
-		//startTimeViewer.setText(TimePickerActivity.onTimeSet());
-
 		endTimeViewer = findViewById(R.id.endTimeViewer);
 	}
 
-	public TimePickerDialog getTime(){
-	    return timePickerDialog;
+    @Override
+    public void onTimeSet(TimePicker timePicker, int hour, int minute) {
+        this.hour = hour;
+        this.minute = minute;
+
+        if (startFlag){
+            startTimeViewer.setText(hour + ":" + minute);
+            startFlag = false;
+        }
+        if (endFlag){
+            endTimeViewer.setText(hour + ":" + minute);
+            endFlag = false;
+        }
+    }
+
+    public void showTimePickerDialog(){
+        DialogFragment timePickerFrag = new TimePickerFragment();
+        timePickerFrag.show(getSupportFragmentManager(), TIMESLOT_BUNDLE_ARG);
     }
 }

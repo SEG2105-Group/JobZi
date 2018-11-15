@@ -29,38 +29,39 @@
             <ExpandableListView
                 android:id="@+id/mondayListView"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="75dp" />
+
             <ExpandableListView
                 android:id="@+id/tuesdayListView"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="75dp" />
+
             <ExpandableListView
                 android:id="@+id/wednesdayListView"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="75dp" />
+
             <ExpandableListView
                 android:id="@+id/thursdayListView"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="75dp" />
+
             <ExpandableListView
                 android:id="@+id/fridayListView"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="75dp" />
+
             <ExpandableListView
                 android:id="@+id/SaturdayListView"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="75dp" />
+
             <ExpandableListView
                 android:id="@+id/sundayListView"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="75dp" />
 
         </LinearLayout>
 
-        <Button
-            android:id="@+id/testbutton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Button" />
     </android.support.constraint.ConstraintLayout>
 </ScrollView>
