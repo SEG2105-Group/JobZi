@@ -24,7 +24,7 @@ import java.util.List;
 
 public class ServiceListFragment extends Fragment {
 
-    public static final String LISTENER_BUNDLE_ARG = "listener";
+    private static final String LISTENER_BUNDLE_ARG = "listener";
 
     private List<Service> serviceList;
 
@@ -36,6 +36,19 @@ public class ServiceListFragment extends Fragment {
 
     }
 
+    public static ServiceListFragment newInstance(ServiceItemListener listener) {
+        
+        ServiceListFragment fragment = new ServiceListFragment();
+        
+        Bundle bundle = new Bundle();
+        bundle.putSerializable(LISTENER_BUNDLE_ARG, listener);
+        
+        fragment.setArguments(bundle);
+        
+        return fragment;
+        
+    }
+    
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,9 +57,7 @@ public class ServiceListFragment extends Fragment {
 
         Bundle arguments = getArguments();
 
-        if (arguments != null) {
-            listener = (ServiceItemListener) arguments.get(LISTENER_BUNDLE_ARG);
-        }
+        listener = (ServiceItemListener) arguments.get(LISTENER_BUNDLE_ARG);
 
     }
 
@@ -105,7 +116,6 @@ public class ServiceListFragment extends Fragment {
                     listener.addService();
                 }
 
-                ServiceListFragment.this.addService();
             }
         });
 
@@ -116,10 +126,6 @@ public class ServiceListFragment extends Fragment {
         super.onResume();
 
         addServiceFloatingButton.setEnabled(true);
-
-    }
-
-    private void addService() {
 
     }
 

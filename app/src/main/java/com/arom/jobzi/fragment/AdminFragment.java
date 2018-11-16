@@ -28,7 +28,7 @@ public class AdminFragment extends Fragment implements ServiceListFragment.Servi
 		CustomPagerAdapter customPagerAdapter = new CustomPagerAdapter(getActivity().getSupportFragmentManager());
 		
 		UserListFragment userListFragment = new UserListFragment();
-		ServiceListFragment serviceListFragment = new ServiceListFragment();
+		ServiceListFragment serviceListFragment = ServiceListFragment.newInstance(this);
 		
 		customPagerAdapter.addFragment(userListFragment, getText(R.string.users_label));
 		customPagerAdapter.addFragment(serviceListFragment, getText(R.string.services_label));

@@ -16,17 +16,15 @@ public class ServiceProviderFragment extends Fragment implements ServiceListFrag
 	@Override
 	public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-		View view = inflater.inflate(R.layout.fragment_service_provider, container, false);
+		
+	    View view = inflater.inflate(R.layout.fragment_service_provider, container, false);
 
         ViewPager viewPager = view.findViewById(R.id.viewPager);
 
         CustomPagerAdapter customPagerAdapter = new CustomPagerAdapter(getActivity().getSupportFragmentManager());
 
         AvailableTimeSlotsListFragment availableTimeSlotsListFragment = new AvailableTimeSlotsListFragment();
-        ServiceListFragment serviceListFragment = new ServiceListFragment();
-
-        Bundle serviceListArguments = new Bundle();
-        serviceListArguments.putSerializable(ServiceListFragment.LISTENER_BUNDLE_ARG, this);
+        ServiceListFragment serviceListFragment = ServiceListFragment.newInstance(this);
 
         customPagerAdapter.addFragment(availableTimeSlotsListFragment, getText(R.string.availabilities_label));
         customPagerAdapter.addFragment(serviceListFragment, getText(R.string.services_label));
@@ -59,7 +57,7 @@ public class ServiceProviderFragment extends Fragment implements ServiceListFrag
 
     @Override
     public void onDelete(Service service) {
-        // TODO: Remove service for service provider.
+    
     }
 
     @Override
