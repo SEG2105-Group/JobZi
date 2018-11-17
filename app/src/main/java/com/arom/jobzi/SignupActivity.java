@@ -124,7 +124,6 @@ public class SignupActivity extends AppCompatActivity {
         accountTypesSpinner.setAdapter(spinnerArrayAdapter);
         accountTypesSpinner.setSelection(AccountType.HOME_OWNER.ordinal());
 
-        // TODO: Setup the ServiceProviderProfileFragment here inside the frame layout. Also fix layout.
         accountTypesSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -279,7 +278,7 @@ public class SignupActivity extends AppCompatActivity {
             UserProfileUtil.ValidatedField emptyField = validationResult.getEmptyField();
 
             // I know this is bad. And I know there is a much better way to do this with string resources.
-            String specificError = "";
+            String specificError;
 
             switch (emptyField) {
                 case USERNAME:
@@ -297,6 +296,7 @@ public class SignupActivity extends AppCompatActivity {
                 case FIRST_NAME:
                     specificError = "a first name";
                     break;
+
                 case LAST_NAME:
                     specificError = "a last name";
                     break;
@@ -307,6 +307,10 @@ public class SignupActivity extends AppCompatActivity {
 
                 case PHONE_NUMBER:
                     specificError = "a phone number";
+                    break;
+
+                default:
+                    specificError = emptyField.name();
                     break;
 
             }
@@ -321,14 +325,27 @@ public class SignupActivity extends AppCompatActivity {
 
             UserProfileUtil.ValidatedField invalidField = validationResult.getInvalidField();
 
-            String specificError = "";
+            String specificError;
 
             switch (invalidField) {
+
+                case FIRST_NAME:
+                    specificError = "first name";
+                    break;
+
+                case LAST_NAME:
+                    specificError = "last name";
+                    break;
+
                 case ADDRESS:
                     specificError = "address";
                     break;
                 case PHONE_NUMBER:
                     specificError = "phone number";
+                    break;
+
+                default:
+                    specificError = invalidField.name();
                     break;
             }
 

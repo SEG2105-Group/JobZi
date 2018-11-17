@@ -9,7 +9,7 @@ import java.util.regex.Pattern;
 
 public final class UserProfileUtil {
 
-    private static final Pattern EMAIL_PATTERN = Pattern.compile("^[a-zA-Z0-9_+&*-]+(?:\\."+
+    private static final Pattern EMAIL_PATTERN = Pattern.compile("^[a-zA-Z0-9_+&*-]+(?:\\." +
             "[a-zA-Z0-9_+&*-]+)*@" +
             "(?:[a-zA-Z0-9-]+\\.)+[a-z" +
             "A-Z]{2,7}$");
@@ -19,7 +19,27 @@ public final class UserProfileUtil {
 
     private static UserProfileUtil instance;
 
-    private UserProfileUtil() {}
+    private UserProfileUtil() {
+    }
+
+    public static UserProfileUtil getInstance() {
+
+        if (instance == null) {
+            instance = new UserProfileUtil();
+        }
+
+        return instance;
+
+    }
+
+    public Class<? extends UserProfile> getClassByAccountType(AccountType accountType) {
+        switch (accountType) {
+            case SERVICE_PROVIDER:
+                return ServiceProviderProfile.class;
+            default:
+                return null;
+        }
+    }
 
     public User createUser(String username, String email, String firstName, String lastName, AccountType accountType) {
 
@@ -50,19 +70,19 @@ public final class UserProfileUtil {
 
     public ValidationResult validateUserInfo(User user, String password) {
 
-        if(user.getEmail().isEmpty()) {
+        if (user.getEmail().isEmpty()) {
             return new ValidationResult(ValidatedField.EMAIL, null);
         }
 
-        if(password.isEmpty()) {
+        if (password.isEmpty()) {
             return new ValidationResult(ValidatedField.PASSWORD, null);
         }
 
-        if(user.getFirstName().isEmpty()) {
+        if (user.getFirstName().isEmpty()) {
             return new ValidationResult(ValidatedField.FIRST_NAME, null);
         }
 
-        if(user.getLastName().isEmpty()) {
+        if (user.getLastName().isEmpty()) {
             return new ValidationResult(ValidatedField.LAST_NAME, null);
         }
 
@@ -78,11 +98,11 @@ public final class UserProfileUtil {
             return new ValidationResult(null, ValidatedField.LAST_NAME);
         }
 
-        if(user.getUserProfile() != null) {
+        if (user.getUserProfile() != null) {
 
             UserProfile userProfile = user.getUserProfile();
 
-            if(user.getAccountType().equals(AccountType.SERVICE_PROVIDER) && userProfile instanceof ServiceProviderProfile) {
+            if (user.getAccountType().equals(AccountType.SERVICE_PROVIDER) && userProfile instanceof ServiceProviderProfile) {
 
                 return validateServiceProviderProfile((ServiceProviderProfile) userProfile);
 
@@ -96,33 +116,23 @@ public final class UserProfileUtil {
 
     public ValidationResult validateServiceProviderProfile(ServiceProviderProfile profile) {
 
-        if(profile.getAddress().isEmpty()) {
+        if (profile.getAddress().isEmpty()) {
             return new ValidationResult(ValidatedField.ADDRESS, null);
         }
 
-        if(profile.getPhoneNumber().isEmpty()) {
+        if (profile.getPhoneNumber().isEmpty()) {
             return new ValidationResult(ValidatedField.PHONE_NUMBER, null);
         }
 
-        if(!ADDRESS_PATTERN.matcher(profile.getAddress()).matches()) {
+        if (!ADDRESS_PATTERN.matcher(profile.getAddress()).matches()) {
             return new ValidationResult(null, ValidatedField.ADDRESS);
         }
 
-        if(!PHONE_NUMBER_PATTERN.matcher(profile.getPhoneNumber()).matches()) {
+        if (!PHONE_NUMBER_PATTERN.matcher(profile.getPhoneNumber()).matches()) {
             return new ValidationResult(null, ValidatedField.PHONE_NUMBER);
         }
 
         return new ValidationResult(null, null);
-
-    }
-
-    public static UserProfileUtil getInstance() {
-
-        if(instance == null) {
-            instance = new UserProfileUtil();
-        }
-
-        return instance;
 
     }
 
