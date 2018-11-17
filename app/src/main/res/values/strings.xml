@@ -28,5 +28,8 @@
     <string name="phone_number">Phone Number</string>
     <string name="description">Description</string>
     <string name="licensed_question">Licensed?</string>
+    <string name="first_name">First Name</string>
+    <string name="last_name">Last Name</string>
+    <string name="sign_up_as">Sign up as:</string>
 
 </resources>
