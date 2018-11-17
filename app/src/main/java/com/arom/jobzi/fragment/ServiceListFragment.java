@@ -1,12 +1,10 @@
 package com.arom.jobzi.fragment;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -126,26 +124,6 @@ public class ServiceListFragment extends Fragment {
         super.onResume();
 
         addServiceFloatingButton.setEnabled(true);
-
-    }
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-
-        if (context instanceof ServiceItemListener) {
-            listener = (ServiceItemListener) context;
-        } else {
-            Log.w(ServiceListFragment.class.getName(), "The context attaching this service list fragment does not implement the ServiceItemListener interface.");
-        }
-
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-
-        listener = null;
 
     }
 
