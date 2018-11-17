@@ -33,8 +33,8 @@ public class SignupActivityTest {
 	@UiThreadTest
 	public void checkUserName() throws Exception {
 		
-		assertNotNull(suActivity.findViewById(R.id.usernameTextView));
-		text = suActivity.findViewById(R.id.usernameTextView);
+		assertNotNull(suActivity.findViewById(R.id.usernameEditText));
+		text = suActivity.findViewById(R.id.usernameEditText);
 		text.setText("user1");
 		String name = text.getText().toString();
 		assertEquals("user1", name);
@@ -44,8 +44,8 @@ public class SignupActivityTest {
 	@UiThreadTest
 	public void checkPassWord() throws Exception {
 		
-		assertNotNull(suActivity.findViewById(R.id.passwordTextView));
-		text = suActivity.findViewById(R.id.passwordTextView);
+		assertNotNull(suActivity.findViewById(R.id.passwordEditText));
+		text = suActivity.findViewById(R.id.passwordEditText);
 		text.setText("password123");
 		String name = text.getText().toString();
 		assertEquals("password123", name);
@@ -55,8 +55,8 @@ public class SignupActivityTest {
 	@UiThreadTest
 	public void checkFirstName() throws Exception {
 		
-		assertNotNull(suActivity.findViewById(R.id.firstNameTextView));
-		text = suActivity.findViewById(R.id.firstNameTextView);
+		assertNotNull(suActivity.findViewById(R.id.firstNameEditText));
+		text = suActivity.findViewById(R.id.firstNameEditText);
 		text.setText("Miguel");
 		String name = text.getText().toString();
 		assertEquals("Miguel", name);
@@ -66,8 +66,8 @@ public class SignupActivityTest {
 	@UiThreadTest
 	public void checkLastName() throws Exception {
 		
-		assertNotNull(suActivity.findViewById(R.id.lastNameTextView));
-		text = suActivity.findViewById(R.id.lastNameTextView);
+		assertNotNull(suActivity.findViewById(R.id.lastNameEditText));
+		text = suActivity.findViewById(R.id.lastNameEditText);
 		text.setText("Garzon");
 		String name = text.getText().toString();
 		assertEquals("Garzon", name);
@@ -77,8 +77,8 @@ public class SignupActivityTest {
 	@UiThreadTest
 	public void checkEmail() throws Exception {
 		
-		assertNotNull(suActivity.findViewById(R.id.lastNameTextView));
-		text = suActivity.findViewById(R.id.lastNameTextView);
+		assertNotNull(suActivity.findViewById(R.id.lastNameEditText));
+		text = suActivity.findViewById(R.id.lastNameEditText);
 		text.setText("myemail@uottawa.ca");
 		String name = text.getText().toString();
 		assertEquals("myemail@uottawa.ca", name);

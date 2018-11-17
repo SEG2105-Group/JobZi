@@ -1,4 +1,9 @@
 package com.arom.jobzi.profile;
 
-public abstract class UserProfile {
+import java.io.Serializable;
+
+public abstract class UserProfile implements Serializable {
+
+    private static float serialVersionUID = 1F;
+
 }

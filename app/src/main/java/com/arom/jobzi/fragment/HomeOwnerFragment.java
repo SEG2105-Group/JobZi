@@ -15,5 +15,5 @@ public class HomeOwnerFragment extends Fragment {
 							 Bundle savedInstanceState) {
 		return inflater.inflate(R.layout.fragment_home_owner, container, false);
 	}
-	
+
 }
