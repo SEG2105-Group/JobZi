@@ -6,8 +6,8 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.widget.BaseAdapter;
 
-import com.arom.jobzi.LoginActivity;
 import com.arom.jobzi.LandingActivity;
+import com.arom.jobzi.LoginActivity;
 import com.arom.jobzi.service.Service;
 import com.arom.jobzi.user.User;
 import com.google.android.gms.tasks.Task;
@@ -28,6 +28,7 @@ public final class Util {
 	
 	public static final String ACCOUNTS_NODE = "accounts";
 	public static final String SERVICES_NODE = "services";
+	public static final String PROFILES_NODE = "profiles";
 	
 	public static final String ARG_USER = "user";
 	
@@ -37,6 +38,7 @@ public final class Util {
 	
 	private DatabaseReference accountsDatabase;
 	private DatabaseReference servicesDatabase;
+	private DatabaseReference profilesDatabase;
 	
 	private Util() {
 	}
@@ -219,6 +221,11 @@ public final class Util {
 		
 		accountsDatabase = FirebaseDatabase.getInstance().getReference().child(ACCOUNTS_NODE);
 		accountsDatabase.child(user.getId()).setValue(user);
+
+		if(user.getUserProfile() != null) {
+            profilesDatabase = FirebaseDatabase.getInstance().getReference().child(PROFILES_NODE);
+            profilesDatabase.child(user.getId()).setValue(user.getUserProfile());
+        }
 		
 	}
 	
