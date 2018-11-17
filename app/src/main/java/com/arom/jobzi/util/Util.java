@@ -252,11 +252,4 @@ public final class Util {
 		return instance;
 	}
 
-	public List<String> getServiceList() {
-		List<String> serviceList = new ArrayList<>();
-		serviceList.add((servicesDatabase.child(SERVICES_NODE).child("name")).toString());
-		return serviceList;
-	}
-
-
 }

@@ -16,4 +16,5 @@ public class AvailableTimeSlotsListFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_available_time_slots_list, container, false);
     }
 
+
 }
