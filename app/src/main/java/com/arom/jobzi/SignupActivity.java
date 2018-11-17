@@ -21,7 +21,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.arom.jobzi.account.AccountType;
-import com.arom.jobzi.fragment.ServiceProviderProfileFragment;
+import com.arom.jobzi.fragment.ProfileFragment;
 import com.arom.jobzi.profile.UserProfile;
 import com.arom.jobzi.user.User;
 import com.arom.jobzi.util.UserProfileUtil;
@@ -134,7 +134,7 @@ public class SignupActivity extends AppCompatActivity {
 
                 switch ((AccountType) parent.getItemAtPosition(position)) {
                     case SERVICE_PROVIDER:
-                        fragment = ServiceProviderProfileFragment.newInstance();
+                        fragment = ProfileFragment.newInstance(AccountType.SERVICE_PROVIDER);
                         break;
                     default:
 
