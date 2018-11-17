@@ -31,5 +31,6 @@
     <string name="first_name">First Name</string>
     <string name="last_name">Last Name</string>
     <string name="sign_up_as">Sign up as:</string>
+    <string name="title_profile_editor">Edit Profile</string>
 
 </resources>

@@ -63,4 +63,24 @@ public class ServiceProviderProfile extends UserProfile {
 	public void setLicensed(boolean licensed) {
 		this.licensed = licensed;
 	}
+	
+	@Override
+	public boolean copyFrom(UserProfile userProfile) {
+		
+		if(userProfile instanceof ServiceProviderProfile) {
+			
+			ServiceProviderProfile serviceProviderProfile = (ServiceProviderProfile) userProfile;
+			setAddress(serviceProviderProfile.getAddress());
+			setPhoneNumber(serviceProviderProfile.getPhoneNumber());
+			setDescription(serviceProviderProfile.getDescription());
+			setLicensed(serviceProviderProfile.isLicensed());
+			
+			return true;
+			
+		}
+		
+		
+		return false;
+		
+	}
 }

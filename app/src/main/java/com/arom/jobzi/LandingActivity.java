@@ -19,6 +19,7 @@ import android.widget.TextView;
 import com.arom.jobzi.fragment.AdminFragment;
 import com.arom.jobzi.fragment.HomeOwnerFragment;
 import com.arom.jobzi.fragment.ServiceProviderFragment;
+import com.arom.jobzi.user.SessionManager;
 import com.arom.jobzi.user.User;
 import com.arom.jobzi.util.Util;
 
@@ -29,6 +30,10 @@ public class LandingActivity extends AppCompatActivity {
 	protected ActionBarDrawerToggle drawerToggle;
 	
 	protected Toolbar toolbar;
+	
+	private TextView usernameNavHeader;
+	private TextView accountTypeNavHeader;
+	private TextView emailNavHeader;
 	
 	@Override
 	protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -47,8 +52,6 @@ public class LandingActivity extends AppCompatActivity {
 
         Bundle bundle = getIntent().getExtras();
 
-        final User user = (User) bundle.getSerializable(Util.USER_BUNDLE_ARG);
-
         NavigationView navigationView = findViewById(R.id.nav_view);
 		navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
 			@Override
@@ -62,9 +65,8 @@ public class LandingActivity extends AppCompatActivity {
 					case R.id.profileMenuItem:
 
 					    Intent toProfileActivity = new Intent(LandingActivity.this, ProfileActivity.class);
-					    toProfileActivity.putExtra(Util.USER_BUNDLE_ARG, user);
-						startActivity(toProfileActivity);
-
+					    startActivity(toProfileActivity);
+						
 						break;
 						
 				}
@@ -76,20 +78,40 @@ public class LandingActivity extends AppCompatActivity {
 
 		View headerView = navigationView.getHeaderView(0);
 		
-		TextView usernameNavHeader = headerView.findViewById(R.id.usernameNavHeader);
-		TextView accountTypeNavHeader = headerView.findViewById(R.id.accountTypeNavHeader);
-		TextView emailNavHeader = headerView.findViewById(R.id.emailNavHeader);
+		usernameNavHeader = headerView.findViewById(R.id.usernameNavHeader);
+		accountTypeNavHeader = headerView.findViewById(R.id.accountTypeNavHeader);
+		emailNavHeader = headerView.findViewById(R.id.emailNavHeader);
+		
+		setupFragment(savedInstanceState);
+
+	}
+	
+	@Override
+	protected void onResume() {
+		super.onResume();
+		updateDrawerInfo();
+	}
+	
+	@Override
+	protected void onStart() {
+		super.onStart();
+		updateDrawerInfo();
+	}
+	
+	private void updateDrawerInfo() {
+		
+		User user = SessionManager.getInstance().getUser();
 		
 		usernameNavHeader.setText(user.getUsername());
 		accountTypeNavHeader.setText(user.getAccountType().toString());
 		emailNavHeader.setText(user.getEmail());
-
-		setupFragment(savedInstanceState, user);
-
+		
 	}
+	
+	private void setupFragment(Bundle savedInstanceBundle) {
 
-	private void setupFragment(Bundle savedInstanceBundle, User user) {
-
+		User user = SessionManager.getInstance().getUser();
+		
         FragmentManager fragmentManager = getSupportFragmentManager();
 
         Fragment fragment;
