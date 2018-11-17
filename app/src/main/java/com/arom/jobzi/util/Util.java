@@ -30,7 +30,7 @@ public final class Util {
 	public static final String SERVICES_NODE = "services";
 	public static final String PROFILES_NODE = "profiles";
 	
-	public static final String ARG_USER = "user";
+	public static final String USER_BUNDLE_ARG = "user";
 	
 	private static Util instance;
 	
@@ -66,7 +66,9 @@ public final class Util {
 			public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 				
 				User user = dataSnapshot.child(firebaseUser.getUid()).getValue(User.class);
-				
+
+				// TODO: Would have to add an additional listener here to fetch the user profile separately,
+
 				if(user != null) {
 					gotoLanding(activity, user);
 				}
@@ -85,7 +87,7 @@ public final class Util {
 		
 		Intent toUserIntent = new Intent(activity, LandingActivity.class);
 		
-		toUserIntent.putExtra(ARG_USER, user);
+		toUserIntent.putExtra(USER_BUNDLE_ARG, user);
 		
 		activity.startActivity(toUserIntent);
 		activity.finish();
