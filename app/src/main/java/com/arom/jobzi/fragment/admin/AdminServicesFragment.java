@@ -1,4 +1,4 @@
-package com.arom.jobzi.fragment;
+package com.arom.jobzi.fragment.admin;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -20,7 +20,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ServiceListFragment extends Fragment {
+public class AdminServicesFragment extends Fragment {
 
     private static final String LISTENER_BUNDLE_ARG = "listener";
 
@@ -30,13 +30,13 @@ public class ServiceListFragment extends Fragment {
 
     private ServiceItemListener listener;
 
-    public ServiceListFragment() {
+    public AdminServicesFragment() {
 
     }
 
-    public static ServiceListFragment newInstance(ServiceItemListener listener) {
+    public static AdminServicesFragment newInstance(ServiceItemListener listener) {
         
-        ServiceListFragment fragment = new ServiceListFragment();
+        AdminServicesFragment fragment = new AdminServicesFragment();
         
         Bundle bundle = new Bundle();
         bundle.putSerializable(LISTENER_BUNDLE_ARG, listener);

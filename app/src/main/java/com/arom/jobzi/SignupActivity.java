@@ -245,7 +245,7 @@ public class SignupActivity extends AppCompatActivity {
                             
                             user.setId(id);
                             
-                            Util.getInstance().updateUser();
+                            Util.getInstance().updateUser(user);
                             
                             Util.getInstance().onUserLogin(SignupActivity.this, newUser);
                             

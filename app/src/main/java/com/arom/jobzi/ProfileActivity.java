@@ -35,7 +35,7 @@ public class ProfileActivity extends AppCompatActivity {
         lastNameEditText = findViewById(R.id.lastNameEditText);
         emailTextView = findViewById(R.id.emailDisplayTextView);
         
-        User user = SessionManager.getInstance().getUser();
+        final User user = SessionManager.getInstance().getUser();
         
         fillInUserFields(user);
         
@@ -54,8 +54,8 @@ public class ProfileActivity extends AppCompatActivity {
                 saveButton.setEnabled(false);
                 cancelButton.setEnabled(false);
                 
-                if(updateUserInformation()) {
-                    Util.getInstance().updateUser();
+                if (updateUserInformation()) {
+                    Util.getInstance().updateUser(user);
                     ProfileActivity.this.finish();
                 } else {
                     saveButton.setEnabled(true);
@@ -102,10 +102,12 @@ public class ProfileActivity extends AppCompatActivity {
         if (UserProfileUtil.getInstance().validateUserInfoWithError(this, unvalidatedUser)) {
             
             user.copyFrom(unvalidatedUser);
+
+//            if(user.getUserProfile() != null) {
+//                user.getUserProfile().copyFrom(unvalidatedUser.getUserProfile());
+//            }
             
-            if(user.getUserProfile() != null) {
-                user.getUserProfile().copyFrom(unvalidatedUser.getUserProfile());
-            }
+            user.setUserProfile(unvalidatedUser.getUserProfile());
             
             return true;
             

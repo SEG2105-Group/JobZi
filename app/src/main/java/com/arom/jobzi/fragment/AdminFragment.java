@@ -12,10 +12,11 @@ import android.view.ViewGroup;
 
 import com.arom.jobzi.R;
 import com.arom.jobzi.ServiceEditorActivity;
+import com.arom.jobzi.fragment.admin.AdminServicesFragment;
 import com.arom.jobzi.service.Service;
 import com.arom.jobzi.util.Util;
 
-public class AdminFragment extends Fragment implements ServiceListFragment.ServiceItemListener, DeleteServiceDialogFragment.DeleteServiceListener {
+public class AdminFragment extends Fragment implements AdminServicesFragment.ServiceItemListener, DeleteServiceDialogFragment.DeleteServiceListener {
 	
 	@Nullable
 	@Override
@@ -28,10 +29,10 @@ public class AdminFragment extends Fragment implements ServiceListFragment.Servi
 		CustomPagerAdapter customPagerAdapter = new CustomPagerAdapter(getActivity().getSupportFragmentManager());
 		
 		UserListFragment userListFragment = new UserListFragment();
-		ServiceListFragment serviceListFragment = ServiceListFragment.newInstance(this);
+		AdminServicesFragment adminServicesFragment = AdminServicesFragment.newInstance(this);
 		
 		customPagerAdapter.addFragment(userListFragment, getText(R.string.users_label));
-		customPagerAdapter.addFragment(serviceListFragment, getText(R.string.services_label));
+		customPagerAdapter.addFragment(adminServicesFragment, getText(R.string.services_label));
 		
 		viewPager.setAdapter(customPagerAdapter);
 		

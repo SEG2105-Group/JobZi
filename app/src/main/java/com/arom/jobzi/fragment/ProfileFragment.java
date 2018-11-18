@@ -57,15 +57,14 @@ public class ProfileFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         User user = SessionManager.getInstance().getUser();
-        AccountType accountType = user.getAccountType();
-
+        
         switch (accountType) {
             case ADMIN:
                 return inflater.inflate(R.layout.admin_profile, container, false);
             case SERVICE_PROVIDER:
                 View view = inflater.inflate(R.layout.service_provider_profile, container, false);
 
-                if (user.getUserProfile() != null) {
+                if (user != null && user.getUserProfile() != null) {
                     fillInServiceProviderFields(view);
                 }
 
@@ -109,7 +108,7 @@ public class ProfileFragment extends Fragment {
         switch (accountType) {
             case SERVICE_PROVIDER:
                 profile = new ServiceProviderProfile();
-                profile.copyFrom(user.getUserProfile());
+//                profile.copyFrom(user.getUserProfile());
                 updateServiceProviderProfile((ServiceProviderProfile) profile);
                 break;
             default:

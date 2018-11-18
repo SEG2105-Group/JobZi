@@ -8,6 +8,7 @@ import android.widget.BaseAdapter;
 
 import com.arom.jobzi.LandingActivity;
 import com.arom.jobzi.LoginActivity;
+import com.arom.jobzi.profile.ServiceProviderProfile;
 import com.arom.jobzi.profile.UserProfile;
 import com.arom.jobzi.service.Service;
 import com.arom.jobzi.user.SessionManager;
@@ -27,9 +28,11 @@ import java.util.List;
 
 public final class Util {
     
-    public static final String ACCOUNTS_NODE = "accounts";
-    public static final String SERVICES_NODE = "services";
-    public static final String PROFILES_NODE = "profiles";
+    private static final String ACCOUNTS_NODE = "accounts";
+    private static final String SERVICES_NODE = "services";
+    private static final String PROFILES_NODE = "profiles";
+    
+    private static final String PROFILE_SERVICES_NODE = "services";
     
     private static Util instance;
     
@@ -90,6 +93,7 @@ public final class Util {
             }
         });
         
+        /*
         database.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -110,7 +114,7 @@ public final class Util {
             public void onCancelled(@NonNull DatabaseError databaseError) {
         
             }
-        });
+        });*/
         
     }
     
@@ -234,7 +238,7 @@ public final class Util {
             
             }
         });
-        
+    
     }
     
     public void deleteService(Service service) {
@@ -249,9 +253,7 @@ public final class Util {
         
     }
     
-    public void updateUser() {
-        
-        User user = SessionManager.getInstance().getUser();
+    public void updateUser(User user) {
         
         accountsDatabase = FirebaseDatabase.getInstance().getReference().child(ACCOUNTS_NODE);
         accountsDatabase.child(user.getId()).setValue(user);
@@ -272,6 +274,58 @@ public final class Util {
         }
         
         servicesDatabase.child(service.getId()).setValue(service);
+        
+    }
+    
+    public void addProfileServiceListListener(final BaseAdapter adapterToUpdate, final User user) {
+        
+        profilesDatabase = FirebaseDatabase.getInstance().getReference().child(PROFILES_NODE);
+    
+        ServiceProviderProfile profile = (ServiceProviderProfile) user.getUserProfile();
+        final List<Service> services = profile.getServices();
+        
+        profilesDatabase.child(user.getId()).child(SERVICES_NODE).addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                
+                services.add(dataSnapshot.getValue(Service.class));
+                adapterToUpdate.notifyDataSetChanged();
+                
+            }
+    
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+        
+                services.set(Integer.parseInt(dataSnapshot.getKey()), dataSnapshot.getValue(Service.class));
+                adapterToUpdate.notifyDataSetChanged();
+    
+            }
+    
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+                
+                services.remove(dataSnapshot.getValue(Service.class));
+                adapterToUpdate.notifyDataSetChanged();
+    
+            }
+    
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+            
+            }
+    
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+        
+            }
+        });
+        
+    }
+    
+    public void addSingleValueServicesListener(ValueEventListener listener) {
+        
+        servicesDatabase = FirebaseDatabase.getInstance().getReference().child(SERVICES_NODE);
+        servicesDatabase.addListenerForSingleValueEvent(listener);
         
     }
     
