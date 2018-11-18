@@ -1,5 +1,6 @@
 package com.arom.jobzi.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
@@ -9,14 +10,16 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.arom.jobzi.R;
+import com.arom.jobzi.ServiceEditorActivity;
 import com.arom.jobzi.service.Service;
+import com.arom.jobzi.util.Util;
 
 public class ServiceProviderFragment extends Fragment implements ServiceListFragment.ServiceItemListener, DeleteServiceDialogFragment.DeleteServiceListener {
-	
+
 	@Override
 	public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-		
+
 	    View view = inflater.inflate(R.layout.fragment_service_provider, container, false);
 
         ViewPager viewPager = view.findViewById(R.id.viewPager);
@@ -35,14 +38,20 @@ public class ServiceProviderFragment extends Fragment implements ServiceListFrag
 
     }
 
+
+    @Override
+    public void onDelete(Service service) {
+        Util.getInstance().deleteService(service);
+        Util.getInstance().updateUser();
+	}
+
+
     @Override
     public void onClick(Service service) {
-        // Do nothing on click. Can't edit service.
-    }
+	    }
 
     @Override
     public void onLongClick(Service service) {
-
         DeleteServiceDialogFragment deleteServiceDialogFragment = new DeleteServiceDialogFragment();
 
         Bundle bundle = new Bundle();
@@ -53,15 +62,16 @@ public class ServiceProviderFragment extends Fragment implements ServiceListFrag
 
         deleteServiceDialogFragment.show(this.getActivity().getSupportFragmentManager(), "");
 
-    }
 
-    @Override
-    public void onDelete(Service service) {
-    
     }
 
     @Override
     public void addService() {
-        // TODO: Add service for service provider.
+        Service service = new Service();
+
+        service.setName("");
+        service.setRate(0);
+
+
     }
 }

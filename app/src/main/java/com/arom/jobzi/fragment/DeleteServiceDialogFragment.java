@@ -24,7 +24,7 @@ public class DeleteServiceDialogFragment extends DialogFragment {
 		
 		Bundle bundle = getArguments();
 
-		final DeleteServiceListener listener = (DeleteServiceListener) bundle.getSerializable(SERVICE_BUNDLE_ARG);
+		final DeleteServiceListener listener = (DeleteServiceListener) bundle.getSerializable(LISTENER_BUNDLE_ARG);
 		final Service service = (Service) bundle.getSerializable(SERVICE_BUNDLE_ARG);
 		
 		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
