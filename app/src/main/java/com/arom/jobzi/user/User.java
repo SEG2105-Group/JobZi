@@ -82,6 +82,19 @@ public class User implements Serializable {
         this.userProfile = userProfile;
     }
     
+    /**
+     * Copies non-object data from <code>user</code> into <code>this</code>.
+     *
+     * @param user The <code>User</code> object to copy data from.
+     */
+    public void copyFrom(User user) {
+        setUsername(user.getUsername());
+        setFirstName(user.getFirstName());
+        setLastName(user.getLastName());
+        setEmail(user.getEmail());
+        setAccountType(user.getAccountType());
+    }
+    
     @Override
     public boolean equals(@Nullable Object obj) {
 

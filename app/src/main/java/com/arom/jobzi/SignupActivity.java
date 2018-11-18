@@ -21,7 +21,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.arom.jobzi.account.AccountType;
-import com.arom.jobzi.fragment.ServiceProviderProfileFragment;
+import com.arom.jobzi.fragment.ProfileFragment;
 import com.arom.jobzi.profile.UserProfile;
 import com.arom.jobzi.user.User;
 import com.arom.jobzi.util.UserProfileUtil;
@@ -37,15 +37,15 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.regex.Pattern;
 
 public class SignupActivity extends AppCompatActivity {
-
+    
     public static final String EXTRA_PROFILE_INFO_TAG = "ExtraProfileInfo";
-
+    
     private static final Pattern EMAIL_PATTERN = Pattern.compile("^[a-zA-Z0-9_+&*-]+(?:\\." +
             "[a-zA-Z0-9_+&*-]+)*@" +
             "(?:[a-zA-Z0-9-]+\\.)+[a-z" +
             "A-Z]{2,7}$");
     private static final Pattern VALID_PATTERN = Pattern.compile("^[a-zA-Z]+");
-
+    
     private EditText usernameEditText;
     private EditText passwordEditText;
     private EditText emailEditText;
@@ -54,18 +54,18 @@ public class SignupActivity extends AppCompatActivity {
     private Spinner accountTypesSpinner;
     private Button signupButton;
     private Button backButton;
-
+    
     private boolean adminExists;
-
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
-
+        
         Util.getInstance().addSingleValueAccountsListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
+                
                 for (DataSnapshot userSnapshot : dataSnapshot.getChildren()) {
                     User user = userSnapshot.getValue(User.class);
                     if (user.getAccountType().equals(AccountType.ADMIN)) {
@@ -73,15 +73,15 @@ public class SignupActivity extends AppCompatActivity {
                         break;
                     }
                 }
-
+                
             }
-
+            
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-
+            
             }
         });
-
+        
         usernameEditText = findViewById(R.id.usernameEditText);
         emailEditText = findViewById(R.id.emailEditText);
         firstNameEditText = findViewById(R.id.firstNameEditText);
@@ -90,87 +90,87 @@ public class SignupActivity extends AppCompatActivity {
         accountTypesSpinner = findViewById(R.id.accountTypesSpinner);
         signupButton = findViewById(R.id.signupButton);
         backButton = findViewById(R.id.backButton);
-
+        
         ArrayAdapter<AccountType> spinnerArrayAdapter = new ArrayAdapter<AccountType>(this, android.R.layout.simple_spinner_dropdown_item, AccountType.values()) {
             @Override
             public boolean isEnabled(int position) {
-
+                
                 if (getItem(position).equals(AccountType.ADMIN) && adminExists) {
                     return false;
                 }
-
+                
                 return super.isEnabled(position);
-
+                
             }
-
+            
             @Override
             public View getDropDownView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-
+                
                 View view = super.getDropDownView(position, convertView, parent);
-
+                
                 TextView textView = (TextView) view;
-
+                
                 if (getItem(position).equals(AccountType.ADMIN) && adminExists) {
                     textView.setTextColor(Color.GRAY);
                 } else {
                     textView.setTextColor(Color.BLACK);
                 }
-
+                
                 return view;
             }
         };
-
+        
         spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         accountTypesSpinner.setAdapter(spinnerArrayAdapter);
         accountTypesSpinner.setSelection(AccountType.HOME_OWNER.ordinal());
-
+        
         accountTypesSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
+                
                 FragmentManager fragmentManager = SignupActivity.this.getSupportFragmentManager();
-
+                
                 Fragment fragment = fragmentManager.findFragmentByTag(EXTRA_PROFILE_INFO_TAG);
-
+                
                 switch ((AccountType) parent.getItemAtPosition(position)) {
                     case SERVICE_PROVIDER:
-                        fragment = ServiceProviderProfileFragment.newInstance();
+                        fragment = ProfileFragment.newInstance(AccountType.SERVICE_PROVIDER);
                         break;
                     default:
-
+                        
                         if (fragment != null) {
                             fragmentManager.beginTransaction().remove(fragment).commit();
                         }
-
+                        
                         return;
-
+                    
                 }
-
+                
                 fragmentManager.beginTransaction().add(R.id.extraProfileInformationFragment, fragment, EXTRA_PROFILE_INFO_TAG).commit();
-
+                
             }
-
+            
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-
+            
             }
         });
-
+        
         signupButton.setEnabled(true);
         backButton.setEnabled(true);
-
+        
         signupButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                
                 signupButton.setEnabled(false);
                 backButton.setEnabled(false);
-
+                
                 onSignupRequest();
-
+                
             }
         });
-
+        
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -178,185 +178,97 @@ public class SignupActivity extends AppCompatActivity {
                 startActivity(toLoginIntent);
             }
         });
-
+        
     }
-
+    
     private void onSignupRequest() {
-
+        
         Util.getInstance().addSingleValueAccountsListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
+                
                 AccountType accountType = (AccountType) accountTypesSpinner.getSelectedItem();
-
+                
                 String username = usernameEditText.getText().toString();
                 String email = emailEditText.getText().toString();
                 String firstName = firstNameEditText.getText().toString();
                 String lastName = lastNameEditText.getText().toString();
                 String password = passwordEditText.getText().toString();
-
+                
                 final User user = UserProfileUtil.getInstance().createUser(username, email, firstName, lastName, accountType);
-
+                
                 Fragment profileFragment = SignupActivity.this.getSupportFragmentManager().findFragmentByTag(EXTRA_PROFILE_INFO_TAG);
-
+                
                 UserProfile userProfile = null;
-
+                
                 if (profileFragment != null) {
                     View profileFragmentView = profileFragment.getView();
-
+                    
                     switch (accountType) {
                         case SERVICE_PROVIDER:
-
+                            
                             EditText addressEditText = profileFragmentView.findViewById(R.id.addressEditText);
                             EditText phoneNumberEditText = profileFragmentView.findViewById(R.id.phoneNumberEditText);
                             EditText descriptionEditText = profileFragmentView.findViewById(R.id.descriptionEditText);
                             Switch licensedSwitch = profileFragmentView.findViewById(R.id.licensedSwitch);
-
+                            
                             String address = addressEditText.getText().toString();
                             String phoneNumber = phoneNumberEditText.getText().toString();
                             String description = descriptionEditText.getText().toString();
                             boolean licensed = licensedSwitch.isChecked();
-
+                            
                             userProfile = UserProfileUtil.getInstance().createServiceProviderProfile(address, phoneNumber, description, licensed);
                             break;
-
+                        
                     }
                 }
-
+                
                 user.setUserProfile(userProfile);
-
+                
                 // Validates everything about the user profile.
-                if (!isUserInfoValid(UserProfileUtil.getInstance().validateUserInfo(user, password))) {
-
+                if (!UserProfileUtil.getInstance().validateUserInfoWithError(SignupActivity.this, user)) {
+                    
                     signupButton.setEnabled(true);
                     backButton.setEnabled(true);
-
+                    
                     return;
                 }
-
+                
                 Util.getInstance().createUser(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-
+                            
                             FirebaseUser newUser = task.getResult().getUser();
-
+                            
                             String id = newUser.getUid();
-
+                            
                             user.setId(id);
-
-                            Util.getInstance().updateUser(user);
-
-                            Util.getInstance().gotoLanding(SignupActivity.this, user);
-
+                            
+                            Util.getInstance().updateUser();
+                            
+                            Util.getInstance().onUserLogin(SignupActivity.this, newUser);
+                            
                         } else {
-
+                            
                             Toast.makeText(SignupActivity.this, task.getException().getMessage(), Toast.LENGTH_LONG).show();
                             Log.w("firebaseDebug", "createUserWithEmail: Failed", task.getException());
-
+                            
                             signupButton.setEnabled(true);
                             backButton.setEnabled(true);
-
+                            
                         }
-
+                        
                     }
                 });
-
+                
             }
-
+            
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-
+            
             }
         });
     }
-
-    private boolean isUserInfoValid(UserProfileUtil.ValidationResult validationResult) {
-
-        if (validationResult.getEmptyField() != null) {
-
-            UserProfileUtil.ValidatedField emptyField = validationResult.getEmptyField();
-
-            // I know this is bad. And I know there is a much better way to do this with string resources.
-            String specificError;
-
-            switch (emptyField) {
-                case USERNAME:
-                    specificError = "a username";
-                    break;
-
-                case EMAIL:
-                    specificError = "an email";
-                    break;
-
-                case PASSWORD:
-                    specificError = "a password";
-                    break;
-
-                case FIRST_NAME:
-                    specificError = "a first name";
-                    break;
-
-                case LAST_NAME:
-                    specificError = "a last name";
-                    break;
-
-                case ADDRESS:
-                    specificError = "an address";
-                    break;
-
-                case PHONE_NUMBER:
-                    specificError = "a phone number";
-                    break;
-
-                default:
-                    specificError = emptyField.name();
-                    break;
-
-            }
-
-            Toast.makeText(this, "Please provide " + specificError + ".", Toast.LENGTH_LONG).show();
-
-            return false;
-
-        }
-
-        if (validationResult.getInvalidField() != null) {
-
-            UserProfileUtil.ValidatedField invalidField = validationResult.getInvalidField();
-
-            String specificError;
-
-            switch (invalidField) {
-
-                case FIRST_NAME:
-                    specificError = "first name";
-                    break;
-
-                case LAST_NAME:
-                    specificError = "last name";
-                    break;
-
-                case ADDRESS:
-                    specificError = "address";
-                    break;
-                case PHONE_NUMBER:
-                    specificError = "phone number";
-                    break;
-
-                default:
-                    specificError = invalidField.name();
-                    break;
-            }
-
-            Toast.makeText(this, "The " + specificError + " you provided is not valid.", Toast.LENGTH_LONG).show();
-
-            return false;
-
-        }
-
-        return true;
-
-    }
-
+    
 }
