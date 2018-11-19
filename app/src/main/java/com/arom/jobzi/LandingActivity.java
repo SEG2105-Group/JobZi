@@ -70,6 +70,8 @@ public class LandingActivity extends AppCompatActivity {
                         Intent toLoginIntent = new Intent(LandingActivity.this, LoginActivity.class);
                         startActivity(toLoginIntent);
                         
+                        LandingActivity.this.finish();
+                        
                         break;
                     
                     case R.id.profileMenuItem:

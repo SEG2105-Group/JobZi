@@ -40,6 +40,8 @@ public class ServiceProviderServicesFragment extends Fragment {
     
     private ServiceItemListener listener;
     
+    private ChildEventListener serviceDeletionListener;
+    
     public ServiceProviderServicesFragment() {
     }
     
@@ -138,7 +140,7 @@ public class ServiceProviderServicesFragment extends Fragment {
         });
     
         DatabaseReference servicesDatabase = Util.getInstance().getServicesDatabase();
-        servicesDatabase.addChildEventListener(new ChildEventListener() {
+        serviceDeletionListener = new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
             
@@ -165,14 +167,25 @@ public class ServiceProviderServicesFragment extends Fragment {
             public void onCancelled(@NonNull DatabaseError databaseError) {
             
             }
-        });
-    
+        };
+        
+        servicesDatabase.addChildEventListener(serviceDeletionListener);
+        
     }
     
     @Override
     public void onResume() {
         super.onResume();
         addServiceFloatingActionButton.setEnabled(true);
+    }
+    
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+    
+        DatabaseReference servicesDatabase = Util.getInstance().getServicesDatabase();
+        servicesDatabase.removeEventListener(serviceDeletionListener);
+    
     }
     
     public interface ServiceItemListener extends Serializable {
