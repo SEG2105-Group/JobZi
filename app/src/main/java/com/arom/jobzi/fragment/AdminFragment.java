@@ -25,7 +25,13 @@ public class AdminFragment extends Fragment implements AdminServicesFragment.Ser
 	@Override
 	public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 		
-		View view = inflater.inflate(R.layout.fragment_admin, null, false);
+		return inflater.inflate(R.layout.fragment_admin, null, false);
+		
+	}
+	
+	@Override
+	public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+		super.onViewCreated(view, savedInstanceState);
 		
 		ViewPager viewPager = view.findViewById(R.id.viewPager);
 		
@@ -39,10 +45,8 @@ public class AdminFragment extends Fragment implements AdminServicesFragment.Ser
 		
 		viewPager.setAdapter(customPagerAdapter);
 		
-		return view;
-		
 	}
-
+	
 	@Override
 	public void onDelete(Service service) {
   
