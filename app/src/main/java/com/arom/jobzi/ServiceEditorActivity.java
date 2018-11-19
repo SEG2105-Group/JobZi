@@ -32,6 +32,8 @@ public class ServiceEditorActivity extends AppCompatActivity {
 
 	private EditText serviceNameTextEdit;
 	private EditText serviceRateTextEdit;
+	
+	private boolean newServiceMode;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -44,7 +46,9 @@ public class ServiceEditorActivity extends AppCompatActivity {
 
 		TextView serviceBannerTextView = findViewById(R.id.serviceBannerTextView);
 
-		if (extras.getBoolean(NEW_SERVICE_MODE_BUNDLE_ARG)) {
+		newServiceMode = extras.getBoolean(NEW_SERVICE_MODE_BUNDLE_ARG);
+		
+		if (newServiceMode) {
 			serviceBannerTextView.setText(getString(R.string.add_service_label));
         } else {
 			serviceBannerTextView.setText(getString(R.string.update_service_label, service.getName()));
@@ -122,6 +126,11 @@ public class ServiceEditorActivity extends AppCompatActivity {
         service.setRate(rateDouble);
 
 		DatabaseReference servicesDatabase = Util.getInstance().getServicesDatabase();
+		
+		if(newServiceMode) {
+			service.setId(servicesDatabase.push().getKey());
+		}
+		
 		servicesDatabase.child(service.getId()).setValue(service);
         
         ServiceEditorActivity.this.finish();
