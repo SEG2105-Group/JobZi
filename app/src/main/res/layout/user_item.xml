@@ -11,6 +11,10 @@
 		android:layout_height="wrap_content"
 		android:layout_alignParentTop="true"
 		android:layout_margin="8dp"
+		android:layout_alignParentLeft="true"
+		android:layout_alignParentStart="true"
+		android:layout_toStartOf="@id/accountTypeTextView"
+		android:layout_toLeftOf="@id/accountTypeTextView"
 		android:textSize="18sp"
 		android:textStyle="bold"
 		tools:text="Username"/>

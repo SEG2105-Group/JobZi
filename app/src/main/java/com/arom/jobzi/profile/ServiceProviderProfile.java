@@ -75,6 +75,9 @@ public class ServiceProviderProfile extends UserProfile {
 			setDescription(serviceProviderProfile.getDescription());
 			setLicensed(serviceProviderProfile.isLicensed());
 			
+			setAvailabilities(serviceProviderProfile.getAvailabilities());
+			setServices(serviceProviderProfile.getServices());
+			
 			return true;
 			
 		}

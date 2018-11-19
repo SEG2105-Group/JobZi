@@ -9,15 +9,14 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.arom.jobzi.user.User;
 import com.arom.jobzi.util.Util;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 
 public class LoginActivity extends AppCompatActivity {
@@ -70,8 +69,26 @@ public class LoginActivity extends AppCompatActivity {
         auth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
+                
                 if(task.isSuccessful()) {
-                    Util.getInstance().onUserLogin(LoginActivity.this, task.getResult().getUser());
+    
+                    DatabaseReference database = Util.getInstance().getAccountsDatabase();
+                    database.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        
+                        }
+    
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+        
+                        }
+                    });
+                    
+                    Intent toLandingIntent = new Intent(LoginActivity.this, LandingActivity.class);
+                    LoginActivity.this.startActivity(toLandingIntent);
+                    LoginActivity.this.finish();
+                    
                 } else {
                     Toast.makeText(LoginActivity.this, "Invalid username or password or user does not exist.", Toast.LENGTH_LONG).show();
 	
