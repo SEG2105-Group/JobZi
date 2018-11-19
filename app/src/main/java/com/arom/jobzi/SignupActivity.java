@@ -238,6 +238,8 @@ public class SignupActivity extends AppCompatActivity {
     
                 FirebaseAuth auth = FirebaseAuth.getInstance();
                 
+                final DatabaseReference profilesDatabase = Util.getInstance().getProfilesDatabase();
+                
                 auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
@@ -251,6 +253,8 @@ public class SignupActivity extends AppCompatActivity {
                             user.setId(id);
                             
                             accountsDatabase.child(id).setValue(user);
+                            
+                            profilesDatabase.child(id).setValue(user.getUserProfile());
                             
                             Intent toLandingIntent = new Intent(SignupActivity.this, LandingActivity.class);
                             SignupActivity.this.startActivity(toLandingIntent);
