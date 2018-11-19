@@ -47,21 +47,22 @@ public final class UserProfileUtil {
     public User createUser(String username, String email, String firstName, String lastName, AccountType accountType) {
         
         User user = new User();
-        
+    
         user.setUsername(username);
         user.setEmail(email);
         user.setFirstName(firstName);
         user.setLastName(lastName);
         user.setAccountType(accountType);
-        
+    
         return user;
         
     }
     
     public ServiceProviderProfile createServiceProviderProfile(String address, String phoneNumber, String description, boolean licensed) {
-        
+    
+        // Empty lists not stored in firebase.
         ServiceProviderProfile serviceProviderProfile = new ServiceProviderProfile();
-        
+    
         serviceProviderProfile.setAddress(address);
         serviceProviderProfile.setPhoneNumber(phoneNumber);
         serviceProviderProfile.setDescription(description);
