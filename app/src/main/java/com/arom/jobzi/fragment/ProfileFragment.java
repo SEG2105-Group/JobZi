@@ -13,7 +13,6 @@ import com.arom.jobzi.R;
 import com.arom.jobzi.account.AccountType;
 import com.arom.jobzi.profile.ServiceProviderProfile;
 import com.arom.jobzi.profile.UserProfile;
-import com.arom.jobzi.user.User;
 import com.arom.jobzi.util.Util;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -66,36 +65,6 @@ public class ProfileFragment extends Fragment {
                              Bundle savedInstanceState) {
         
         FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-        DatabaseReference accountsDatabase = Util.getInstance().getAccountsDatabase();
-        
-        accountsDatabase.child(firebaseUser.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                
-                final User user = dataSnapshot.getValue(User.class);
-                
-                DatabaseReference profilesDatabase = Util.getInstance().getProfilesDatabase();
-                
-                profilesDatabase.child(user.getId()).addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    
-                    
-                    }
-                    
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-                    
-                    }
-                });
-                
-            }
-            
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-            
-            }
-        });
         
         switch (accountType) {
             case ADMIN:
@@ -109,7 +78,9 @@ public class ProfileFragment extends Fragment {
                 descriptionEditText = view.findViewById(R.id.descriptionEditText);
                 licensedSwitch = view.findViewById(R.id.licensedSwitch);
     
-                fillInServiceProviderFields(view);
+                if(firebaseUser != null) {
+                    fillInServiceProviderFields(view);
+                }
                 
                 return view;
             
@@ -118,11 +89,6 @@ public class ProfileFragment extends Fragment {
             default:
                 return null;
         }
-    }
-    
-    private void setupView(final User user) {
-    
-    
     }
     
     private void fillInServiceProviderFields(View view) {
