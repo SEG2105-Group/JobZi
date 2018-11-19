@@ -1,6 +1,7 @@
 package com.arom.jobzi;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -9,10 +10,15 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.arom.jobzi.fragment.ProfileFragment;
-import com.arom.jobzi.user.SessionManager;
 import com.arom.jobzi.user.User;
 import com.arom.jobzi.util.UserProfileUtil;
-import com.arom.jobzi.util.Util;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class ProfileActivity extends AppCompatActivity {
     
@@ -22,6 +28,9 @@ public class ProfileActivity extends AppCompatActivity {
     private EditText firstNameEditText;
     private EditText lastNameEditText;
     private TextView emailTextView;
+    
+    private Button saveButton;
+    private Button cancelButton;
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,86 +43,99 @@ public class ProfileActivity extends AppCompatActivity {
         firstNameEditText = findViewById(R.id.firstNameEditText);
         lastNameEditText = findViewById(R.id.lastNameEditText);
         emailTextView = findViewById(R.id.emailDisplayTextView);
+    
+        saveButton = findViewById(R.id.saveButton);
+        cancelButton = findViewById(R.id.cancelButton);
+    
+        FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        DatabaseReference userDatabase = FirebaseDatabase.getInstance().getReference().child(firebaseUser.getUid());
         
-        final User user = SessionManager.getInstance().getUser();
-        
-        fillInUserFields(user);
-        
-        profileFragment = ProfileFragment.newInstance(user.getAccountType());
-        
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction().add(R.id.extraProfileInformationFragment, profileFragment).commit();
-        
-        final Button saveButton = findViewById(R.id.saveButton);
-        final Button cancelButton = findViewById(R.id.cancelButton);
-        
-        saveButton.setOnClickListener(new View.OnClickListener() {
+        userDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onClick(View view) {
-                
-                saveButton.setEnabled(false);
-                cancelButton.setEnabled(false);
-                
-                if (updateUserInformation()) {
-                    Util.getInstance().updateUser(user);
-                    ProfileActivity.this.finish();
-                } else {
-                    saveButton.setEnabled(true);
-                    cancelButton.setEnabled(true);
-                }
-                
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                setupUserInterface(dataSnapshot.getValue(User.class));
+            }
+    
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+        
             }
         });
         
+    }
+    
+    private void setupUserInterface(User user) {
+        
+        usernameEditText.setText(user.getUsername());
+        firstNameEditText.setText(user.getFirstName());
+        lastNameEditText.setText(user.getLastName());
+        emailTextView.setText(user.getEmail());
+    
+        profileFragment = ProfileFragment.newInstance(user.getAccountType());
+    
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction().add(R.id.extraProfileInformationFragment, profileFragment).commit();
+    
+        saveButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+            
+                saveButton.setEnabled(false);
+                cancelButton.setEnabled(false);
+            
+                updateUserInformation();
+                
+            }
+        });
+    
         cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 ProfileActivity.this.finish();
             }
         });
-        
-    }
     
-    private void fillInUserFields(User user) {
-        
-        usernameEditText.setText(user.getUsername());
-        firstNameEditText.setText(user.getFirstName());
-        lastNameEditText.setText(user.getLastName());
-        emailTextView.setText(user.getEmail());
-        
     }
     
     /**
      * @return <code>true</code> if updating the user's information was successful and <code>false</code> otherwise.
      */
-    private boolean updateUserInformation() {
+    private void updateUserInformation() {
         
-        User user = SessionManager.getInstance().getUser();
+        FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        final DatabaseReference userDatabase = FirebaseDatabase.getInstance().getReference().child(firebaseUser.getUid());
         
-        User unvalidatedUser = new User();
-        unvalidatedUser.copyFrom(user);
+        userDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+    
+                User user = dataSnapshot.getValue(User.class);
+    
+                user.setUsername(usernameEditText.getText().toString());
+                user.setFirstName(firstNameEditText.getText().toString());
+                user.setLastName(lastNameEditText.getText().toString());
+                
+                user.setUserProfile(profileFragment.getUserProfile());
+                
+                if (UserProfileUtil.getInstance().validateUserInfoWithError(ProfileActivity.this, user)) {
+                    
+                    userDatabase.setValue(user);
+                    ProfileActivity.this.finish();
+                    
+                } else {
+                    
+                    saveButton.setEnabled(true);
+                    cancelButton.setEnabled(true);
+                    
+                }
+                
+            }
+    
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
         
-        unvalidatedUser.setUsername(usernameEditText.getText().toString());
-        unvalidatedUser.setFirstName(firstNameEditText.getText().toString());
-        unvalidatedUser.setLastName(lastNameEditText.getText().toString());
-        
-        unvalidatedUser.setUserProfile(profileFragment.getUserProfile());
-        
-        if (UserProfileUtil.getInstance().validateUserInfoWithError(this, unvalidatedUser)) {
-            
-            user.copyFrom(unvalidatedUser);
-
-//            if(user.getUserProfile() != null) {
-//                user.getUserProfile().copyFrom(unvalidatedUser.getUserProfile());
-//            }
-            
-            user.setUserProfile(unvalidatedUser.getUserProfile());
-            
-            return true;
-            
-        }
-        
-        return false;
+            }
+        });
         
     }
     

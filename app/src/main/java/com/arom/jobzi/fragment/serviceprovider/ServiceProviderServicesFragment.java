@@ -15,25 +15,33 @@ import com.arom.jobzi.R;
 import com.arom.jobzi.profile.ServiceProviderProfile;
 import com.arom.jobzi.service.Service;
 import com.arom.jobzi.service.ServiceArrayAdapter;
-import com.arom.jobzi.user.SessionManager;
-import com.arom.jobzi.user.User;
 import com.arom.jobzi.util.Util;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.ValueEventListener;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ServiceProviderServicesFragment extends Fragment {
     
-    public ServiceProviderServicesFragment() {
-    }
-    
     private static final String LISTENER_BUNDLE_ARG = "listener";
     
-    private User user;
-    private ServiceProviderProfile profile;
+    private List<Service> services;
+    
+    private ServiceArrayAdapter serviceArrayAdapter;
     
     private FloatingActionButton addServiceFloatingActionButton;
     
     private ServiceItemListener listener;
+    
+    public ServiceProviderServicesFragment() {
+    }
     
     public static ServiceProviderServicesFragment newInstance(ServiceItemListener listener) {
         
@@ -52,26 +60,32 @@ public class ServiceProviderServicesFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         
-        View view = inflater.inflate(R.layout.fragment_service_provider_services, container, false);
+        return inflater.inflate(R.layout.fragment_service_provider_services, container, false);
         
-        final ListView serviceListView = view.findViewById(R.id.serviceListView);
-        
-        ServiceArrayAdapter serviceArrayAdapter = new ServiceArrayAdapter(getActivity(), profile.getServices());
+    }
+    
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+    
+        ListView serviceListView = view.findViewById(R.id.serviceListView);
+    
+        serviceArrayAdapter = new ServiceArrayAdapter(getActivity(), services);
         serviceListView.setAdapter(serviceArrayAdapter);
-        
-        Util.getInstance().addProfileServiceListListener(serviceArrayAdapter, user);
-        
+    
+        setupServiceList();
+    
         serviceListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
-                
-                listener.requestRemoveService(profile.getServices().get(i));
-                
+            
+                listener.requestRemoveService(services.get(i));
+            
                 return true;
-                
+            
             }
         });
-        
+    
         addServiceFloatingActionButton = view.findViewById(R.id.addServiceFloatingButton);
         addServiceFloatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -80,20 +94,79 @@ public class ServiceProviderServicesFragment extends Fragment {
                 listener.requestAddService();
             }
         });
-        
-        return view;
-        
+    
+    
     }
     
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        
-        user = SessionManager.getInstance().getUser();
-        profile = (ServiceProviderProfile) user.getUserProfile();
-        
+    
+        services = new ArrayList<Service>();
+    
         listener = (ServiceItemListener) getArguments().getSerializable(LISTENER_BUNDLE_ARG);
         
+    }
+    
+    private void setupServiceList() {
+        
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        
+        DatabaseReference userProfileDatabase = Util.getInstance().getProfilesDatabase().child(user.getUid());
+        userProfileDatabase.addValueEventListener(new ValueEventListener() {
+            
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                
+                services.clear();
+                
+                List<Service> updatedServices = dataSnapshot.getValue(ServiceProviderProfile.class).getServices();
+                
+                if (updatedServices != null) {
+                    services.addAll(updatedServices);
+                }
+                
+                serviceArrayAdapter.notifyDataSetChanged();
+                
+            }
+            
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+            
+            }
+            
+        });
+    
+        DatabaseReference servicesDatabase = Util.getInstance().getServicesDatabase();
+        servicesDatabase.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+            
+            }
+        
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+            
+            }
+        
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+            
+                listener.onServiceDeleted(dataSnapshot.getValue(Service.class));
+            
+            }
+        
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+            
+            }
+        
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+            
+            }
+        });
+    
     }
     
     @Override
@@ -107,6 +180,12 @@ public class ServiceProviderServicesFragment extends Fragment {
         void requestRemoveService(Service service);
         
         void requestAddService();
+    
+        /**
+         * This is called when a change in the database containing all the services has been detected and the change is the deletion of a service.
+         * @param service The <code>Service</code> object that was deleted.
+         */
+        void onServiceDeleted(Service service);
         
     }
     

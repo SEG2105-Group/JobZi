@@ -29,22 +29,18 @@ import com.arom.jobzi.util.Util;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
-
-import java.util.regex.Pattern;
 
 public class SignupActivity extends AppCompatActivity {
     
     public static final String EXTRA_PROFILE_INFO_TAG = "ExtraProfileInfo";
     
-    private static final Pattern EMAIL_PATTERN = Pattern.compile("^[a-zA-Z0-9_+&*-]+(?:\\." +
-            "[a-zA-Z0-9_+&*-]+)*@" +
-            "(?:[a-zA-Z0-9-]+\\.)+[a-z" +
-            "A-Z]{2,7}$");
-    private static final Pattern VALID_PATTERN = Pattern.compile("^[a-zA-Z]+");
+    private DatabaseReference accountsDatabase;
     
     private EditText usernameEditText;
     private EditText passwordEditText;
@@ -61,17 +57,22 @@ public class SignupActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
+    
+        accountsDatabase = Util.getInstance().getAccountsDatabase();
         
-        Util.getInstance().addSingleValueAccountsListener(new ValueEventListener() {
+        accountsDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 
                 for (DataSnapshot userSnapshot : dataSnapshot.getChildren()) {
+                    
                     User user = userSnapshot.getValue(User.class);
+                    
                     if (user.getAccountType().equals(AccountType.ADMIN)) {
                         adminExists = true;
                         break;
                     }
+                    
                 }
                 
             }
@@ -183,7 +184,7 @@ public class SignupActivity extends AppCompatActivity {
     
     private void onSignupRequest() {
         
-        Util.getInstance().addSingleValueAccountsListener(new ValueEventListener() {
+        accountsDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 
@@ -202,6 +203,7 @@ public class SignupActivity extends AppCompatActivity {
                 UserProfile userProfile = null;
                 
                 if (profileFragment != null) {
+                    
                     View profileFragmentView = profileFragment.getView();
                     
                     switch (accountType) {
@@ -233,10 +235,13 @@ public class SignupActivity extends AppCompatActivity {
                     
                     return;
                 }
+    
+                FirebaseAuth auth = FirebaseAuth.getInstance();
                 
-                Util.getInstance().createUser(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
+                        
                         if (task.isSuccessful()) {
                             
                             FirebaseUser newUser = task.getResult().getUser();
@@ -245,9 +250,11 @@ public class SignupActivity extends AppCompatActivity {
                             
                             user.setId(id);
                             
-                            Util.getInstance().updateUser(user);
+                            accountsDatabase.child(id).setValue(user);
                             
-                            Util.getInstance().onUserLogin(SignupActivity.this, newUser);
+                            Intent toLandingIntent = new Intent(SignupActivity.this, LandingActivity.class);
+                            SignupActivity.this.startActivity(toLandingIntent);
+                            SignupActivity.this.finish();
                             
                         } else {
                             

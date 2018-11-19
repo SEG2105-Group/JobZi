@@ -15,6 +15,9 @@ import com.arom.jobzi.ServiceEditorActivity;
 import com.arom.jobzi.fragment.admin.AdminServicesFragment;
 import com.arom.jobzi.service.Service;
 import com.arom.jobzi.util.Util;
+import com.google.firebase.database.DatabaseReference;
+
+import java.io.Serializable;
 
 public class AdminFragment extends Fragment implements AdminServicesFragment.ServiceItemListener, DeleteServiceDialogFragment.DeleteServiceListener {
 	
@@ -42,14 +45,17 @@ public class AdminFragment extends Fragment implements AdminServicesFragment.Ser
 
 	@Override
 	public void onDelete(Service service) {
-        Util.getInstance().deleteService(service);
+  
+		DatabaseReference servicesDatabase = Util.getInstance().getServicesDatabase();
+		servicesDatabase.child(service.getId()).removeValue();
+		
 	}
 
 	@Override
 	public void onClick(Service service) {
 
         Intent toServiceEditorIntent = new Intent(this.getActivity(), ServiceEditorActivity.class);
-        toServiceEditorIntent.putExtra(ServiceEditorActivity.SERVICE_BUNDLE_ARG, service);
+        toServiceEditorIntent.putExtra(ServiceEditorActivity.SERVICE_BUNDLE_ARG, (Serializable) service);
         toServiceEditorIntent.putExtra(ServiceEditorActivity.NEW_SERVICE_MODE_BUNDLE_ARG, false);
 
         startActivity(toServiceEditorIntent);
@@ -80,7 +86,7 @@ public class AdminFragment extends Fragment implements AdminServicesFragment.Ser
         service.setRate(0);
 
         Intent toServiceEditorIntent = new Intent(getActivity(), ServiceEditorActivity.class);
-        toServiceEditorIntent.putExtra(ServiceEditorActivity.SERVICE_BUNDLE_ARG, service);
+        toServiceEditorIntent.putExtra(ServiceEditorActivity.SERVICE_BUNDLE_ARG, (Serializable) service);
         toServiceEditorIntent.putExtra(ServiceEditorActivity.NEW_SERVICE_MODE_BUNDLE_ARG, true);
         startActivity(toServiceEditorIntent);
 

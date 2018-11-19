@@ -15,6 +15,10 @@ import com.arom.jobzi.R;
 import com.arom.jobzi.service.Service;
 import com.arom.jobzi.service.ServiceArrayAdapter;
 import com.arom.jobzi.util.Util;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -71,7 +75,7 @@ public class AdminServicesFragment extends Fragment {
 
         ListView serviceListView = view.findViewById(R.id.serviceListView);
 
-        ServiceArrayAdapter serviceArrayAdapter = new ServiceArrayAdapter(getActivity(), serviceList);
+        final ServiceArrayAdapter serviceArrayAdapter = new ServiceArrayAdapter(getActivity(), serviceList);
 
         serviceListView.setAdapter(serviceArrayAdapter);
 
@@ -100,8 +104,48 @@ public class AdminServicesFragment extends Fragment {
             }
         });
 
-        Util.getInstance().addServiceListListener(serviceArrayAdapter, serviceList);
-
+        DatabaseReference servicesDatabase = Util.getInstance().getServicesDatabase();
+        servicesDatabase.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                
+                serviceList.add(dataSnapshot.getValue(Service.class));
+    
+                serviceArrayAdapter.notifyDataSetChanged();
+    
+            }
+    
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+    
+                Service serviceChanged = dataSnapshot.getValue(Service.class);
+    
+                serviceList.set(serviceList.indexOf(serviceChanged), serviceChanged);
+    
+                serviceArrayAdapter.notifyDataSetChanged();
+                
+            }
+    
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+    
+                serviceList.remove(dataSnapshot.getValue(Service.class));
+    
+                serviceArrayAdapter.notifyDataSetChanged();
+    
+            }
+    
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+        
+            }
+    
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+        
+            }
+        });
+        
         addServiceFloatingButton = view.findViewById(R.id.addServiceFloatingButton);
 
         addServiceFloatingButton.setOnClickListener(new View.OnClickListener() {

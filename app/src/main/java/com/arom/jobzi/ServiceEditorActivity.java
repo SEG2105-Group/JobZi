@@ -10,6 +10,7 @@ import android.widget.Toast;
 
 import com.arom.jobzi.service.Service;
 import com.arom.jobzi.util.Util;
+import com.google.firebase.database.DatabaseReference;
 
 import java.util.regex.Pattern;
 
@@ -120,8 +121,9 @@ public class ServiceEditorActivity extends AppCompatActivity {
         service.setName(name);
         service.setRate(rateDouble);
 
-        Util.getInstance().updateService(service);
-
+		DatabaseReference servicesDatabase = Util.getInstance().getServicesDatabase();
+		servicesDatabase.child(service.getId()).setValue(service);
+        
         ServiceEditorActivity.this.finish();
 
     }
