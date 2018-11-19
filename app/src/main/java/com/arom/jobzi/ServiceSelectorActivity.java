@@ -61,7 +61,7 @@ public class ServiceSelectorActivity extends AppCompatActivity {
                     
                     if (servicesToExclude == null) {
                         serviceList.add(service);
-                    } else if(!servicesToExclude.contains(service)) {
+                    } else if (!servicesToExclude.contains(service)) {
                         serviceList.add(service);
                     }
                     
@@ -69,6 +69,7 @@ public class ServiceSelectorActivity extends AppCompatActivity {
                 
                 if (serviceList.isEmpty()) {
                     ServiceSelectorActivity.this.setResult(NO_SERVICES_FOUND_RESULT);
+                    ServiceSelectorActivity.this.finish();
                 } else {
                     
                     setupServiceList();
@@ -97,7 +98,7 @@ public class ServiceSelectorActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 
                 Service selectedService = serviceList.get(i);
-    
+                
                 Intent resultIntent = new Intent();
                 
                 Bundle resultBundle = new Bundle();
