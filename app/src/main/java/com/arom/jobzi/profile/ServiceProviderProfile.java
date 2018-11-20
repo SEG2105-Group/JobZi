@@ -12,6 +12,7 @@ public class ServiceProviderProfile extends UserProfile {
 	
 	private String address;
 	private String phoneNumber;
+	private String companyName;
 	private String description;
 	
 	private boolean licensed;
@@ -48,6 +49,14 @@ public class ServiceProviderProfile extends UserProfile {
 		this.phoneNumber = phoneNumber;
 	}
 	
+	public String getCompanyName() {
+		return companyName;
+	}
+	
+	public void setCompanyName(String companyName) {
+		this.companyName = companyName;
+	}
+	
 	public String getDescription() {
 		return description;
 	}
@@ -62,5 +71,28 @@ public class ServiceProviderProfile extends UserProfile {
 	
 	public void setLicensed(boolean licensed) {
 		this.licensed = licensed;
+	}
+	
+	@Override
+	public boolean copyFrom(UserProfile userProfile) {
+		
+		if(userProfile instanceof ServiceProviderProfile) {
+			
+			ServiceProviderProfile serviceProviderProfile = (ServiceProviderProfile) userProfile;
+			setAddress(serviceProviderProfile.getAddress());
+			setPhoneNumber(serviceProviderProfile.getPhoneNumber());
+			setDescription(serviceProviderProfile.getDescription());
+			setLicensed(serviceProviderProfile.isLicensed());
+			
+			setAvailabilities(serviceProviderProfile.getAvailabilities());
+			setServices(serviceProviderProfile.getServices());
+			
+			return true;
+			
+		}
+		
+		
+		return false;
+		
 	}
 }
