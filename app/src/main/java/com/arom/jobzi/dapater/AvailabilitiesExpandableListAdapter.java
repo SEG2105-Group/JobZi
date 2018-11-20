@@ -83,17 +83,16 @@ public class AvailabilitiesExpandableListAdapter extends BaseExpandableListAdapt
         String headerTitle = (String) getGroup(weekDayPosition);
 
         if (convertView == null) {
-            LayoutInflater inflater = (LayoutInflater) context.getSystemService(context.LAYOUT_INFLATER_SERVICE);
-            convertView = inflater.inflate(R.id.AvailibilitiesListView, null);
+            LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            convertView = inflater.inflate(R.layout.week_days_list_group, null);
         }
-
-        //TextView listHeader = convertView.findViewById(R.id.)
 
         return convertView;
     }
 
     @Override
     public View getChildView(int i, int i1, boolean b, View view, ViewGroup viewGroup) {
+
         return null;
     }
 
