@@ -1,51 +1,65 @@
-package com.arom.jobzi.util;
+package com.arom.jobzi.dapater;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.BaseExpandableListAdapter;
-import android.widget.TextView;
 
 import com.arom.jobzi.R;
-import com.arom.jobzi.service.Availabilities;
+import com.arom.jobzi.service.Availability;
 
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 
-public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
+public class AvailabilitiesExpandableListAdapter extends BaseExpandableListAdapter {
 
-    private List<String> weekDays; //group
-    private List<Availabilities> availabilities; // children
     private Context context;
 
-    public ExpandableListViewAdapter(Context context){
+    private List<String> daysOfWeekList;
+    private HashMap<String, List<Availability>> dayToAvailabilityMap;
+
+    public AvailabilitiesExpandableListAdapter(Context context){
         this.context = context;
-        weekDays =  new ArrayList<>(Arrays.asList("Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"));
+
+        daysOfWeekList = new ArrayList<String>();
+
+        daysOfWeekList.add(Calendar.getInstance().getDisplayName(Calendar.MONDAY, Calendar.LONG, Locale.getDefault());
+        daysOfWeekList.add(Calendar.getInstance().getDisplayName(Calendar.TUESDAY, Calendar.LONG, Locale.getDefault());
+        daysOfWeekList.add(Calendar.getInstance().getDisplayName(Calendar.WEDNESDAY, Calendar.LONG, Locale.getDefault());
+        daysOfWeekList.add(Calendar.getInstance().getDisplayName(Calendar.THURSDAY, Calendar.LONG, Locale.getDefault());
+        daysOfWeekList.add(Calendar.getInstance().getDisplayName(Calendar.FRIDAY, Calendar.LONG, Locale.getDefault());
+        daysOfWeekList.add(Calendar.getInstance().getDisplayName(Calendar.SATURDAY, Calendar.LONG, Locale.getDefault());
+        daysOfWeekList.add(Calendar.getInstance().getDisplayName(Calendar.SUNDAY, Calendar.LONG, Locale.getDefault());
+
+        for(String dayOfWeek: daysOfWeekList) {
+            dayToAvailabilityMap.put(dayOfWeek, new ArrayList<Availability>());
+        }
+
     }
 
     @Override
     public int getGroupCount() {
-        return weekDays.size();
+        return daysOfWeekList.size();
     }
 
     @Override
     public int getChildrenCount(int weekDayPosition) {
-        return availabilities.size();
+        return dayToAvailabilityMap.get(daysOfWeekList.get(weekDayPosition)).size();
     }
 
     @Override
     public Object getGroup(int weekDayPosition) {
-        return weekDays.get(weekDayPosition);
+        return daysOfWeekList.get(weekDayPosition);
     }
 
     @Override
     public Object getChild(int weekDayPosition, int availibilitiesPosition) {
-        return availabilities.get(weekDayPosition);
+        return dayToAvailabilityMap.get(daysOfWeekList.get(weekDayPosition)).get(availibilitiesPosition);
     }
 
     @Override
