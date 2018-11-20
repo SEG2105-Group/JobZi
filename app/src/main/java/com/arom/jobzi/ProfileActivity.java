@@ -18,7 +18,6 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 public class ProfileActivity extends AppCompatActivity {
@@ -104,7 +103,7 @@ public class ProfileActivity extends AppCompatActivity {
     private void updateUserInformation() {
         
         FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-        final DatabaseReference userDatabase = FirebaseDatabase.getInstance().getReference().child(firebaseUser.getUid());
+        final DatabaseReference userDatabase = Util.getInstance().getAccountsDatabase().child(firebaseUser.getUid());
         
         userDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -121,6 +120,10 @@ public class ProfileActivity extends AppCompatActivity {
                 if (UserProfileUtil.getInstance().validateUserInfoWithError(ProfileActivity.this, user, null)) {
                     
                     userDatabase.setValue(user);
+
+                    DatabaseReference profilesDatabase = Util.getInstance().getProfilesDatabase();
+                    profilesDatabase.child(user.getId()).setValue(user.getUserProfile());
+
                     ProfileActivity.this.finish();
                     
                 } else {
