@@ -4,12 +4,15 @@ import android.app.TimePickerDialog;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
+import android.text.format.DateFormat;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
 import com.arom.jobzi.util.TimePickerFragment;
+
+import java.util.Date;
 
 public class AvailableTimeSlotEditorActivity extends AppCompatActivity implements TimePickerDialog.OnTimeSetListener {
 
@@ -69,11 +72,9 @@ public class AvailableTimeSlotEditorActivity extends AppCompatActivity implement
 
     @Override
     public void onTimeSet(TimePicker timePicker, int hour, int minute) {
-        this.hour = hour;
-        this.minute = minute;
-
+		DateFormat.format("hh:mm", new Date(0,0,0, hour, minute));
         if (startFlag){
-            startTimeViewer.setText(hour + ":" + minute);
+            startTimeViewer.setText(DateFormat.format("hh:mm", new Date(0,0,0, hour, minute)));
             startFlag = false;
         }
         if (endFlag){

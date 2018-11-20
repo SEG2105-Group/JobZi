@@ -1,57 +1,20 @@
 package com.arom.jobzi.util;
 
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.BaseExpandableListAdapter;
+import android.content.Context;
+import android.support.annotation.NonNull;
+import android.widget.ArrayAdapter;
 
-public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
-    @Override
-    public int getGroupCount() {
-        return 0;
-    }
+import com.arom.jobzi.R;
+import com.arom.jobzi.service.Availabilities;
 
-    @Override
-    public int getChildrenCount(int i) {
-        return 0;
-    }
+import java.util.List;
 
-    @Override
-    public Object getGroup(int i) {
-        return null;
-    }
+public class ExpandableListViewAdapter extends ArrayAdapter<Availabilities> {
 
-    @Override
-    public Object getChild(int i, int i1) {
-        return null;
-    }
+    private List<Availabilities> availabilities;
 
-    @Override
-    public long getGroupId(int i) {
-        return 0;
-    }
+    public ExpandableListViewAdapter(@NonNull Context context, @NonNull List<Availabilities> availabilities) {
+        super(context,R.layout.availabilities_item, availabilities);
 
-    @Override
-    public long getChildId(int i, int i1) {
-        return 0;
-    }
-
-    @Override
-    public boolean hasStableIds() {
-        return false;
-    }
-
-    @Override
-    public View getGroupView(int i, boolean b, View view, ViewGroup viewGroup) {
-        return null;
-    }
-
-    @Override
-    public View getChildView(int i, int i1, boolean b, View view, ViewGroup viewGroup) {
-        return null;
-    }
-
-    @Override
-    public boolean isChildSelectable(int i, int i1) {
-        return false;
     }
 }
