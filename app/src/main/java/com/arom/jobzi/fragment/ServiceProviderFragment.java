@@ -13,6 +13,8 @@ import android.widget.Toast;
 
 import com.arom.jobzi.R;
 import com.arom.jobzi.ServiceSelectorActivity;
+import com.arom.jobzi.dapater.CustomPagerAdapter;
+import com.arom.jobzi.fragment.serviceprovider.ServiceProviderAvailabilitiesFragment;
 import com.arom.jobzi.fragment.serviceprovider.ServiceProviderServicesFragment;
 import com.arom.jobzi.profile.ServiceProviderProfile;
 import com.arom.jobzi.service.Service;
@@ -42,8 +44,8 @@ public class ServiceProviderFragment extends Fragment implements ServiceProvider
 
         ViewPager viewPager = view.findViewById(R.id.viewPager);
         CustomPagerAdapter customPagerAdapter = new CustomPagerAdapter(getActivity().getSupportFragmentManager());
-
-        AvailableTimeSlotsListFragment availableTimeSlotsListFragment = new AvailableTimeSlotsListFragment();
+    
+        ServiceProviderAvailabilitiesFragment availableTimeSlotsListFragment = new ServiceProviderAvailabilitiesFragment();
         ServiceProviderServicesFragment serviceListFragment = ServiceProviderServicesFragment.newInstance(this);
 
         customPagerAdapter.addFragment(availableTimeSlotsListFragment, getText(R.string.availabilities_label));

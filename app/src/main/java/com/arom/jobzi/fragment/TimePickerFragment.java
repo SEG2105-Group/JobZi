@@ -1,4 +1,4 @@
-package com.arom.jobzi.util;
+package com.arom.jobzi.fragment;
 
 import android.app.Dialog;
 import android.app.TimePickerDialog;
@@ -13,12 +13,14 @@ import java.util.Calendar;
 public class TimePickerFragment extends DialogFragment {
 
     @NonNull
-    Calendar calender = Calendar.getInstance();
-    int hour = calender.get(Calendar.HOUR_OF_DAY);
-    int minute = calender.get(Calendar.MINUTE);
-
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
-        return new TimePickerDialog(getActivity(), (TimePickerDialog.OnTimeSetListener) getActivity(), hour, minute, DateFormat.is24HourFormat(getActivity()) );
+
+        Calendar calender = Calendar.getInstance();
+        int hour = calender.get(Calendar.HOUR_OF_DAY);
+        int minute = calender.get(Calendar.MINUTE);
+
+        return new TimePickerDialog(getActivity(), (TimePickerDialog.OnTimeSetListener) getActivity(), hour, minute, DateFormat.is24HourFormat(getActivity()));
+
     }
 
 }

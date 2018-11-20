@@ -1,12 +1,11 @@
 package com.arom.jobzi.service;
 
-import com.arom.jobzi.AvailableTimeSlotEditorActivity;
-import com.arom.jobzi.ServiceEditorActivity;
+import com.google.firebase.database.Exclude;
 
 import java.io.Serializable;
 import java.sql.Time;
 
-public class Availabilities implements Serializable {
+public class Availability implements Serializable {
 
     private static float serialVersionUID = 1F;
 
@@ -28,4 +27,11 @@ public class Availabilities implements Serializable {
     public void setEndTime(Time endTime) {
         this.endTime = endTime;
     }
+
+    @Exclude
+    public String getDisplayName() {
+        // TODO: implement this.
+        return "";
+    }
+
 }

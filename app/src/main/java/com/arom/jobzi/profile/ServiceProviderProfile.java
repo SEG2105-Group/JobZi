@@ -1,13 +1,13 @@
 package com.arom.jobzi.profile;
 
-import com.arom.jobzi.service.Availabilities;
+import com.arom.jobzi.service.Availability;
 import com.arom.jobzi.service.Service;
 
 import java.util.List;
 
 public class ServiceProviderProfile extends UserProfile {
 	
-	private List<Availabilities> availabilities;
+	private List<Availability> availabilities;
 	private List<Service> services;
 	
 	private String address;
@@ -17,11 +17,11 @@ public class ServiceProviderProfile extends UserProfile {
 	
 	private boolean licensed;
 	
-	public List<Availabilities> getAvailabilities() {
+	public List<Availability> getAvailabilities() {
 		return availabilities;
 	}
 	
-	public void setAvailabilities(List<Availabilities> availabilities) {
+	public void setAvailabilities(List<Availability> availabilities) {
 		this.availabilities = availabilities;
 	}
 	
