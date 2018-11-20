@@ -9,9 +9,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.text.format.DateFormat;
 
 import com.arom.jobzi.util.TimePickerFragment;
 
+import java.util.Calendar;
 import java.util.Date;
 
 public class AvailableTimeSlotEditorActivity extends AppCompatActivity implements TimePickerDialog.OnTimeSetListener {
@@ -21,17 +23,25 @@ public class AvailableTimeSlotEditorActivity extends AppCompatActivity implement
 	private TextView selectStartTime, selectEndTime;
 	private TextView startTimeViewer, endTimeViewer;
 	private Button saveButton, cancelButton;
+	private Calendar calendar;
 	private TimePickerDialog timePickerDialog;
 	private int hour, minute;
 	private boolean startFlag, endFlag;
+	private String amPm;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_available_time_slot_editor);
+
+		hour = calendar.get(Calendar.HOUR_OF_DAY);
+		minute = calendar.get(Calendar.MINUTE);
+
         startTimeViewer = findViewById(R.id.startTimeViewer);
         endTimeViewer = findViewById(R.id.endTimeViewer);
 
+        startTimeViewer.setText(hour + ":" + minute + " " + getAMPM());
+        endTimeViewer.setText(hour + ":" + minute + " " + getAMPM());
 
 		selectStartTime = findViewById(R.id.selectStartTime);
 		selectStartTime.setOnClickListener(new View.OnClickListener() {
@@ -72,13 +82,13 @@ public class AvailableTimeSlotEditorActivity extends AppCompatActivity implement
 
     @Override
     public void onTimeSet(TimePicker timePicker, int hour, int minute) {
-		DateFormat.format("hh:mm", new Date(0,0,0, hour, minute));
+
         if (startFlag){
-            startTimeViewer.setText(DateFormat.format("hh:mm", new Date(0,0,0, hour, minute)));
+            startTimeViewer.setText(hour + ":" +minute + " " + getAMPM());
             startFlag = false;
         }
         if (endFlag){
-            endTimeViewer.setText(hour + ":" + minute);
+            endTimeViewer.setText(hour + ":" +minute + " " + getAMPM());
             endFlag = false;
         }
     }
@@ -87,4 +97,16 @@ public class AvailableTimeSlotEditorActivity extends AppCompatActivity implement
         DialogFragment timePickerFrag = new TimePickerFragment();
         timePickerFrag.show(getSupportFragmentManager(), TIMESLOT_BUNDLE_ARG);
     }
+
+	public String getAMPM(){
+		amPm = "";
+		if (! DateFormat.is24HourFormat(this)){
+			if (hour >= 12){
+				amPm = "PM";
+			} else {
+				amPm = "AM";
+			}
+		}
+		return amPm;
+	}
 }
