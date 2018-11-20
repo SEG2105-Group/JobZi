@@ -28,13 +28,13 @@ public class AvailabilitiesExpandableListAdapter extends BaseExpandableListAdapt
 
         daysOfWeekList = new ArrayList<String>();
 
-        daysOfWeekList.add(Calendar.getInstance().getDisplayName(Calendar.MONDAY, Calendar.LONG, Locale.getDefault());
-        daysOfWeekList.add(Calendar.getInstance().getDisplayName(Calendar.TUESDAY, Calendar.LONG, Locale.getDefault());
-        daysOfWeekList.add(Calendar.getInstance().getDisplayName(Calendar.WEDNESDAY, Calendar.LONG, Locale.getDefault());
-        daysOfWeekList.add(Calendar.getInstance().getDisplayName(Calendar.THURSDAY, Calendar.LONG, Locale.getDefault());
-        daysOfWeekList.add(Calendar.getInstance().getDisplayName(Calendar.FRIDAY, Calendar.LONG, Locale.getDefault());
-        daysOfWeekList.add(Calendar.getInstance().getDisplayName(Calendar.SATURDAY, Calendar.LONG, Locale.getDefault());
-        daysOfWeekList.add(Calendar.getInstance().getDisplayName(Calendar.SUNDAY, Calendar.LONG, Locale.getDefault());
+        daysOfWeekList.add(Calendar.getInstance().getDisplayName(Calendar.MONDAY, Calendar.LONG, Locale.getDefault()));
+        daysOfWeekList.add(Calendar.getInstance().getDisplayName(Calendar.TUESDAY, Calendar.LONG, Locale.getDefault()));
+        daysOfWeekList.add(Calendar.getInstance().getDisplayName(Calendar.WEDNESDAY, Calendar.LONG, Locale.getDefault()));
+        daysOfWeekList.add(Calendar.getInstance().getDisplayName(Calendar.THURSDAY, Calendar.LONG, Locale.getDefault()));
+        daysOfWeekList.add(Calendar.getInstance().getDisplayName(Calendar.FRIDAY, Calendar.LONG, Locale.getDefault()));
+        daysOfWeekList.add(Calendar.getInstance().getDisplayName(Calendar.SATURDAY, Calendar.LONG, Locale.getDefault()));
+        daysOfWeekList.add(Calendar.getInstance().getDisplayName(Calendar.SUNDAY, Calendar.LONG, Locale.getDefault()));
 
         for(String dayOfWeek: daysOfWeekList) {
             dayToAvailabilityMap.put(dayOfWeek, new ArrayList<Availability>());
