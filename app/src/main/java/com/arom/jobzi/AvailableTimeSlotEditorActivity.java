@@ -24,10 +24,9 @@ public class AvailableTimeSlotEditorActivity extends AppCompatActivity implement
 	private TextView startTimeViewer, endTimeViewer;
 	private Button saveButton, cancelButton;
 	private Calendar calendar;
-	private TimePickerDialog timePickerDialog;
 	private int hour, minute;
 	private boolean startFlag, endFlag;
-	private String amPm;
+	private String amPm, startTimeSaved, endTimeSaved;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -49,7 +48,7 @@ public class AvailableTimeSlotEditorActivity extends AppCompatActivity implement
 			public void onClick(View v) {
                 showTimePickerDialog();
                 startFlag = true;
-            }
+			}
 		});
 
 		selectEndTime = findViewById(R.id.selectEndTime);
@@ -85,11 +84,13 @@ public class AvailableTimeSlotEditorActivity extends AppCompatActivity implement
 
         if (startFlag){
             startTimeViewer.setText(hour + ":" +minute + " " + getAMPM());
+            startTimeSaved = hour + ":" +minute + " " + getAMPM();
             startFlag = false;
         }
         if (endFlag){
             endTimeViewer.setText(hour + ":" +minute + " " + getAMPM());
-            endFlag = false;
+			endTimeSaved = hour + ":" +minute + " " + getAMPM();
+			endFlag = false;
         }
     }
 
@@ -108,5 +109,12 @@ public class AvailableTimeSlotEditorActivity extends AppCompatActivity implement
 			}
 		}
 		return amPm;
+	}
+
+	public String getStartTimeSaved (){
+		return startTimeSaved;
+	}
+	public String getEndTimeSaved(){
+		return endTimeSaved;
 	}
 }

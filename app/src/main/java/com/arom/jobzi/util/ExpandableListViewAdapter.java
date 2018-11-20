@@ -16,46 +16,51 @@ import com.arom.jobzi.service.Availabilities;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.zip.Inflater;
 
 public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
 
     private List<String> weekDays; //group
-    private List<Availabilities> availabilities; // children
+    private String[] group =  {"Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"};
+    private List<List<Availabilities>> children = new ArrayList<List<Availabilities>>(7);
     private Context context;
 
     public ExpandableListViewAdapter(Context context){
+
+        //LayoutInflater inflater = ;
         this.context = context;
         weekDays =  new ArrayList<>(Arrays.asList("Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"));
     }
 
+
     @Override
     public int getGroupCount() {
-        return weekDays.size();
+        return group.length;
     }
 
     @Override
-    public int getChildrenCount(int weekDayPosition) {
-        return availabilities.size();
+    public int getChildrenCount(int groupPosition) {
+        return children.size();
     }
 
     @Override
-    public Object getGroup(int weekDayPosition) {
-        return weekDays.get(weekDayPosition);
+    public Object getGroup(int groupPosition) {
+        return group[groupPosition];
     }
 
     @Override
-    public Object getChild(int weekDayPosition, int availibilitiesPosition) {
-        return availabilities.get(weekDayPosition);
+    public Object getChild(int groupPosition, int availibilitiesPosition) {
+        return children.get(groupPosition);
     }
 
     @Override
-    public long getGroupId(int weekDayPosition) {
-        return weekDayPosition;
+    public long getGroupId(int groupPosition) {
+        return groupPosition;
     }
 
     @Override
-    public long getChildId(int weekDayPosition, int availibilitiesPosition) {
-        return availibilitiesPosition;
+    public long getChildId(int groupPosition, int availibilitiesPosition) {
+        return children.indexOf(groupPosition);//get(availibilitiesPosition));
     }
 
     @Override
@@ -88,4 +93,5 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
         return true;
     }
 }
+
 

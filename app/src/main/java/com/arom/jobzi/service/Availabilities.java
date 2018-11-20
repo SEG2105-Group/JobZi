@@ -1,5 +1,8 @@
 package com.arom.jobzi.service;
 
+import com.arom.jobzi.AvailableTimeSlotEditorActivity;
+import com.arom.jobzi.ServiceEditorActivity;
+
 import java.io.Serializable;
 import java.sql.Time;
 
