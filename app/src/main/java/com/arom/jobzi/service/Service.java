@@ -52,7 +52,6 @@ public class Service implements Serializable, Parcelable {
 
         return false;
 
-
     }
     
     public static final Parcelable.Creator<Service> CREATOR = new Parcelable.Creator<Service>() {
