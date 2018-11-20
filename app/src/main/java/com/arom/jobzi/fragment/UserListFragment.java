@@ -10,8 +10,8 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 
 import com.arom.jobzi.R;
+import com.arom.jobzi.dapater.UserArrayAdapter;
 import com.arom.jobzi.user.User;
-import com.arom.jobzi.user.UserArrayAdapter;
 import com.arom.jobzi.util.Util;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;

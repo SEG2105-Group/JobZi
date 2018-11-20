@@ -9,12 +9,10 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.TimePicker;
-import android.text.format.DateFormat;
 
-import com.arom.jobzi.util.TimePickerFragment;
+import com.arom.jobzi.fragment.TimePickerFragment;
 
 import java.util.Calendar;
-import java.util.Date;
 
 public class AvailableTimeSlotEditorActivity extends AppCompatActivity implements TimePickerDialog.OnTimeSetListener {
 

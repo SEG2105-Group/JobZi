@@ -17,8 +17,8 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.arom.jobzi.fragment.AdminFragment;
-import com.arom.jobzi.fragment.HomeOwnerFragment;
 import com.arom.jobzi.fragment.ServiceProviderFragment;
+import com.arom.jobzi.fragment.homeowner.HomeOwnerFragment;
 import com.arom.jobzi.user.User;
 import com.arom.jobzi.util.Util;
 import com.google.firebase.auth.FirebaseAuth;

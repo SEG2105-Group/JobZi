@@ -1,4 +1,4 @@
-package com.arom.jobzi.user;
+package com.arom.jobzi.dapater;
 
 import android.app.Activity;
 import android.support.annotation.Nullable;
@@ -9,6 +9,7 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.arom.jobzi.R;
+import com.arom.jobzi.user.User;
 
 import java.util.List;
 
