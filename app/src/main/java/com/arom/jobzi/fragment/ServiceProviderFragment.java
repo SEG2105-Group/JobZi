@@ -1,18 +1,33 @@
 package com.arom.jobzi.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.arom.jobzi.R;
+import com.arom.jobzi.ServiceSelectorActivity;
+import com.arom.jobzi.fragment.serviceprovider.ServiceProviderServicesFragment;
+import com.arom.jobzi.profile.ServiceProviderProfile;
+import com.arom.jobzi.service.Service;
+import com.arom.jobzi.util.Util;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
 public class ServiceProviderFragment extends Fragment implements ServiceProviderServicesFragment.ServiceItemListener, DeleteServiceDialogFragment.DeleteServiceListener {
-    
+
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -43,7 +58,7 @@ public class ServiceProviderFragment extends Fragment implements ServiceProvider
         
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         final DatabaseReference userProfileDatabase = Util.getInstance().getProfilesDatabase().child(user.getUid());
-        
+
         userProfileDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
