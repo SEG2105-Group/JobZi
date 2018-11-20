@@ -3,6 +3,7 @@ package com.arom.jobzi.fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
@@ -31,21 +32,25 @@ public class ServiceProviderFragment extends Fragment implements ServiceProvider
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         
-        View view = inflater.inflate(R.layout.fragment_service_provider, container, false);
+        return inflater.inflate(R.layout.fragment_service_provider, container, false);
         
+    }
+    
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+    
         ViewPager viewPager = view.findViewById(R.id.viewPager);
-        
+    
         CustomPagerAdapter customPagerAdapter = new CustomPagerAdapter(getActivity().getSupportFragmentManager());
-        
+    
         AvailableTimeSlotsListFragment availableTimeSlotsListFragment = new AvailableTimeSlotsListFragment();
         ServiceProviderServicesFragment serviceListFragment = ServiceProviderServicesFragment.newInstance(this);
-        
+    
         customPagerAdapter.addFragment(availableTimeSlotsListFragment, getText(R.string.availabilities_label));
         customPagerAdapter.addFragment(serviceListFragment, getText(R.string.services_label));
-        
+    
         viewPager.setAdapter(customPagerAdapter);
-        
-        return view;
         
     }
     
