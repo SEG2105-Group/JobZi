@@ -26,6 +26,15 @@
         tools:text="0123456789" />
 
     <EditText
+        android:id="@+id/companyNameEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:hint="@string/company_name"
+        android:inputType="text"
+        tools:text="The Good Company" />
+
+    <EditText
         android:id="@+id/descriptionEditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

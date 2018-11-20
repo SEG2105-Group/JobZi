@@ -1,6 +1,7 @@
 package com.arom.jobzi.util;
 
 import android.content.Context;
+import android.support.annotation.Nullable;
 import android.widget.Toast;
 
 import com.arom.jobzi.account.AccountType;
@@ -58,12 +59,12 @@ public final class UserProfileUtil {
         
     }
     
-    public ServiceProviderProfile createServiceProviderProfile(String address, String phoneNumber, String description, boolean licensed) {
+    public ServiceProviderProfile createServiceProviderProfile(String address, String companyName, String phoneNumber, String description, boolean licensed) {
     
-        // Empty lists not stored in firebase.
         ServiceProviderProfile serviceProviderProfile = new ServiceProviderProfile();
     
         serviceProviderProfile.setAddress(address);
+        serviceProviderProfile.setCompanyName(companyName);
         serviceProviderProfile.setPhoneNumber(phoneNumber);
         serviceProviderProfile.setDescription(description);
         serviceProviderProfile.setLicensed(licensed);
@@ -72,10 +73,15 @@ public final class UserProfileUtil {
         
     }
     
-    public ValidationResult validateUserInfo(User user) {
+    public ValidationResult validateUserInfo(User user, @Nullable String password) {
         
         if (user.getEmail().isEmpty()) {
             return new ValidationResult(ValidatedField.EMAIL, null);
+        }
+        
+        // When null, do not check the password (for updating profile without changing password).
+        if(password != null && password.isEmpty()) {
+            return new ValidationResult(ValidatedField.PASSWORD, null);
         }
         
         if (user.getFirstName().isEmpty()) {
@@ -124,6 +130,10 @@ public final class UserProfileUtil {
             return new ValidationResult(ValidatedField.PHONE_NUMBER, null);
         }
         
+        if(profile.getCompanyName().isEmpty()) {
+            return new ValidationResult(ValidatedField.COMPANY_NAME, null);
+        }
+        
         if (!ADDRESS_PATTERN.matcher(profile.getAddress()).matches()) {
             return new ValidationResult(null, ValidatedField.ADDRESS);
         }
@@ -136,8 +146,9 @@ public final class UserProfileUtil {
         
     }
     
-    public boolean validateUserInfoWithError(Context context, User user) {
-        ValidationResult validationResult = validateUserInfo(user);
+    public boolean validateUserInfoWithError(Context context, User user, String password) {
+        
+        ValidationResult validationResult = validateUserInfo(user, password);
         
         if (validationResult.getEmptyField() != null) {
             
@@ -150,7 +161,11 @@ public final class UserProfileUtil {
                 case USERNAME:
                     specificError = "a username";
                     break;
-                
+    
+                case PASSWORD:
+                    specificError = "a password";
+                    break;
+                    
                 case EMAIL:
                     specificError = "an email";
                     break;
@@ -167,6 +182,10 @@ public final class UserProfileUtil {
                     specificError = "an address";
                     break;
                 
+                case COMPANY_NAME:
+                    specificError = "a company name";
+                    break;
+                    
                 case PHONE_NUMBER:
                     specificError = "a phone number";
                     break;
@@ -190,6 +209,14 @@ public final class UserProfileUtil {
             String specificError;
             
             switch (invalidField) {
+                
+                case USERNAME:
+                    specificError = "username";
+                    break;
+                    
+                case EMAIL:
+                    specificError = "email";
+                    break;
                 
                 case FIRST_NAME:
                     specificError = "first name";
@@ -223,10 +250,10 @@ public final class UserProfileUtil {
     
     public enum ValidatedField {
         // General user field common to all users.
-        USERNAME, EMAIL, FIRST_NAME, LAST_NAME,
+        USERNAME, EMAIL, PASSWORD, FIRST_NAME, LAST_NAME,
         
         // Fields only found in the service provider's profile.
-        ADDRESS, PHONE_NUMBER, GENERAL_INFO, LICENSED
+        ADDRESS, PHONE_NUMBER, COMPANY_NAME,
         
     }
     

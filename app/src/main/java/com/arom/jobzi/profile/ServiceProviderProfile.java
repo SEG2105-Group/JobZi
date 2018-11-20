@@ -12,6 +12,7 @@ public class ServiceProviderProfile extends UserProfile {
 	
 	private String address;
 	private String phoneNumber;
+	private String companyName;
 	private String description;
 	
 	private boolean licensed;
@@ -46,6 +47,14 @@ public class ServiceProviderProfile extends UserProfile {
 	
 	public void setPhoneNumber(String phoneNumber) {
 		this.phoneNumber = phoneNumber;
+	}
+	
+	public String getCompanyName() {
+		return companyName;
+	}
+	
+	public void setCompanyName(String companyName) {
+		this.companyName = companyName;
 	}
 	
 	public String getDescription() {

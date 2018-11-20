@@ -210,16 +210,18 @@ public class SignupActivity extends AppCompatActivity {
                         case SERVICE_PROVIDER:
                             
                             EditText addressEditText = profileFragmentView.findViewById(R.id.addressEditText);
+                            EditText companyNameEditText = profileFragmentView.findViewById(R.id.companyNameEditText);
                             EditText phoneNumberEditText = profileFragmentView.findViewById(R.id.phoneNumberEditText);
                             EditText descriptionEditText = profileFragmentView.findViewById(R.id.descriptionEditText);
                             Switch licensedSwitch = profileFragmentView.findViewById(R.id.licensedSwitch);
                             
                             String address = addressEditText.getText().toString();
+                            String companyName = companyNameEditText.getText().toString();
                             String phoneNumber = phoneNumberEditText.getText().toString();
                             String description = descriptionEditText.getText().toString();
                             boolean licensed = licensedSwitch.isChecked();
                             
-                            userProfile = UserProfileUtil.getInstance().createServiceProviderProfile(address, phoneNumber, description, licensed);
+                            userProfile = UserProfileUtil.getInstance().createServiceProviderProfile(address, companyName, phoneNumber, description, licensed);
                             break;
                         
                     }
@@ -228,7 +230,7 @@ public class SignupActivity extends AppCompatActivity {
                 user.setUserProfile(userProfile);
                 
                 // Validates everything about the user profile.
-                if (!UserProfileUtil.getInstance().validateUserInfoWithError(SignupActivity.this, user)) {
+                if (!UserProfileUtil.getInstance().validateUserInfoWithError(SignupActivity.this, user, password)) {
                     
                     signupButton.setEnabled(true);
                     backButton.setEnabled(true);

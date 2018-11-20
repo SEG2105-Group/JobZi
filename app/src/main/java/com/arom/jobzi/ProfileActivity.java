@@ -118,7 +118,7 @@ public class ProfileActivity extends AppCompatActivity {
                 
                 user.setUserProfile(profileFragment.getUserProfile());
                 
-                if (UserProfileUtil.getInstance().validateUserInfoWithError(ProfileActivity.this, user)) {
+                if (UserProfileUtil.getInstance().validateUserInfoWithError(ProfileActivity.this, user, null)) {
                     
                     userDatabase.setValue(user);
                     ProfileActivity.this.finish();

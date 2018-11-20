@@ -30,6 +30,7 @@ public class ProfileFragment extends Fragment {
     private UserProfile userProfile;
     
     private EditText addressEditText;
+    private EditText companyNameEditText;
     private EditText phoneNumberEditText;
     private EditText descriptionEditText;
     private Switch licensedSwitch;
@@ -74,6 +75,7 @@ public class ProfileFragment extends Fragment {
                 View view = inflater.inflate(R.layout.service_provider_profile, container, false);
     
                 addressEditText = view.findViewById(R.id.addressEditText);
+                companyNameEditText = view.findViewById(R.id.companyNameEditText);
                 phoneNumberEditText = view.findViewById(R.id.phoneNumberEditText);
                 descriptionEditText = view.findViewById(R.id.descriptionEditText);
                 licensedSwitch = view.findViewById(R.id.licensedSwitch);
@@ -103,6 +105,7 @@ public class ProfileFragment extends Fragment {
                 ServiceProviderProfile serviceProviderProfile = dataSnapshot.getValue(ServiceProviderProfile.class);
                 
                 addressEditText.setText(serviceProviderProfile.getAddress());
+                companyNameEditText.setText(serviceProviderProfile.getCompanyName());
                 phoneNumberEditText.setText(serviceProviderProfile.getPhoneNumber());
                 descriptionEditText.setText(serviceProviderProfile.getDescription());
                 licensedSwitch.setChecked(serviceProviderProfile.isLicensed());
@@ -136,6 +139,7 @@ public class ProfileFragment extends Fragment {
     private void updateServiceProviderProfile(ServiceProviderProfile profile) {
         
         profile.setAddress(addressEditText.getText().toString());
+        profile.setCompanyName(companyNameEditText.getText().toString());
         profile.setPhoneNumber(phoneNumberEditText.getText().toString());
         profile.setDescription(descriptionEditText.getText().toString());
         profile.setLicensed(licensedSwitch.isChecked());

@@ -32,8 +32,6 @@
 	<string name="last_name">Last Name</string>
 	<string name="sign_up_as">Sign up as:</string>
 	<string name="title_profile_editor">Edit Profile</string>
-
-	<!-- TODO: Remove or change this placeholder text -->
-	<string name="hello_blank_fragment">Hello blank fragment</string>
+	<string name="company_name">Company Name</string>
 
 </resources>
