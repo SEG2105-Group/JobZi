@@ -12,7 +12,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.arom.jobzi.R;
-import com.arom.jobzi.dapater.ServiceArrayAdapter;
+import com.arom.jobzi.adapater.ServiceArrayAdapter;
 import com.arom.jobzi.profile.ServiceProviderProfile;
 import com.arom.jobzi.service.Service;
 import com.arom.jobzi.util.Util;

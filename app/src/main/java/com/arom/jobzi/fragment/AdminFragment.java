@@ -12,7 +12,7 @@ import android.view.ViewGroup;
 
 import com.arom.jobzi.R;
 import com.arom.jobzi.ServiceEditorActivity;
-import com.arom.jobzi.dapater.CustomPagerAdapter;
+import com.arom.jobzi.adapater.CustomPagerAdapter;
 import com.arom.jobzi.fragment.admin.AdminServicesFragment;
 import com.arom.jobzi.fragment.admin.AdminUsersFragment;
 import com.arom.jobzi.profile.ServiceProviderProfile;

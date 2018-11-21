@@ -1,4 +1,4 @@
-package com.arom.jobzi.dapater;
+package com.arom.jobzi.adapater;
 
 import android.app.Activity;
 import android.support.annotation.NonNull;
