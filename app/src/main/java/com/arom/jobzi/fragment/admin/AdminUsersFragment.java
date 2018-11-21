@@ -1,4 +1,4 @@
-package com.arom.jobzi.fragment;
+package com.arom.jobzi.fragment.admin;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -21,15 +21,11 @@ import com.google.firebase.database.DatabaseReference;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UserListFragment extends Fragment {
+public class AdminUsersFragment extends Fragment {
 
     private List<User> userList;
 
-    /**
-     * Mandatory empty constructor for the fragment manager to instantiate the
-     * fragment (e.g. upon screen orientation changes).
-     */
-    public UserListFragment() {
+    public AdminUsersFragment() {
     }
 
     @Override
