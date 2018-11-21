@@ -31,6 +31,7 @@ public class Availability implements Serializable {
     @Exclude
     public String getDisplayName() {
         // TODO: implement this.
+
         return "";
     }
 

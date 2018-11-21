@@ -1,4 +1,4 @@
-package com.arom.jobzi.dapater;
+package com.arom.jobzi.adapater;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -23,6 +23,8 @@ public class AvailabilitiesExpandableListAdapter extends BaseExpandableListAdapt
     private List<String> daysOfWeekList;
     private HashMap<String, List<Availability>> dayToAvailabilityMap;
 
+
+    @SuppressLint("WrongConstant")
     public AvailabilitiesExpandableListAdapter(Context context){
         this.context = context;
 
@@ -92,7 +94,6 @@ public class AvailabilitiesExpandableListAdapter extends BaseExpandableListAdapt
 
     @Override
     public View getChildView(int i, int i1, boolean b, View view, ViewGroup viewGroup) {
-
         return null;
     }
 

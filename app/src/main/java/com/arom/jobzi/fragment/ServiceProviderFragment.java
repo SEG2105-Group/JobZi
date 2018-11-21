@@ -1,5 +1,6 @@
 package com.arom.jobzi.fragment;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -9,11 +10,12 @@ import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.arom.jobzi.R;
 import com.arom.jobzi.ServiceSelectorActivity;
-import com.arom.jobzi.dapater.CustomPagerAdapter;
+import com.arom.jobzi.adapater.CustomPagerAdapter;
 import com.arom.jobzi.fragment.serviceprovider.ServiceProviderAvailabilitiesFragment;
 import com.arom.jobzi.fragment.serviceprovider.ServiceProviderServicesFragment;
 import com.arom.jobzi.profile.ServiceProviderProfile;
@@ -33,9 +35,7 @@ public class ServiceProviderFragment extends Fragment implements ServiceProvider
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
         return inflater.inflate(R.layout.fragment_service_provider, container, false);
-
     }
 
     @Override
@@ -45,7 +45,7 @@ public class ServiceProviderFragment extends Fragment implements ServiceProvider
         ViewPager viewPager = view.findViewById(R.id.viewPager);
         CustomPagerAdapter customPagerAdapter = new CustomPagerAdapter(getActivity().getSupportFragmentManager());
     
-        ServiceProviderAvailabilitiesFragment availableTimeSlotsListFragment = new ServiceProviderAvailabilitiesFragment();
+        final ServiceProviderAvailabilitiesFragment availableTimeSlotsListFragment = new ServiceProviderAvailabilitiesFragment();
         ServiceProviderServicesFragment serviceListFragment = ServiceProviderServicesFragment.newInstance(this);
 
         customPagerAdapter.addFragment(availableTimeSlotsListFragment, getText(R.string.availabilities_label));

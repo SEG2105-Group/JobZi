@@ -10,7 +10,7 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 
-import com.arom.jobzi.dapater.ServiceArrayAdapter;
+import com.arom.jobzi.adapater.ServiceArrayAdapter;
 import com.arom.jobzi.service.Service;
 import com.arom.jobzi.util.Util;
 import com.google.firebase.database.DataSnapshot;

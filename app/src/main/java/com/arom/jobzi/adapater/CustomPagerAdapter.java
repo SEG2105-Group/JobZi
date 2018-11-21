@@ -1,4 +1,4 @@
-package com.arom.jobzi.dapater;
+package com.arom.jobzi.adapater;
 
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
