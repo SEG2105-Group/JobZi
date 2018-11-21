@@ -1,17 +1,22 @@
 package com.arom.jobzi.fragment;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.arom.jobzi.R;
 import com.arom.jobzi.ServiceSelectorActivity;
+import com.arom.jobzi.adapater.CustomPagerAdapter;
+import com.arom.jobzi.fragment.serviceprovider.ServiceProviderAvailabilitiesFragment;
 import com.arom.jobzi.fragment.serviceprovider.ServiceProviderServicesFragment;
 import com.arom.jobzi.profile.ServiceProviderProfile;
 import com.arom.jobzi.service.Service;
@@ -30,6 +35,7 @@ public class ServiceProviderFragment extends Fragment implements ServiceProvider
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+<<<<<<< HEAD
 
         View view = inflater.inflate(R.layout.fragment_service_provider, container, false);
 
@@ -38,6 +44,19 @@ public class ServiceProviderFragment extends Fragment implements ServiceProvider
         CustomPagerAdapter customPagerAdapter = new CustomPagerAdapter(getActivity().getSupportFragmentManager());
 
         AvailableTimeSlotsListFragment availableTimeSlotsListFragment = new AvailableTimeSlotsListFragment();
+=======
+        return inflater.inflate(R.layout.fragment_service_provider, container, false);
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        ViewPager viewPager = view.findViewById(R.id.viewPager);
+        CustomPagerAdapter customPagerAdapter = new CustomPagerAdapter(getActivity().getSupportFragmentManager());
+    
+        final ServiceProviderAvailabilitiesFragment availableTimeSlotsListFragment = new ServiceProviderAvailabilitiesFragment();
+>>>>>>> 2dd512fa03eb785a4fe339282da1f1cc638d96bd
         ServiceProviderServicesFragment serviceListFragment = ServiceProviderServicesFragment.newInstance(this);
 
         customPagerAdapter.addFragment(availableTimeSlotsListFragment, getText(R.string.availabilities_label));
@@ -45,8 +64,11 @@ public class ServiceProviderFragment extends Fragment implements ServiceProvider
 
         viewPager.setAdapter(customPagerAdapter);
 
+<<<<<<< HEAD
         return view;
 
+=======
+>>>>>>> 2dd512fa03eb785a4fe339282da1f1cc638d96bd
     }
 
     @Override
@@ -104,7 +126,11 @@ public class ServiceProviderFragment extends Fragment implements ServiceProvider
 
                 Bundle bundle = new Bundle();
 
+<<<<<<< HEAD
                 if(profile.getServices() != null) {
+=======
+                if (profile.getServices() != null) {
+>>>>>>> 2dd512fa03eb785a4fe339282da1f1cc638d96bd
                     bundle.putParcelableArrayList(ServiceSelectorActivity.SERVICES_TO_EXCLUDE_BUNDLE_ARG, (ArrayList<Service>) profile.getServices());
                 }
 
@@ -143,7 +169,11 @@ public class ServiceProviderFragment extends Fragment implements ServiceProvider
 
                         ServiceProviderProfile profile = dataSnapshot.getValue(ServiceProviderProfile.class);
 
+<<<<<<< HEAD
                         if(profile.getServices() == null) {
+=======
+                        if (profile.getServices() == null) {
+>>>>>>> 2dd512fa03eb785a4fe339282da1f1cc638d96bd
                             profile.setServices(new ArrayList<Service>());
                         }
 

@@ -12,9 +12,9 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.arom.jobzi.R;
+import com.arom.jobzi.adapater.ServiceArrayAdapter;
 import com.arom.jobzi.profile.ServiceProviderProfile;
 import com.arom.jobzi.service.Service;
-import com.arom.jobzi.service.ServiceArrayAdapter;
 import com.arom.jobzi.util.Util;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -39,6 +39,8 @@ public class ServiceProviderServicesFragment extends Fragment {
     private FloatingActionButton addServiceFloatingActionButton;
     
     private ServiceItemListener listener;
+    
+    private ChildEventListener serviceDeletionListener;
     
     public ServiceProviderServicesFragment() {
     }
@@ -138,7 +140,7 @@ public class ServiceProviderServicesFragment extends Fragment {
         });
     
         DatabaseReference servicesDatabase = Util.getInstance().getServicesDatabase();
-        servicesDatabase.addChildEventListener(new ChildEventListener() {
+        serviceDeletionListener = new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
             
@@ -165,14 +167,25 @@ public class ServiceProviderServicesFragment extends Fragment {
             public void onCancelled(@NonNull DatabaseError databaseError) {
             
             }
-        });
-    
+        };
+        
+        servicesDatabase.addChildEventListener(serviceDeletionListener);
+        
     }
     
     @Override
     public void onResume() {
         super.onResume();
         addServiceFloatingActionButton.setEnabled(true);
+    }
+    
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+    
+        DatabaseReference servicesDatabase = Util.getInstance().getServicesDatabase();
+        servicesDatabase.removeEventListener(serviceDeletionListener);
+    
     }
     
     public interface ServiceItemListener extends Serializable {

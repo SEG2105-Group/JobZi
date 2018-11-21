@@ -8,7 +8,7 @@ import java.io.Serializable;
 
 public class Service implements Serializable, Parcelable {
 
-    private static final float serialVersionUID = 1L;
+    private static final float serialVersionUID = 2F;
 
     private String id;
 
@@ -51,7 +51,6 @@ public class Service implements Serializable, Parcelable {
         }
 
         return false;
-
 
     }
     

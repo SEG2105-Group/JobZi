@@ -1,26 +1,27 @@
 package com.arom.jobzi.profile;
 
-import com.arom.jobzi.service.AvailableTimeSlot;
+import com.arom.jobzi.service.Availability;
 import com.arom.jobzi.service.Service;
 
 import java.util.List;
 
 public class ServiceProviderProfile extends UserProfile {
 	
-	private List<AvailableTimeSlot> availabilities;
+	private List<Availability> availabilities;
 	private List<Service> services;
 	
 	private String address;
 	private String phoneNumber;
+	private String companyName;
 	private String description;
 	
 	private boolean licensed;
 	
-	public List<AvailableTimeSlot> getAvailabilities() {
+	public List<Availability> getAvailabilities() {
 		return availabilities;
 	}
 	
-	public void setAvailabilities(List<AvailableTimeSlot> availabilities) {
+	public void setAvailabilities(List<Availability> availabilities) {
 		this.availabilities = availabilities;
 	}
 	
@@ -46,6 +47,14 @@ public class ServiceProviderProfile extends UserProfile {
 	
 	public void setPhoneNumber(String phoneNumber) {
 		this.phoneNumber = phoneNumber;
+	}
+	
+	public String getCompanyName() {
+		return companyName;
+	}
+	
+	public void setCompanyName(String companyName) {
+		this.companyName = companyName;
 	}
 	
 	public String getDescription() {

@@ -12,12 +12,12 @@ import android.widget.TextView;
 import com.arom.jobzi.fragment.ProfileFragment;
 import com.arom.jobzi.user.User;
 import com.arom.jobzi.util.UserProfileUtil;
+import com.arom.jobzi.util.Util;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 public class ProfileActivity extends AppCompatActivity {
@@ -48,7 +48,7 @@ public class ProfileActivity extends AppCompatActivity {
         cancelButton = findViewById(R.id.cancelButton);
     
         FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-        DatabaseReference userDatabase = FirebaseDatabase.getInstance().getReference().child(firebaseUser.getUid());
+        DatabaseReference userDatabase = Util.getInstance().getAccountsDatabase().child(firebaseUser.getUid());
         
         userDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -103,7 +103,7 @@ public class ProfileActivity extends AppCompatActivity {
     private void updateUserInformation() {
         
         FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-        final DatabaseReference userDatabase = FirebaseDatabase.getInstance().getReference().child(firebaseUser.getUid());
+        final DatabaseReference userDatabase = Util.getInstance().getAccountsDatabase().child(firebaseUser.getUid());
         
         userDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -117,9 +117,13 @@ public class ProfileActivity extends AppCompatActivity {
                 
                 user.setUserProfile(profileFragment.getUserProfile());
                 
-                if (UserProfileUtil.getInstance().validateUserInfoWithError(ProfileActivity.this, user)) {
+                if (UserProfileUtil.getInstance().validateUserInfoWithError(ProfileActivity.this, user, null)) {
                     
                     userDatabase.setValue(user);
+
+                    DatabaseReference profilesDatabase = Util.getInstance().getProfilesDatabase();
+                    profilesDatabase.child(user.getId()).setValue(user.getUserProfile());
+
                     ProfileActivity.this.finish();
                     
                 } else {
