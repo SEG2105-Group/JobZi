@@ -7,7 +7,7 @@ import java.util.List;
 
 public class ServiceProviderProfile extends UserProfile {
 	
-	private List<Availability> availabilities;
+	private List<Availability>[] availabilities;
 	private List<Service> services;
 	
 	private String address;
@@ -17,11 +17,11 @@ public class ServiceProviderProfile extends UserProfile {
 	
 	private boolean licensed;
 	
-	public List<Availability> getAvailabilities() {
+	public List<Availability>[] getAvailabilities() {
 		return availabilities;
 	}
 	
-	public void setAvailabilities(List<Availability> availabilities) {
+	public void setAvailabilities(List<Availability>[] availabilities) {
 		this.availabilities = availabilities;
 	}
 	
