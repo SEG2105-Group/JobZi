@@ -1,4 +1,4 @@
-package com.arom.jobzi.fragment;
+package com.arom.jobzi.fragment.homeowner;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -15,5 +15,5 @@ public class HomeOwnerFragment extends Fragment {
 							 Bundle savedInstanceState) {
 		return inflater.inflate(R.layout.fragment_home_owner, container, false);
 	}
-	
+
 }

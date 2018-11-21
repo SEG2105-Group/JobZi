@@ -7,8 +7,7 @@
 	<string name="email">Email</string>
 	<string name="username">Username</string>
 	<string name="password">Password</string>
-	<string name="username_menu_label">Username: %s</string>
-	<string name="account_type_menu_label">Account Type: %s</string>
+	<string name="profile_menu_label">Profile</string>
 	<string name="add_service_label">Add a Service</string>
 	<string name="update_service_label">Editing: "%s"</string>
 	<string name="dialog_delete_service">Are you sure you want to delete %s?</string>
@@ -24,5 +23,15 @@
 	<string name="navigation_drawer_open">Open navigation drawer</string>
 	<string name="navigation_drawer_close">Close navigation drawer</string>
 	<string name="user_preferences">User Preferences</string>
+	<string name="availabilities_label">Availabilities</string>
+	<string name="address">Address</string>
+	<string name="phone_number">Phone Number</string>
+	<string name="description">Description</string>
+	<string name="licensed_question">Licensed?</string>
+	<string name="first_name">First Name</string>
+	<string name="last_name">Last Name</string>
+	<string name="sign_up_as">Sign up as:</string>
+	<string name="title_profile_editor">Edit Profile</string>
+	<string name="company_name">Company Name</string>
 
 </resources>

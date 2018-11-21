@@ -3,12 +3,14 @@ package com.arom.jobzi.user;
 import android.support.annotation.Nullable;
 
 import com.arom.jobzi.account.AccountType;
+import com.arom.jobzi.profile.UserProfile;
+import com.google.firebase.database.Exclude;
 
 import java.io.Serializable;
 
 public class User implements Serializable {
 
-    private static final long serialVersionUID = 2L;
+    private static final long serialVersionUID = 4L;
     
     private String id;
     
@@ -18,6 +20,8 @@ public class User implements Serializable {
     private String lastName;
 
     private AccountType accountType;
+    
+    private UserProfile userProfile;
     
     public String getId() {
         return id;
@@ -67,6 +71,30 @@ public class User implements Serializable {
         return accountType;
     }
 
+    // Does not parse properly with this.
+    @Exclude
+    public UserProfile getUserProfile() {
+        return userProfile;
+    }
+
+    @Exclude
+    public void setUserProfile(UserProfile userProfile) {
+        this.userProfile = userProfile;
+    }
+    
+    /**
+     * Copies non-object data from <code>user</code> into <code>this</code>.
+     *
+     * @param user The <code>User</code> object to copy data from.
+     */
+    public void copyFrom(User user) {
+        setUsername(user.getUsername());
+        setFirstName(user.getFirstName());
+        setLastName(user.getLastName());
+        setEmail(user.getEmail());
+        setAccountType(user.getAccountType());
+    }
+    
     @Override
     public boolean equals(@Nullable Object obj) {
 

@@ -1,10 +1,10 @@
 package com.arom.jobzi;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 
-import com.arom.jobzi.util.Util;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 public class MainActivity extends AppCompatActivity {
@@ -14,15 +14,22 @@ public class MainActivity extends AppCompatActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		
-		FirebaseUser currentUser = Util.getInstance().getCurrentUser();
+		FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
 		
-		if(currentUser != null) {
-			Util.getInstance().onUserLogin(this, currentUser);
+		Intent redirectIntent;
+		
+		if(currentUser == null) {
+			
+			redirectIntent = new Intent(this, LoginActivity.class);
+			
 		} else {
-			Intent toLoginIntent = new Intent(this, LoginActivity.class);
-			startActivity(toLoginIntent);
-			finish();
+			
+			redirectIntent = new Intent(this, LandingActivity.class);
+			
 		}
+		
+		startActivity(redirectIntent);
+		finish();
 		
 	}
 }

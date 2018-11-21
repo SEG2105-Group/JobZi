@@ -1,4 +1,4 @@
-package com.arom.jobzi.service;
+package com.arom.jobzi.adapater;
 
 import android.app.Activity;
 import android.support.annotation.NonNull;
@@ -10,6 +10,7 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.arom.jobzi.R;
+import com.arom.jobzi.service.Service;
 
 import java.util.List;
 

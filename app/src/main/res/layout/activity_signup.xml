@@ -11,14 +11,9 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical" >
-
             <android.support.constraint.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="651dp">
+                android:layout_height="wrap_content">
 
                 <TextView
                     android:id="@+id/ActivityText"
@@ -35,60 +30,9 @@
                     app:layout_constraintVertical_bias="0.032" />
 
                 <LinearLayout
-                    android:id="@+id/linearLayout3"
-                    android:layout_width="175dp"
-                    android:layout_height="136dp"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginBottom="8dp"
-                    android:orientation="vertical"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.482"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="0.739">
-
-                    <Button
-                        android:id="@+id/signupButton"
-                        android:layout_width="@dimen/button_widths"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="8dp"
-                        android:layout_marginTop="8dp"
-                        android:layout_marginEnd="8dp"
-                        android:layout_marginBottom="8dp"
-                        android:text="Signup"
-                        android:textAllCaps="false"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintHorizontal_bias="0.5"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintVertical_bias="0.615" />
-
-                    <Button
-                        android:id="@+id/backButton"
-                        android:layout_width="@dimen/button_widths"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="8dp"
-                        android:layout_marginTop="9dp"
-                        android:layout_marginEnd="8dp"
-                        android:layout_marginBottom="8dp"
-                        android:text="Back to Login"
-                        android:textAllCaps="false"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintHorizontal_bias="0.5"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintVertical_bias="0.727" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/linearLayout2"
+                    android:id="@+id/userInfoContainer"
                     android:layout_width="286dp"
-                    android:layout_height="309dp"
+                    android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="8dp"
                     android:layout_marginEnd="8dp"
@@ -102,67 +46,89 @@
                     app:layout_constraintVertical_bias="0.165">
 
                     <EditText
-                        android:id="@+id/usernameTextView"
+                        android:id="@+id/usernameEditText"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:ems="10"
-                        android:hint="Username"
+                        android:hint="@string/username"
                         android:inputType="textPersonName" />
 
                     <EditText
-                        android:id="@+id/passwordTextView"
+                        android:id="@+id/passwordEditText"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:ems="10"
-                        android:hint="Password"
+                        android:hint="@string/password"
                         android:inputType="textPassword" />
 
                     <EditText
-                        android:id="@+id/firstNameTextView"
+                        android:id="@+id/firstNameEditText"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:ems="10"
-                        android:hint="First Name"
+                        android:hint="@string/first_name"
                         android:inputType="textPersonName" />
 
                     <EditText
-                        android:id="@+id/lastNameTextView"
+                        android:id="@+id/lastNameEditText"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:ems="10"
-                        android:hint="Last Name"
+                        android:hint="@string/last_name"
                         android:inputType="textPersonName" />
 
                     <EditText
-                        android:id="@+id/emailTextView"
+                        android:id="@+id/emailEditText"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:ems="10"
-                        android:hint="Email"
+                        android:hint="@string/email"
                         android:inputType="textEmailAddress" />
 
                     <TextView
-                        android:id="@+id/activityText2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
                         android:layout_marginBottom="8dp"
-                        android:text="Sign up as:"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintHorizontal_bias="0.5"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintVertical_bias="0.032" />
+                        android:text="@string/sign_up_as" />
 
                     <Spinner
                         android:id="@+id/accountTypesSpinner"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content" />
 
+                    <FrameLayout
+                        android:id="@+id/extraProfileInformationFragment"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        tools:layout="@layout/service_item"
+                        />
+
+                    <Button
+                        android:id="@+id/signupButton"
+                        android:layout_width="@dimen/button_widths"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginEnd="8dp"
+                        android:layout_marginBottom="8dp"
+                        android:text="Signup"
+                        android:textAllCaps="false" />
+
+                    <Button
+                        android:id="@+id/backButton"
+                        android:layout_width="@dimen/button_widths"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="9dp"
+                        android:layout_marginEnd="8dp"
+                        android:layout_marginBottom="8dp"
+                        android:text="Back to Login"
+                        android:textAllCaps="false" />
                 </LinearLayout>
+
             </android.support.constraint.ConstraintLayout>
-        </LinearLayout>
+
     </ScrollView>
 
 </LinearLayout>

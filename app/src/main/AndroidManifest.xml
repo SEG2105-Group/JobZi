@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="com.arom.jobzi">
+    package="com.arom.jobzi">
 
 	<uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
 	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
@@ -24,19 +24,23 @@
 		</activity>
 		<activity
 			android:name=".LoginActivity"
-			android:label="@string/title_activity_login">
-		</activity>
+			android:label="@string/title_activity_login"/>
 		<activity
 			android:name=".SignupActivity"
 			android:label="@string/title_activity_signup"
 			android:theme="@style/AppTheme.NoActionBar"/>
 		<activity
 			android:name=".ServiceEditorActivity"
-			android:label="@string/title_activity_service_editor"/>
-
-		<activity android:name=".ServiceProviderActivity"
-		          android:theme="@style/AppTheme.NoActionBar"/>
-		<activity android:name=".ServiceAvailibility"/>
+			android:label="@string/title_activity_service_editor"
+			android:windowSoftInputMode="stateVisible|adjustPan"/>
+		<activity
+			android:name=".LandingActivity"
+			android:theme="@style/AppTheme.NoActionBar"/>
+		<activity android:name=".ProfileActivity"/>
+		<activity android:name=".AvailableTimeSlotEditorActivity">
+		</activity>
+		<activity android:name=".ServiceSelectorActivity">
+		</activity>
 	</application>
 
 </manifest>

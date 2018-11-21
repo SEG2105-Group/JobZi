@@ -1,6 +1,8 @@
 package com.arom.jobzi.fragment;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,9 +10,13 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 
 import com.arom.jobzi.R;
+import com.arom.jobzi.adapater.UserArrayAdapter;
 import com.arom.jobzi.user.User;
-import com.arom.jobzi.user.UserArrayAdapter;
 import com.arom.jobzi.util.Util;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,12 +48,56 @@ public class UserListFragment extends Fragment {
 
         ListView userListView = view.findViewById(R.id.userListView);
 
-        UserArrayAdapter userArrayAdapter = new UserArrayAdapter(getActivity(), userList);
+        final UserArrayAdapter userArrayAdapter = new UserArrayAdapter(getActivity(), userList);
 
         userListView.setAdapter(userArrayAdapter);
     
-        Util.getInstance().addUserListListener(userArrayAdapter, userList);
-
+        DatabaseReference accountsDatabase = Util.getInstance().getAccountsDatabase();
+        accountsDatabase.addChildEventListener(new ChildEventListener() {
+        
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+            
+                User user = dataSnapshot.getValue(User.class);
+                userList.add(user);
+            
+                userArrayAdapter.notifyDataSetChanged();
+            
+            }
+        
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+            
+                User userChanged = dataSnapshot.getValue(User.class);
+            
+                userList.set(userList.indexOf(userChanged), userChanged);
+    
+                userArrayAdapter.notifyDataSetChanged();
+            
+            }
+        
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+            
+                User userRemoved = dataSnapshot.getValue(User.class);
+            
+                userList.remove(userRemoved);
+    
+                userArrayAdapter.notifyDataSetChanged();
+            
+            }
+        
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+            
+            }
+        
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+            
+            }
+        });
+        
         return view;
 
     }
