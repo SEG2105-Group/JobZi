@@ -31,21 +31,9 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 
 public class ServiceProviderFragment extends Fragment implements ServiceProviderServicesFragment.ServiceItemListener, DeleteServiceDialogFragment.DeleteServiceListener {
-
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-<<<<<<< HEAD
-<<<<<<< HEAD
-
-        View view = inflater.inflate(R.layout.fragment_service_provider, container, false);
-
-        ViewPager viewPager = view.findViewById(R.id.viewPager);
-
-        CustomPagerAdapter customPagerAdapter = new CustomPagerAdapter(getActivity().getSupportFragmentManager());
-
-        AvailableTimeSlotsListFragment availableTimeSlotsListFragment = new AvailableTimeSlotsListFragment();
-=======
         return inflater.inflate(R.layout.fragment_service_provider, container, false);
     }
 
@@ -57,35 +45,12 @@ public class ServiceProviderFragment extends Fragment implements ServiceProvider
         CustomPagerAdapter customPagerAdapter = new CustomPagerAdapter(getActivity().getSupportFragmentManager());
     
         final ServiceProviderAvailabilitiesFragment availableTimeSlotsListFragment = new ServiceProviderAvailabilitiesFragment();
->>>>>>> 2dd512fa03eb785a4fe339282da1f1cc638d96bd
-=======
-        return inflater.inflate(R.layout.fragment_service_provider, container, false);
-    }
-
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
-        ViewPager viewPager = view.findViewById(R.id.viewPager);
-        CustomPagerAdapter customPagerAdapter = new CustomPagerAdapter(getActivity().getSupportFragmentManager());
-    
-        final ServiceProviderAvailabilitiesFragment availableTimeSlotsListFragment = new ServiceProviderAvailabilitiesFragment();
->>>>>>> 2dd512fa03eb785a4fe339282da1f1cc638d96bd
         ServiceProviderServicesFragment serviceListFragment = ServiceProviderServicesFragment.newInstance(this);
 
         customPagerAdapter.addFragment(availableTimeSlotsListFragment, getText(R.string.availabilities_label));
         customPagerAdapter.addFragment(serviceListFragment, getText(R.string.services_label));
 
         viewPager.setAdapter(customPagerAdapter);
-
-<<<<<<< HEAD
-<<<<<<< HEAD
-        return view;
-
-=======
->>>>>>> 2dd512fa03eb785a4fe339282da1f1cc638d96bd
-=======
->>>>>>> 2dd512fa03eb785a4fe339282da1f1cc638d96bd
     }
 
     @Override
@@ -143,15 +108,7 @@ public class ServiceProviderFragment extends Fragment implements ServiceProvider
 
                 Bundle bundle = new Bundle();
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-                if(profile.getServices() != null) {
-=======
                 if (profile.getServices() != null) {
->>>>>>> 2dd512fa03eb785a4fe339282da1f1cc638d96bd
-=======
-                if (profile.getServices() != null) {
->>>>>>> 2dd512fa03eb785a4fe339282da1f1cc638d96bd
                     bundle.putParcelableArrayList(ServiceSelectorActivity.SERVICES_TO_EXCLUDE_BUNDLE_ARG, (ArrayList<Service>) profile.getServices());
                 }
 
@@ -190,15 +147,7 @@ public class ServiceProviderFragment extends Fragment implements ServiceProvider
 
                         ServiceProviderProfile profile = dataSnapshot.getValue(ServiceProviderProfile.class);
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-                        if(profile.getServices() == null) {
-=======
                         if (profile.getServices() == null) {
->>>>>>> 2dd512fa03eb785a4fe339282da1f1cc638d96bd
-=======
-                        if (profile.getServices() == null) {
->>>>>>> 2dd512fa03eb785a4fe339282da1f1cc638d96bd
                             profile.setServices(new ArrayList<Service>());
                         }
 
