@@ -24,6 +24,15 @@ public class ServiceProviderAvailabilitiesFragment extends Fragment {
 
         expandableList = view.findViewById(R.id.expandableListView);
 
+        button = view.findViewById(R.id.testingButton);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(ServiceProviderAvailabilitiesFragment.this.getActivity(), AvailableTimeSlotEditorActivity.class);
+                startActivity(intent);
+            }
+        });
+
         return view;
     }
 

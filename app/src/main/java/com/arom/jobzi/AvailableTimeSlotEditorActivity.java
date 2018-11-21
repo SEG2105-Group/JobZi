@@ -20,6 +20,8 @@ import com.arom.jobzi.fragment.TimePickerFragment;
 import com.arom.jobzi.service.Availability;
 import com.arom.jobzi.service.Service;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -33,13 +35,15 @@ public class AvailableTimeSlotEditorActivity extends AppCompatActivity implement
 	private Button saveButton, cancelButton;
 	private Calendar calendar;
 	private int hour, minute;
+	private int startHour, startMinute;
+	private int endHour, endMinute;
 	private boolean startFlag, endFlag;
 	private String amPm;
+	private TimePickerDialog timePickerDialog;
 	private List<Availability> availabilityList;
 
     public static final String AVAILIBILITY_SELECTED_BUNDLE_ARG = "availibility_selected";
     public static final int AVAILIBILITY_SELECTED_RESULT = 0;
-    public static final int NO_SERVICES_FOUND_RESULT = 1;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -49,7 +53,12 @@ public class AvailableTimeSlotEditorActivity extends AppCompatActivity implement
 		availabilityList = new ArrayList<>();
 
         calendar = Calendar.getInstance();
-		hour = calendar.get(Calendar.HOUR_OF_DAY);
+
+        if (DateFormat.is24HourFormat(this)){
+            hour = calendar.get(Calendar.HOUR_OF_DAY);
+        } else {
+            hour = calendar.get(Calendar.HOUR);
+        }
 		minute = calendar.get(Calendar.MINUTE);
 
         startTimeViewer = findViewById(R.id.startTimeViewer);
@@ -97,13 +106,24 @@ public class AvailableTimeSlotEditorActivity extends AppCompatActivity implement
 
     @Override
     public void onTimeSet(TimePicker timePicker, int hour, int minute) {
+        if (!DateFormat.is24HourFormat(this)){
+            if (hour == 0)
+                hour = 12;
+        }
 
-        if (startFlag){
-            startTimeViewer.setText(hour + ":" +minute + " " + getAMPM());
+	    this.hour = endHour;
+	    this.minute = endMinute;
+
+	    if (startFlag){
+	        startHour = hour;
+	        startMinute = minute;
+            startTimeViewer.setText(hour + ":" + minute + " " + getAMPM());
             startFlag = false;
         }
         if (endFlag){
-            endTimeViewer.setText(hour + ":" +minute + " " + getAMPM());
+	        endHour = hour;
+	        endMinute = minute;
+            endTimeViewer.setText(hour + ":" + minute + " " + getAMPM());
 			endFlag = false;
         }
     }
@@ -115,24 +135,28 @@ public class AvailableTimeSlotEditorActivity extends AppCompatActivity implement
 
 	public String getAMPM(){
 		amPm = "";
-		if (! DateFormat.is24HourFormat(this)){
-			if (hour >= 12){
-				amPm = "PM";
-			} else {
-				amPm = "AM";
-			}
-		}
+		if (DateFormat.is24HourFormat(this)) {
+            return amPm;
+        }
+
+        if (calendar.get(Calendar.AM_PM) == Calendar.AM)
+            amPm = "AM";
+        else if (calendar.get(Calendar.AM_PM) == Calendar.PM)
+            amPm = "PM";
+
 		return amPm;
 	}
 
 
-    private void setupServiceList() {
+    private void setupAvailibilities() {
 
         AvailableTimeSlotEditorActivity.this.setContentView(R.layout.activity_available_time_slot_editor);
 
         ListView availibilityTextView = findViewById(R.id.availibilityItemTextView);
         final AvailabilitiesExpandableListAdapter adapter = new AvailabilitiesExpandableListAdapter(AvailableTimeSlotEditorActivity.this);
         availibilityTextView.setAdapter((ListAdapter) adapter);
+
+        validateTime(startHour, endHour, startMinute, endMinute);
 
         availibilityTextView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -151,5 +175,17 @@ public class AvailableTimeSlotEditorActivity extends AppCompatActivity implement
 
             }
         });
+    }
+
+    public void validateTime(int startHour, int endHour, int startMinute, int endMinute) {
+        if (startHour > endHour){
+            int tempHour = startHour;
+            startHour = endHour;
+            endHour = tempHour;
+
+            int tempMinute = startMinute;
+            startMinute = endMinute;
+            endMinute = tempMinute;
+        }
     }
 }
