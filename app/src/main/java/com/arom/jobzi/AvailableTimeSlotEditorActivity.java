@@ -20,25 +20,27 @@ import java.util.Date;
 
 public class AvailableTimeSlotEditorActivity extends AppCompatActivity implements TimePickerDialog.OnTimeSetListener {
     
+    public static final String DAY_TO_EDIT_BUNDLE_ARG = "day";
+    public static final String AVAILABILITY_BUNDLE_ARG = "availability";
+    public static final String AVAILABILITY_INDEX_BUNDLE_ARG = "availability_index";
+    
+    public static final int AVAILABILITY_ADDED_RESULT = 0;
+    public static final int AVAILABILITY_SAVED_RESULT = 1;
+    public static final int CANCEL_RESULT = 2;
+    
     private TextView selectStartTime, selectEndTime;
     private TextView startTimeViewer, endTimeViewer;
     private Button saveButton, cancelButton;
     private Calendar calendar;
     private Availability availability;
     
-    private int hour, minute;
-    private boolean startFlag, endFlag;
+    private String day;
+    private int availabilityIndex;
     
     private String amPm;
     
-    private int day;
-    
-    public static final String AVAILABILITY_BUNDLE_ARG = "availability";
-    public static final String DAY_BUNDLE_ARG = "day";
-    
-    public static final int AVAILABALITY_ADDED_RESULT = 0;
-    public static final int AVAILABILITY_SAVED_RESULT = 1;
-    public static final int CANCEL_RESULT = 2;
+    private int hour, minute;
+    private boolean startFlag, endFlag;
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +56,8 @@ public class AvailableTimeSlotEditorActivity extends AppCompatActivity implement
         
         Bundle bundle = getIntent().getExtras();
         
+        day = bundle.getString(DAY_TO_EDIT_BUNDLE_ARG);
+        availabilityIndex = bundle.getInt(AVAILABILITY_INDEX_BUNDLE_ARG);
         availability = (Availability) bundle.getSerializable(AVAILABILITY_BUNDLE_ARG);
         
         if (availability == null) {
@@ -68,8 +72,6 @@ public class AvailableTimeSlotEditorActivity extends AppCompatActivity implement
             availability.setEndTime(calendar.getTime());
             
         }
-        
-        day = bundle.getInt(DAY_BUNDLE_ARG);
         
         updateTimeViews();
         
@@ -96,12 +98,17 @@ public class AvailableTimeSlotEditorActivity extends AppCompatActivity implement
             @Override
             public void onClick(View view) {
                 
+                saveButton.setEnabled(false);
+                
                 Intent result = new Intent();
                 Bundle bundle = new Bundle();
-                result.putExtras(bundle);
                 
+                bundle.putString(DAY_TO_EDIT_BUNDLE_ARG, day);
+                bundle.putInt(AVAILABILITY_INDEX_BUNDLE_ARG, availabilityIndex);
                 bundle.putSerializable(AVAILABILITY_BUNDLE_ARG, availability);
     
+                result.putExtras(bundle);
+                
                 AvailableTimeSlotEditorActivity.this.setResult(AVAILABILITY_SAVED_RESULT, result);
                 AvailableTimeSlotEditorActivity.this.finish();
                 

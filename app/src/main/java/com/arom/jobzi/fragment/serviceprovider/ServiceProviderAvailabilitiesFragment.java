@@ -22,12 +22,17 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
 public class ServiceProviderAvailabilitiesFragment extends Fragment implements AvailabilitiesExpandableListAdapter.OnAddClickListener {
-    
-    private ExpandableListView availabilitiesListView;
     
     public static final int ADD_AVAILABILITY_REQUEST = 0;
     public static final int EDIT_AVAILABILITY_REQUEST = 1;
+    
+    private ExpandableListView availabilitiesListView;
+    private AvailabilitiesExpandableListAdapter availabilitiesAdapter;
     
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -37,8 +42,8 @@ public class ServiceProviderAvailabilitiesFragment extends Fragment implements A
         
         availabilitiesListView = view.findViewById(R.id.availabilitiesListView);
         
-        final AvailabilitiesExpandableListAdapter adapter = new AvailabilitiesExpandableListAdapter(getContext(), this);
-        availabilitiesListView.setAdapter(adapter);
+        availabilitiesAdapter = new AvailabilitiesExpandableListAdapter(getContext(), this);
+        availabilitiesListView.setAdapter(availabilitiesAdapter);
         
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         DatabaseReference profileDatabase = Util.getInstance().getProfilesDatabase().child(user.getUid());
@@ -48,8 +53,7 @@ public class ServiceProviderAvailabilitiesFragment extends Fragment implements A
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 
                 ServiceProviderProfile profile = dataSnapshot.getValue(ServiceProviderProfile.class);
-                adapter.updateAvailabilities(profile);
-                adapter.notifyDataSetChanged();
+                availabilitiesAdapter.updateAvailabilities(profile);
                 
             }
             
@@ -64,14 +68,13 @@ public class ServiceProviderAvailabilitiesFragment extends Fragment implements A
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 
                 ServiceProviderProfile profile = dataSnapshot.getValue(ServiceProviderProfile.class);
-                adapter.updateAvailabilities(profile);
-                adapter.notifyDataSetChanged();
+                availabilitiesAdapter.updateAvailabilities(profile);
                 
             }
-    
+            
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-        
+            
             }
         });
         
@@ -85,12 +88,12 @@ public class ServiceProviderAvailabilitiesFragment extends Fragment implements A
     }
     
     @Override
-    public void onAdd(int day) {
+    public void onAdd(String day) {
         
         Intent toTimeSlotEditorIntent = new Intent(this.getActivity(), AvailableTimeSlotEditorActivity.class);
         
         Bundle bundle = new Bundle();
-        bundle.putInt(AvailableTimeSlotEditorActivity.DAY_BUNDLE_ARG, day);
+        bundle.putString(AvailableTimeSlotEditorActivity.DAY_TO_EDIT_BUNDLE_ARG, day);
         toTimeSlotEditorIntent.putExtras(bundle);
         
         startActivityForResult(toTimeSlotEditorIntent, ADD_AVAILABILITY_REQUEST);
@@ -98,12 +101,13 @@ public class ServiceProviderAvailabilitiesFragment extends Fragment implements A
     }
     
     @Override
-    public void onEdit(int day, Availability availability) {
+    public void onEdit(String day, Availability availability, int index) {
         
         Intent toTimeSlotEditorIntent = new Intent(this.getActivity(), AvailableTimeSlotEditorActivity.class);
         
         Bundle bundle = new Bundle();
-        bundle.putInt(AvailableTimeSlotEditorActivity.DAY_BUNDLE_ARG, day);
+        bundle.putString(AvailableTimeSlotEditorActivity.DAY_TO_EDIT_BUNDLE_ARG, day);
+        bundle.putInt(AvailableTimeSlotEditorActivity.AVAILABILITY_INDEX_BUNDLE_ARG, index);
         bundle.putSerializable(AvailableTimeSlotEditorActivity.AVAILABILITY_BUNDLE_ARG, availability);
         toTimeSlotEditorIntent.putExtras(bundle);
         
@@ -112,24 +116,48 @@ public class ServiceProviderAvailabilitiesFragment extends Fragment implements A
     }
     
     @Override
-    public void onActivityResult(int requestCode, int resultCode, final Intent data) {
+    public void onActivityResult(final int requestCode, int resultCode, final Intent data) {
         
         switch (resultCode) {
-            case AvailableTimeSlotEditorActivity.AVAILABALITY_ADDED_RESULT:
+            case AvailableTimeSlotEditorActivity.AVAILABILITY_SAVED_RESULT:
+                
+                final Availability availability = (Availability) data.getSerializableExtra(AvailableTimeSlotEditorActivity.AVAILABILITY_BUNDLE_ARG);
+                final String day = data.getStringExtra(AvailableTimeSlotEditorActivity.DAY_TO_EDIT_BUNDLE_ARG);
                 
                 FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                 final DatabaseReference profileDatabase = Util.getInstance().getProfilesDatabase().child(user.getUid());
                 profileDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        Bundle bundle = data.getExtras();
                         
                         ServiceProviderProfile profile = dataSnapshot.getValue(ServiceProviderProfile.class);
                         
-                        Availability availability = (Availability) bundle.getSerializable(AvailableTimeSlotEditorActivity.AVAILABILITY_BUNDLE_ARG);
-                        int day = bundle.getInt(AvailableTimeSlotEditorActivity.DAY_BUNDLE_ARG);
+                        HashMap<String, List<Availability>> availabilities = profile.getAvailabilities();
                         
-                        profile.getAvailabilities()[day].add(availability);
+                        if (availabilities == null) {
+                            availabilities = new HashMap<String, List<Availability>>();
+                            availabilities.put(day, new ArrayList<Availability>());
+                            profile.setAvailabilities(availabilities);
+                        }
+                        
+                        List<Availability> perDayAvailabilities = availabilities.get(day);
+                        
+                        if (perDayAvailabilities == null) {
+                            perDayAvailabilities = new ArrayList<Availability>();
+                            profile.getAvailabilities().put(day, perDayAvailabilities);
+                        }
+                        
+                        if (requestCode == ADD_AVAILABILITY_REQUEST) {
+                            
+                            perDayAvailabilities.add(availability);
+                            
+                        } else if (requestCode == EDIT_AVAILABILITY_REQUEST) {
+                            
+                            int availabilityIndex = data.getIntExtra(AvailableTimeSlotEditorActivity.AVAILABILITY_INDEX_BUNDLE_ARG, -1);
+                            perDayAvailabilities.set(availabilityIndex, availability);
+                            
+                        }
+                        
                         profileDatabase.setValue(profile);
                         
                     }
@@ -140,8 +168,8 @@ public class ServiceProviderAvailabilitiesFragment extends Fragment implements A
                     }
                 });
                 
-                
                 break;
+            
         }
         
     }

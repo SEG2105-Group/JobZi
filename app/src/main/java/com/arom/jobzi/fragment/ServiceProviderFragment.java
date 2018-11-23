@@ -107,7 +107,10 @@ public class ServiceProviderFragment extends Fragment implements ServiceProvider
                 Intent toServiceSelectorIntent = new Intent(getActivity(), ServiceSelectorActivity.class);
                 
                 Bundle bundle = new Bundle();
-                bundle.putSerializable(ServiceSelectorActivity.SERVICES_TO_EXCLUDE_BUNDLE_ARG, profile.getServices().toArray());
+                
+                if (profile.getServices() != null) {
+                    bundle.putSerializable(ServiceSelectorActivity.SERVICES_TO_EXCLUDE_BUNDLE_ARG, profile.getServices().toArray(new Service[profile.getServices().size()]));
+                }
                 
                 toServiceSelectorIntent.putExtras(bundle);
                 

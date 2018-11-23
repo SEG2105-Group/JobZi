@@ -2,7 +2,6 @@ package com.arom.jobzi.adapater;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.text.format.DateFormat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,8 +12,8 @@ import android.widget.TextView;
 import com.arom.jobzi.R;
 import com.arom.jobzi.profile.ServiceProviderProfile;
 import com.arom.jobzi.service.Availability;
+import com.arom.jobzi.util.TimeFormatterUtil;
 
-import java.text.DateFormatSymbols;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -40,18 +39,17 @@ public class AvailabilitiesExpandableListAdapter extends BaseExpandableListAdapt
     private Context context;
     
     private List<String> daysOfWeekList;
-    private HashMap<String, List<Availability>> dayToAvailabilityMap;
     
     private OnAddClickListener addAvailabilityListener;
     
-    private List<Availability>[] availabilities;
+    private HashMap<String, List<Availability>> dailyAvailabilities;
     
     @SuppressLint("WrongConstant")
     public AvailabilitiesExpandableListAdapter(Context context, OnAddClickListener addAvailabilityListener) {
         this.context = context;
         
         daysOfWeekList = new ArrayList<String>();
-
+        
         daysOfWeekList.add(Weekday.MONDAY.getName());
         daysOfWeekList.add(Weekday.TUESDAY.getName());
         daysOfWeekList.add(Weekday.WEDNESDAY.getName());
@@ -60,29 +58,46 @@ public class AvailabilitiesExpandableListAdapter extends BaseExpandableListAdapt
         daysOfWeekList.add(Weekday.SATURDAY.getName());
         daysOfWeekList.add(Weekday.SUNDAY.getName());
         
-        DateFormatSymbols.getInstance().getWeekdays();
+        dailyAvailabilities = new HashMap<String, List<Availability>>();
         
-        dayToAvailabilityMap = new HashMap<String, List<Availability>>();
-    
+        for(String dayOfWeek: daysOfWeekList) {
+            dailyAvailabilities.put(dayOfWeek, new ArrayList<Availability>());
+        }
+        
         this.addAvailabilityListener = addAvailabilityListener;
         
     }
     
     public void updateAvailabilities(ServiceProviderProfile profile) {
-    
-        availabilities = profile.getAvailabilities();
         
-        if(availabilities == null) {
-            availabilities = new ArrayList<ArrayList<Availability>>(daysOfWeekList.size()).toArray();
+        HashMap<String, List<Availability>> newDailyAvailabilities = profile.getAvailabilities();
+        
+        if(newDailyAvailabilities == null) {
+            return;
         }
-    
-        for (int i = 0; i < daysOfWeekList.size(); i++) {
+        
+        for(String dayOfWeek: daysOfWeekList) {
             
-            String dayOfWeek = daysOfWeekList.get(i);
-            dayToAvailabilityMap.put(dayOfWeek, availabilities[i]);
+            List<Availability> newAvailabilities = newDailyAvailabilities.get(dayOfWeek);
+            
+            List<Availability> availabilities = dailyAvailabilities.get(dayOfWeek);
+            
+            if(newAvailabilities == null) {
+                
+                if(!availabilities.isEmpty()) {
+                    availabilities.clear();
+                }
+                
+            } else {
+                availabilities.clear();
+                availabilities.addAll(newAvailabilities);
+    
+            }
             
         }
-    
+        
+        notifyDataSetChanged();
+        
     }
     
     @Override
@@ -92,7 +107,7 @@ public class AvailabilitiesExpandableListAdapter extends BaseExpandableListAdapt
     
     @Override
     public int getChildrenCount(int weekDayPosition) {
-        return dayToAvailabilityMap.get(daysOfWeekList.get(weekDayPosition)).size();
+        return dailyAvailabilities.get(daysOfWeekList.get(weekDayPosition)).size();
     }
     
     @Override
@@ -101,8 +116,8 @@ public class AvailabilitiesExpandableListAdapter extends BaseExpandableListAdapt
     }
     
     @Override
-    public Object getChild(int weekDayPosition, int availibilitiesPosition) {
-        return dayToAvailabilityMap.get(daysOfWeekList.get(weekDayPosition)).get(availibilitiesPosition);
+    public Object getChild(int weekDayPosition, int availabilityPosition) {
+        return dailyAvailabilities.get(daysOfWeekList.get(weekDayPosition)).get(availabilityPosition);
     }
     
     @Override
@@ -120,7 +135,6 @@ public class AvailabilitiesExpandableListAdapter extends BaseExpandableListAdapt
         return false;
     }
     
-    @SuppressLint("ResourceType")
     @Override
     public View getGroupView(final int weekDayPosition, boolean isExpanded, View convertView, ViewGroup parent) {
         
@@ -133,10 +147,11 @@ public class AvailabilitiesExpandableListAdapter extends BaseExpandableListAdapt
         weekdayTextView.setText(daysOfWeekList.get(weekDayPosition));
         
         Button addAvailabilityButton = convertView.findViewById(R.id.addAvailabilityButton);
+        addAvailabilityButton.setFocusable(false);
         addAvailabilityButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                addAvailabilityListener.onAdd(weekDayPosition);
+                addAvailabilityListener.onAdd(daysOfWeekList.get(weekDayPosition));
             }
         });
         
@@ -144,23 +159,23 @@ public class AvailabilitiesExpandableListAdapter extends BaseExpandableListAdapt
     }
     
     @Override
-    public View getChildView(final int weekdayPosition, final int availabilitiesPosition, boolean isExpanded, View convertView, ViewGroup parent) {
+    public View getChildView(final int weekdayPosition, final int availabilityPosition, boolean isExpanded, View convertView, ViewGroup parent) {
         
-        if(convertView == null) {
+        if (convertView == null) {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = inflater.inflate(R.layout.availability_list_item, parent, false);
         }
         
         TextView availabilityTextView = convertView.findViewById(R.id.availibilityTextView);
         
-        final Availability availability = dayToAvailabilityMap.get(daysOfWeekList.get(weekdayPosition)).get(availabilitiesPosition);
+        final Availability availability = dailyAvailabilities.get(daysOfWeekList.get(weekdayPosition)).get(availabilityPosition);
         
-        availabilityTextView.setText(DateFormat.getTimeFormat(context).format(availability.getStartTime()) + " - " + DateFormat.getTimeFormat(context).format(availability.getEndTime()));
+        availabilityTextView.setText(TimeFormatterUtil.formatAvailability(context, availability));
         
         availabilityTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                addAvailabilityListener.onEdit(weekdayPosition, dayToAvailabilityMap.get(daysOfWeekList.get(weekdayPosition)).get(availabilitiesPosition));
+                addAvailabilityListener.onEdit(daysOfWeekList.get(weekdayPosition), availability, availabilityPosition);
             }
         });
         
@@ -174,8 +189,9 @@ public class AvailabilitiesExpandableListAdapter extends BaseExpandableListAdapt
     }
     
     public interface OnAddClickListener {
-        void onAdd(int day);
-        void onEdit(int day, Availability availability);
+        void onAdd(String day);
+        
+        void onEdit(String day, Availability availability, int index);
     }
     
 }
