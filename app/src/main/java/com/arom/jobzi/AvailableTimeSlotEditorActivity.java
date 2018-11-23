@@ -51,8 +51,8 @@ public class AvailableTimeSlotEditorActivity extends AppCompatActivity implement
         hour = calendar.get(Calendar.HOUR_OF_DAY);
         minute = calendar.get(Calendar.MINUTE);
         
-        startTimeViewer = findViewById(R.id.startTimeViewer);
-        endTimeViewer = findViewById(R.id.endTimeViewer);
+        startTimeViewer = findViewById(R.id.startTimeTextView);
+        endTimeViewer = findViewById(R.id.endTimeTextView);
         
         Bundle bundle = getIntent().getExtras();
         
@@ -124,7 +124,7 @@ public class AvailableTimeSlotEditorActivity extends AppCompatActivity implement
             }
         });
         
-        endTimeViewer = findViewById(R.id.endTimeViewer);
+        endTimeViewer = findViewById(R.id.endTimeTextView);
     }
     
     private void updateTimeViews() {
