@@ -36,15 +36,16 @@ public class ServiceSelectorActivity extends AppCompatActivity {
     /**
      * These services are to be excluded when retrieving the list of all services that can be selected from. This is optional.
      */
-    private ArrayList<Service> servicesToExclude;
+    private List<Service> servicesToExclude;
     
     @Override
+    @SuppressWarnings("unchecked")
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(new ContentLoadingProgressBar(this));
         
         if (getIntent().getExtras() != null) {
-            servicesToExclude = getIntent().getExtras().getParcelableArrayList(SERVICES_TO_EXCLUDE_BUNDLE_ARG);
+            servicesToExclude = (List<Service>) getIntent().getExtras().getSerializable(SERVICES_TO_EXCLUDE_BUNDLE_ARG);
         }
         
         serviceList = new ArrayList<Service>();
