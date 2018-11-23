@@ -75,7 +75,7 @@ public class AvailableTimeSlotEditorActivity extends AppCompatActivity implement
         
         updateTimeViews();
         
-        selectStartTime = findViewById(R.id.selectStartTime);
+        selectStartTime = findViewById(R.id.startTimeTextView);
         selectStartTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -84,7 +84,7 @@ public class AvailableTimeSlotEditorActivity extends AppCompatActivity implement
             }
         });
         
-        selectEndTime = findViewById(R.id.selectEndTime);
+        selectEndTime = findViewById(R.id.endTimeTextView);
         selectEndTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
