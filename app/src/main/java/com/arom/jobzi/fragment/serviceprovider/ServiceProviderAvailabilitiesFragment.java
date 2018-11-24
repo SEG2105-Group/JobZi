@@ -12,6 +12,7 @@ import android.widget.ExpandableListView;
 import com.arom.jobzi.AvailableTimeSlotEditorActivity;
 import com.arom.jobzi.R;
 import com.arom.jobzi.adapater.AvailabilitiesExpandableListAdapter;
+import com.arom.jobzi.fragment.DeleteAvailabilityDialogFragment;
 import com.arom.jobzi.profile.ServiceProviderProfile;
 import com.arom.jobzi.service.Availability;
 import com.arom.jobzi.util.Util;
@@ -26,7 +27,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class ServiceProviderAvailabilitiesFragment extends Fragment implements AvailabilitiesExpandableListAdapter.OnAddClickListener {
+public class ServiceProviderAvailabilitiesFragment extends Fragment implements AvailabilitiesExpandableListAdapter.OnAvailabilityListener {
     
     public static final int ADD_AVAILABILITY_REQUEST = 0;
     public static final int EDIT_AVAILABILITY_REQUEST = 1;
@@ -112,6 +113,49 @@ public class ServiceProviderAvailabilitiesFragment extends Fragment implements A
         toTimeSlotEditorIntent.putExtras(bundle);
         
         startActivityForResult(toTimeSlotEditorIntent, EDIT_AVAILABILITY_REQUEST);
+        
+    }
+    
+    @Override
+    public void onDeleteAvailability(final String day, final int index) {
+    
+        final DeleteAvailabilityDialogFragment deleteAvailabilityDialogFragment = new DeleteAvailabilityDialogFragment();
+        
+        Bundle bundle = new Bundle();
+        bundle.putSerializable(DeleteAvailabilityDialogFragment.LISTENER_BUNDLE_ARG, new DeleteAvailabilityDialogFragment.DeleteAvailabilityListener() {
+            @Override
+            public void onDelete(final String day, final int index) {
+    
+                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                final DatabaseReference userProfileDatabase = Util.getInstance().getProfilesDatabase().child(user.getUid());
+    
+                userProfileDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+            
+                        ServiceProviderProfile profile = dataSnapshot.getValue(ServiceProviderProfile.class);
+                        profile.getAvailabilities().get(day).remove(index);
+                        
+                        userProfileDatabase.setValue(profile);
+                        
+                        deleteAvailabilityDialogFragment.dismiss();
+                        
+                    }
+        
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+            
+                    }
+                });
+    
+            }
+        });
+        bundle.putString(DeleteAvailabilityDialogFragment.DAY_BUNDLE_ARG, day);
+        bundle.putInt(DeleteAvailabilityDialogFragment.INDEX_BUNDLE_ARG, index);
+        
+        deleteAvailabilityDialogFragment.setArguments(bundle);
+        
+        deleteAvailabilityDialogFragment.show(getActivity().getSupportFragmentManager(), "");
         
     }
     

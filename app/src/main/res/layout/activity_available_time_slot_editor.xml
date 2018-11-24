@@ -1,18 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center"
-    android:orientation="vertical"
     tools:context=".AvailableTimeSlotEditorActivity">
+
+    <TextView
+        android:id="@+id/dayOfWeekTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/day_of_week_placeholder"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="8dp"
+        android:layout_above="@id/timeDisplayLayout"
+        android:textStyle="bold"
+        android:textSize="28sp"
+        tools:text="Day: Monday"/>
 
     <android.support.constraint.ConstraintLayout
         android:id="@+id/timeDisplayLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_margin="8dp">
 
         <TextView
             android:id="@+id/startTimeLabel"
@@ -66,10 +78,13 @@
     </android.support.constraint.ConstraintLayout>
 
     <LinearLayout
+        android:id="@+id/controlsLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/timeDisplayLayout">
 
         <Button
             android:id="@+id/saveButton"
@@ -85,4 +100,4 @@
 
     </LinearLayout>
 
-</LinearLayout>
+</RelativeLayout>
