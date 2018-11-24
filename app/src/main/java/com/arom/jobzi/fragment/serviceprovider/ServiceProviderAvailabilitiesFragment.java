@@ -91,10 +91,13 @@ public class ServiceProviderAvailabilitiesFragment extends Fragment implements A
     @Override
     public void onAdd(String day) {
         
+        List<Availability> availabilities = availabilitiesAdapter.getAvailabilities(day);
+        
         Intent toTimeSlotEditorIntent = new Intent(this.getActivity(), AvailableTimeSlotEditorActivity.class);
         
         Bundle bundle = new Bundle();
         bundle.putString(AvailableTimeSlotEditorActivity.DAY_TO_EDIT_BUNDLE_ARG, day);
+        bundle.putSerializable(AvailableTimeSlotEditorActivity.OTHER_AVAILABILITIES_BUNDLE_ARG, availabilities.toArray(new Availability[availabilities.size()]));
         toTimeSlotEditorIntent.putExtras(bundle);
         
         startActivityForResult(toTimeSlotEditorIntent, ADD_AVAILABILITY_REQUEST);
@@ -103,6 +106,11 @@ public class ServiceProviderAvailabilitiesFragment extends Fragment implements A
     
     @Override
     public void onEdit(String day, Availability availability, int index) {
+    
+        List<Availability> availabilities = availabilitiesAdapter.getAvailabilities(day);
+        List<Availability> otherAvailabilities = new ArrayList<Availability>(availabilities);
+        
+        otherAvailabilities.remove(index);
         
         Intent toTimeSlotEditorIntent = new Intent(this.getActivity(), AvailableTimeSlotEditorActivity.class);
         
@@ -110,6 +118,8 @@ public class ServiceProviderAvailabilitiesFragment extends Fragment implements A
         bundle.putString(AvailableTimeSlotEditorActivity.DAY_TO_EDIT_BUNDLE_ARG, day);
         bundle.putInt(AvailableTimeSlotEditorActivity.AVAILABILITY_INDEX_BUNDLE_ARG, index);
         bundle.putSerializable(AvailableTimeSlotEditorActivity.AVAILABILITY_BUNDLE_ARG, availability);
+        bundle.putSerializable(AvailableTimeSlotEditorActivity.OTHER_AVAILABILITIES_BUNDLE_ARG, otherAvailabilities.toArray(new Availability[otherAvailabilities.size()]));
+        
         toTimeSlotEditorIntent.putExtras(bundle);
         
         startActivityForResult(toTimeSlotEditorIntent, EDIT_AVAILABILITY_REQUEST);

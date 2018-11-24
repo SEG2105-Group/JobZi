@@ -199,6 +199,10 @@ public class AvailabilitiesExpandableListAdapter extends BaseExpandableListAdapt
         return true;
     }
     
+    public List<Availability> getAvailabilities(String day) {
+        return dailyAvailabilities.get(day);
+    }
+    
     public interface OnAvailabilityListener {
         
         void onAdd(String day);
