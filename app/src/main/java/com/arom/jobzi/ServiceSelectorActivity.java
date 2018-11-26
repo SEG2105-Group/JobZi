@@ -13,6 +13,7 @@ import android.widget.ListView;
 import com.arom.jobzi.adapater.ServiceArrayAdapter;
 import com.arom.jobzi.service.Service;
 import com.arom.jobzi.util.Util;
+import com.google.android.gms.common.util.ArrayUtils;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -36,15 +37,16 @@ public class ServiceSelectorActivity extends AppCompatActivity {
     /**
      * These services are to be excluded when retrieving the list of all services that can be selected from. This is optional.
      */
-    private ArrayList<Service> servicesToExclude;
+    private Service[] servicesToExclude;
     
     @Override
+    @SuppressWarnings("unchecked")
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(new ContentLoadingProgressBar(this));
         
         if (getIntent().getExtras() != null) {
-            servicesToExclude = getIntent().getExtras().getParcelableArrayList(SERVICES_TO_EXCLUDE_BUNDLE_ARG);
+            servicesToExclude = (Service[]) getIntent().getExtras().getSerializable(SERVICES_TO_EXCLUDE_BUNDLE_ARG);
         }
         
         serviceList = new ArrayList<Service>();
@@ -61,7 +63,7 @@ public class ServiceSelectorActivity extends AppCompatActivity {
                     
                     if (servicesToExclude == null) {
                         serviceList.add(service);
-                    } else if (!servicesToExclude.contains(service)) {
+                    } else if (!ArrayUtils.contains(servicesToExclude, service)) {
                         serviceList.add(service);
                     }
                     
