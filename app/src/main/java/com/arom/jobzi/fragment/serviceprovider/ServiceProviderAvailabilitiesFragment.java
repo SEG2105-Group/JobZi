@@ -12,6 +12,7 @@ import android.widget.ExpandableListView;
 import com.arom.jobzi.AvailableTimeSlotEditorActivity;
 import com.arom.jobzi.R;
 import com.arom.jobzi.adapater.AvailabilitiesExpandableListAdapter;
+import com.arom.jobzi.fragment.DeleteAvailabilityDialogFragment;
 import com.arom.jobzi.profile.ServiceProviderProfile;
 import com.arom.jobzi.service.Availability;
 import com.arom.jobzi.util.Util;
@@ -26,7 +27,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class ServiceProviderAvailabilitiesFragment extends Fragment implements AvailabilitiesExpandableListAdapter.OnAddClickListener {
+public class ServiceProviderAvailabilitiesFragment extends Fragment implements AvailabilitiesExpandableListAdapter.OnAvailabilityListener {
     
     public static final int ADD_AVAILABILITY_REQUEST = 0;
     public static final int EDIT_AVAILABILITY_REQUEST = 1;
@@ -90,10 +91,13 @@ public class ServiceProviderAvailabilitiesFragment extends Fragment implements A
     @Override
     public void onAdd(String day) {
         
+        List<Availability> availabilities = availabilitiesAdapter.getAvailabilities(day);
+        
         Intent toTimeSlotEditorIntent = new Intent(this.getActivity(), AvailableTimeSlotEditorActivity.class);
         
         Bundle bundle = new Bundle();
         bundle.putString(AvailableTimeSlotEditorActivity.DAY_TO_EDIT_BUNDLE_ARG, day);
+        bundle.putSerializable(AvailableTimeSlotEditorActivity.OTHER_AVAILABILITIES_BUNDLE_ARG, availabilities.toArray(new Availability[availabilities.size()]));
         toTimeSlotEditorIntent.putExtras(bundle);
         
         startActivityForResult(toTimeSlotEditorIntent, ADD_AVAILABILITY_REQUEST);
@@ -102,6 +106,11 @@ public class ServiceProviderAvailabilitiesFragment extends Fragment implements A
     
     @Override
     public void onEdit(String day, Availability availability, int index) {
+    
+        List<Availability> availabilities = availabilitiesAdapter.getAvailabilities(day);
+        List<Availability> otherAvailabilities = new ArrayList<Availability>(availabilities);
+        
+        otherAvailabilities.remove(index);
         
         Intent toTimeSlotEditorIntent = new Intent(this.getActivity(), AvailableTimeSlotEditorActivity.class);
         
@@ -109,9 +118,54 @@ public class ServiceProviderAvailabilitiesFragment extends Fragment implements A
         bundle.putString(AvailableTimeSlotEditorActivity.DAY_TO_EDIT_BUNDLE_ARG, day);
         bundle.putInt(AvailableTimeSlotEditorActivity.AVAILABILITY_INDEX_BUNDLE_ARG, index);
         bundle.putSerializable(AvailableTimeSlotEditorActivity.AVAILABILITY_BUNDLE_ARG, availability);
+        bundle.putSerializable(AvailableTimeSlotEditorActivity.OTHER_AVAILABILITIES_BUNDLE_ARG, otherAvailabilities.toArray(new Availability[otherAvailabilities.size()]));
+        
         toTimeSlotEditorIntent.putExtras(bundle);
         
         startActivityForResult(toTimeSlotEditorIntent, EDIT_AVAILABILITY_REQUEST);
+        
+    }
+    
+    @Override
+    public void onDeleteAvailability(final String day, final int index) {
+    
+        final DeleteAvailabilityDialogFragment deleteAvailabilityDialogFragment = new DeleteAvailabilityDialogFragment();
+        
+        Bundle bundle = new Bundle();
+        bundle.putSerializable(DeleteAvailabilityDialogFragment.LISTENER_BUNDLE_ARG, new DeleteAvailabilityDialogFragment.DeleteAvailabilityListener() {
+            @Override
+            public void onDelete(final String day, final int index) {
+    
+                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                final DatabaseReference userProfileDatabase = Util.getInstance().getProfilesDatabase().child(user.getUid());
+    
+                userProfileDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+            
+                        ServiceProviderProfile profile = dataSnapshot.getValue(ServiceProviderProfile.class);
+                        profile.getAvailabilities().get(day).remove(index);
+                        
+                        userProfileDatabase.setValue(profile);
+                        
+                        deleteAvailabilityDialogFragment.dismiss();
+                        
+                    }
+        
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+            
+                    }
+                });
+    
+            }
+        });
+        bundle.putString(DeleteAvailabilityDialogFragment.DAY_BUNDLE_ARG, day);
+        bundle.putInt(DeleteAvailabilityDialogFragment.INDEX_BUNDLE_ARG, index);
+        
+        deleteAvailabilityDialogFragment.setArguments(bundle);
+        
+        deleteAvailabilityDialogFragment.show(getActivity().getSupportFragmentManager(), "");
         
     }
     

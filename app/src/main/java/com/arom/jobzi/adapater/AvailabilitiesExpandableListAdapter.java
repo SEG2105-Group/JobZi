@@ -40,12 +40,12 @@ public class AvailabilitiesExpandableListAdapter extends BaseExpandableListAdapt
     
     private List<String> daysOfWeekList;
     
-    private OnAddClickListener addAvailabilityListener;
+    private OnAvailabilityListener availabilityListener;
     
     private HashMap<String, List<Availability>> dailyAvailabilities;
     
     @SuppressLint("WrongConstant")
-    public AvailabilitiesExpandableListAdapter(Context context, OnAddClickListener addAvailabilityListener) {
+    public AvailabilitiesExpandableListAdapter(Context context, OnAvailabilityListener availabilityListener) {
         this.context = context;
         
         daysOfWeekList = new ArrayList<String>();
@@ -64,7 +64,7 @@ public class AvailabilitiesExpandableListAdapter extends BaseExpandableListAdapt
             dailyAvailabilities.put(dayOfWeek, new ArrayList<Availability>());
         }
         
-        this.addAvailabilityListener = addAvailabilityListener;
+        this.availabilityListener = availabilityListener;
         
     }
     
@@ -151,7 +151,7 @@ public class AvailabilitiesExpandableListAdapter extends BaseExpandableListAdapt
         addAvailabilityButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                addAvailabilityListener.onAdd(daysOfWeekList.get(weekDayPosition));
+                availabilityListener.onAdd(daysOfWeekList.get(weekDayPosition));
             }
         });
         
@@ -175,7 +175,18 @@ public class AvailabilitiesExpandableListAdapter extends BaseExpandableListAdapt
         availabilityTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                addAvailabilityListener.onEdit(daysOfWeekList.get(weekdayPosition), availability, availabilityPosition);
+                availabilityListener.onEdit(daysOfWeekList.get(weekdayPosition), availability, availabilityPosition);
+            }
+        });
+        
+        availabilityTextView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                
+                availabilityListener.onDeleteAvailability(daysOfWeekList.get(weekdayPosition), availabilityPosition);
+                
+                return true;
+                
             }
         });
         
@@ -188,10 +199,18 @@ public class AvailabilitiesExpandableListAdapter extends BaseExpandableListAdapt
         return true;
     }
     
-    public interface OnAddClickListener {
+    public List<Availability> getAvailabilities(String day) {
+        return dailyAvailabilities.get(day);
+    }
+    
+    public interface OnAvailabilityListener {
+        
         void onAdd(String day);
         
         void onEdit(String day, Availability availability, int index);
+        
+        void onDeleteAvailability(String day, int index);
+        
     }
     
 }
