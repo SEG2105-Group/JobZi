@@ -67,8 +67,9 @@ public final class UserProfileUtil {
         serviceProviderProfile.setCompanyName(companyName);
         serviceProviderProfile.setPhoneNumber(phoneNumber);
         serviceProviderProfile.setDescription(description);
+        serviceProviderProfile.setRating(RatingsUtil.DEFAULT_RATING);
         serviceProviderProfile.setLicensed(licensed);
-        
+
         return serviceProviderProfile;
         
     }
