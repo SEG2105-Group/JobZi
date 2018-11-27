@@ -132,14 +132,30 @@ public class AvailableTimeSlotEditorActivity extends AppCompatActivity {
         showTimePickerDialog(availability.getStartTime(), new TimePickerFragment.CustomTimeSetListener() {
             @Override
             public void onTimeSet(Date time) {
-            
-                if (time.after(availability.getEndTime())) {
+                
+                Calendar newStartTime = Calendar.getInstance();
+                newStartTime.setTime(time);
+                
+                Calendar oldStartTime = Calendar.getInstance();
+                oldStartTime.setTime(availability.getStartTime());
+                
+                Calendar endTime = Calendar.getInstance();
+                endTime.setTime(availability.getEndTime());
+                
+                Availability conflicting;
+                
+                if (compareTo(newStartTime, endTime) >= 0) {
                     Toast.makeText(AvailableTimeSlotEditorActivity.this, "Please select a time before " + TimeFormatterUtil.formatTime(AvailableTimeSlotEditorActivity.this, availability.getEndTime()), Toast.LENGTH_LONG).show();
+                    saveButton.setEnabled(false);
+                } else if ((conflicting = getConflicting(newStartTime, endTime)) != null) {
+                    Toast.makeText(AvailableTimeSlotEditorActivity.this, "This time conflicts with: " + TimeFormatterUtil.formatAvailability(AvailableTimeSlotEditorActivity.this, conflicting), Toast.LENGTH_SHORT).show();
+                    saveButton.setEnabled(false);
                 } else {
-                    availability.setStartTime(time);
-                    updateTime();
+                    saveButton.setEnabled(true);
                 }
-            
+                availability.setStartTime(time);
+                updateTime();
+                
             }
         });
     }
@@ -148,16 +164,80 @@ public class AvailableTimeSlotEditorActivity extends AppCompatActivity {
         showTimePickerDialog(availability.getEndTime(), new TimePickerFragment.CustomTimeSetListener() {
             @Override
             public void onTimeSet(Date time) {
-            
-                if (time.before(availability.getStartTime())) {
+                
+                Calendar newEndTime = Calendar.getInstance();
+                newEndTime.setTime(time);
+                
+                Calendar oldEndTime = Calendar.getInstance();
+                oldEndTime.setTime(availability.getEndTime());
+                
+                Calendar startTime = Calendar.getInstance();
+                startTime.setTime(availability.getStartTime());
+                
+                Availability conflicting;
+                
+                if (compareTo(startTime, newEndTime) >= 0) {
                     Toast.makeText(AvailableTimeSlotEditorActivity.this, "Please select a time after " + TimeFormatterUtil.formatTime(AvailableTimeSlotEditorActivity.this, availability.getStartTime()), Toast.LENGTH_LONG).show();
+                    saveButton.setEnabled(false);
+                } else if ((conflicting = getConflicting(startTime, newEndTime)) != null) {
+                    Toast.makeText(AvailableTimeSlotEditorActivity.this, "This time conflicts with: " + TimeFormatterUtil.formatAvailability(AvailableTimeSlotEditorActivity.this, conflicting), Toast.LENGTH_SHORT).show();
+                    saveButton.setEnabled(false);
                 } else {
-                    availability.setEndTime(time);
-                    updateTime();
+                    saveButton.setEnabled(true);
                 }
-            
+                
+                availability.setEndTime(time);
+                updateTime();
+                
             }
         });
+    }
+    
+    private Availability getConflicting(Calendar startTime, Calendar endTime) {
+        
+        Calendar availabilityStartTime = Calendar.getInstance();
+        Calendar availabilityEndTime = Calendar.getInstance();
+        
+        for (Availability availability : otherAvailabilities) {
+            
+            availabilityStartTime.setTime(availability.getStartTime());
+            availabilityEndTime.setTime(availability.getEndTime());
+            
+            if ((compareTo(startTime, availabilityEndTime) <= 0 && compareTo(startTime, availabilityStartTime) >= 0) ||
+                    (compareTo(endTime, availabilityStartTime) >= 0 && compareTo(endTime, availabilityEndTime) <= 0) ||
+                    (compareTo(startTime, availabilityStartTime) <= 0 && compareTo(endTime, availabilityEndTime) >= 0)) {
+                return availability;
+            }
+            
+        }
+        
+        return null;
+        
+    }
+    
+    /**
+     * @param first
+     * @param second
+     * @return 1 if first > second, -1 if first < second, and 0 if first == second. Basically, it is a normalized first - second.
+     */
+    private int compareTo(Calendar first, Calendar second) {
+        
+        if (first.get(Calendar.HOUR_OF_DAY) > second.get(Calendar.HOUR_OF_DAY)) {
+            return 1;
+        } else if (first.get(Calendar.HOUR_OF_DAY) < second.get(Calendar.HOUR_OF_DAY)) {
+            return -1;
+        } else {
+            
+            if (first.get(Calendar.MINUTE) > second.get(Calendar.MINUTE)) {
+                return 1;
+            } else if (first.get(Calendar.MINUTE) < second.get(Calendar.MINUTE)) {
+                return -1;
+            }
+            
+        }
+        
+        return 0;
+        
     }
     
     private void showTimePickerDialog(Date time, TimePickerFragment.CustomTimeSetListener timeSetListener) {
