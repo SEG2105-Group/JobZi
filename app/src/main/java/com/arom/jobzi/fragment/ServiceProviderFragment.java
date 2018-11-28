@@ -15,6 +15,7 @@ import com.arom.jobzi.R;
 import com.arom.jobzi.ServiceSelectorActivity;
 import com.arom.jobzi.adapater.CustomPagerAdapter;
 import com.arom.jobzi.fragment.serviceprovider.ServiceProviderAvailabilitiesFragment;
+import com.arom.jobzi.fragment.serviceprovider.ServiceProviderBookingsFragment;
 import com.arom.jobzi.fragment.serviceprovider.ServiceProviderServicesFragment;
 import com.arom.jobzi.profile.ServiceProviderProfile;
 import com.arom.jobzi.service.Service;
@@ -45,10 +46,12 @@ public class ServiceProviderFragment extends Fragment implements ServiceProvider
         
         final ServiceProviderAvailabilitiesFragment availableTimeSlotsListFragment = new ServiceProviderAvailabilitiesFragment();
         ServiceProviderServicesFragment serviceListFragment = ServiceProviderServicesFragment.newInstance(this);
-        
+        ServiceProviderBookingsFragment serviceBookingFragment = ServiceProviderBookingsFragment.newInstance(this);
+
+        customPagerAdapter.addFragment(serviceBookingFragment, getText(R.string.bookings_label));
         customPagerAdapter.addFragment(availableTimeSlotsListFragment, getText(R.string.availabilities_label));
         customPagerAdapter.addFragment(serviceListFragment, getText(R.string.services_label));
-        
+
         viewPager.setAdapter(customPagerAdapter);
         
     }
