@@ -37,9 +37,10 @@
             android:name=".LandingActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".ProfileActivity" />
-        <activity android:name=".AvailableTimeSlotEditorActivity"></activity>
-        <activity android:name=".ServiceSelectorActivity"></activity>
-        <activity android:name=".util.SearchUtil"></activity>
+        <activity android:name=".AvailableTimeSlotEditorActivity" />
+        <activity android:name=".ServiceSelectorActivity" />
+        <activity android:name=".util.SearchUtil" />
+        <activity android:name=".activity_home_owner_find_service"></activity>
     </application>
 
 </manifest>
