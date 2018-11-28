@@ -11,7 +11,7 @@ import android.widget.Toast;
 
 import com.arom.jobzi.fragment.TimePickerFragment;
 import com.arom.jobzi.service.Availability;
-import com.arom.jobzi.util.TimeFormatterUtil;
+import com.arom.jobzi.util.TimeUtil;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -71,23 +71,6 @@ public class AvailableTimeSlotEditorActivity extends AppCompatActivity {
         TextView dayOfWeekTextView = findViewById(R.id.dayOfWeekTextView);
         dayOfWeekTextView.setText(getString(R.string.day_of_week_placeholder, day));
         
-        Calendar calendar = Calendar.getInstance();
-        
-        if (availability == null) {
-            
-            availability = new Availability();
-            
-            availability.setStartTime(calendar.getTime());
-            
-            // Increment by 30 minutes.
-            calendar.add(Calendar.MINUTE, 30);
-            
-            availability.setEndTime(calendar.getTime());
-            
-        }
-        
-        updateTime();
-        
         saveButton = findViewById(R.id.saveButton);
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -119,12 +102,38 @@ public class AvailableTimeSlotEditorActivity extends AppCompatActivity {
             }
         });
         
+        if (availability == null) {
+            
+            availability = new Availability();
+            
+            Calendar startTime = Calendar.getInstance();
+            
+            availability.setStartTime(startTime.getTime());
+            
+            Calendar endTime = Calendar.getInstance();
+            endTime.setTime(startTime.getTime());
+            // Increment by 30 minutes.
+            endTime.add(Calendar.MINUTE, 30);
+            
+            availability.setEndTime(endTime.getTime());
+    
+            Availability conflicting;
+            
+            if((conflicting = TimeUtil.getConflicting(startTime, endTime, otherAvailabilities)) != null) {
+                Toast.makeText(AvailableTimeSlotEditorActivity.this, "This time conflicts with: " + TimeUtil.formatAvailability(AvailableTimeSlotEditorActivity.this, conflicting), Toast.LENGTH_SHORT).show();
+                saveButton.setEnabled(false);
+            }
+    
+        }
+        
+        updateTime();
+        
     }
     
     private void updateTime() {
         
-        startTimeTextView.setText(TimeFormatterUtil.formatTime(this, availability.getStartTime()));
-        endTimeTextView.setText(TimeFormatterUtil.formatTime(this, availability.getEndTime()));
+        startTimeTextView.setText(TimeUtil.formatTime(this, availability.getStartTime()));
+        endTimeTextView.setText(TimeUtil.formatTime(this, availability.getEndTime()));
         
     }
     
@@ -144,11 +153,11 @@ public class AvailableTimeSlotEditorActivity extends AppCompatActivity {
                 
                 Availability conflicting;
                 
-                if (compareTo(newStartTime, endTime) >= 0) {
-                    Toast.makeText(AvailableTimeSlotEditorActivity.this, "Please select a time before " + TimeFormatterUtil.formatTime(AvailableTimeSlotEditorActivity.this, availability.getEndTime()), Toast.LENGTH_LONG).show();
+                if (TimeUtil.compareTo(newStartTime, endTime) >= 0) {
+                    Toast.makeText(AvailableTimeSlotEditorActivity.this, "Please select a time before " + TimeUtil.formatTime(AvailableTimeSlotEditorActivity.this, availability.getEndTime()), Toast.LENGTH_LONG).show();
                     saveButton.setEnabled(false);
-                } else if ((conflicting = getConflicting(newStartTime, endTime)) != null) {
-                    Toast.makeText(AvailableTimeSlotEditorActivity.this, "This time conflicts with: " + TimeFormatterUtil.formatAvailability(AvailableTimeSlotEditorActivity.this, conflicting), Toast.LENGTH_SHORT).show();
+                } else if ((conflicting = TimeUtil.getConflicting(newStartTime, endTime, otherAvailabilities)) != null) {
+                    Toast.makeText(AvailableTimeSlotEditorActivity.this, "This time conflicts with: " + TimeUtil.formatAvailability(AvailableTimeSlotEditorActivity.this, conflicting), Toast.LENGTH_SHORT).show();
                     saveButton.setEnabled(false);
                 } else {
                     saveButton.setEnabled(true);
@@ -176,11 +185,11 @@ public class AvailableTimeSlotEditorActivity extends AppCompatActivity {
                 
                 Availability conflicting;
                 
-                if (compareTo(startTime, newEndTime) >= 0) {
-                    Toast.makeText(AvailableTimeSlotEditorActivity.this, "Please select a time after " + TimeFormatterUtil.formatTime(AvailableTimeSlotEditorActivity.this, availability.getStartTime()), Toast.LENGTH_LONG).show();
+                if (TimeUtil.compareTo(startTime, newEndTime) >= 0) {
+                    Toast.makeText(AvailableTimeSlotEditorActivity.this, "Please select a time after " + TimeUtil.formatTime(AvailableTimeSlotEditorActivity.this, availability.getStartTime()), Toast.LENGTH_LONG).show();
                     saveButton.setEnabled(false);
-                } else if ((conflicting = getConflicting(startTime, newEndTime)) != null) {
-                    Toast.makeText(AvailableTimeSlotEditorActivity.this, "This time conflicts with: " + TimeFormatterUtil.formatAvailability(AvailableTimeSlotEditorActivity.this, conflicting), Toast.LENGTH_SHORT).show();
+                } else if ((conflicting = TimeUtil.getConflicting(startTime, newEndTime, otherAvailabilities)) != null) {
+                    Toast.makeText(AvailableTimeSlotEditorActivity.this, "This time conflicts with: " + TimeUtil.formatAvailability(AvailableTimeSlotEditorActivity.this, conflicting), Toast.LENGTH_SHORT).show();
                     saveButton.setEnabled(false);
                 } else {
                     saveButton.setEnabled(true);
@@ -191,53 +200,6 @@ public class AvailableTimeSlotEditorActivity extends AppCompatActivity {
                 
             }
         });
-    }
-    
-    private Availability getConflicting(Calendar startTime, Calendar endTime) {
-        
-        Calendar availabilityStartTime = Calendar.getInstance();
-        Calendar availabilityEndTime = Calendar.getInstance();
-        
-        for (Availability availability : otherAvailabilities) {
-            
-            availabilityStartTime.setTime(availability.getStartTime());
-            availabilityEndTime.setTime(availability.getEndTime());
-            
-            if ((compareTo(startTime, availabilityEndTime) <= 0 && compareTo(startTime, availabilityStartTime) >= 0) ||
-                    (compareTo(endTime, availabilityStartTime) >= 0 && compareTo(endTime, availabilityEndTime) <= 0) ||
-                    (compareTo(startTime, availabilityStartTime) <= 0 && compareTo(endTime, availabilityEndTime) >= 0)) {
-                return availability;
-            }
-            
-        }
-        
-        return null;
-        
-    }
-    
-    /**
-     * @param first
-     * @param second
-     * @return 1 if first > second, -1 if first < second, and 0 if first == second. Basically, it is a normalized first - second.
-     */
-    private int compareTo(Calendar first, Calendar second) {
-        
-        if (first.get(Calendar.HOUR_OF_DAY) > second.get(Calendar.HOUR_OF_DAY)) {
-            return 1;
-        } else if (first.get(Calendar.HOUR_OF_DAY) < second.get(Calendar.HOUR_OF_DAY)) {
-            return -1;
-        } else {
-            
-            if (first.get(Calendar.MINUTE) > second.get(Calendar.MINUTE)) {
-                return 1;
-            } else if (first.get(Calendar.MINUTE) < second.get(Calendar.MINUTE)) {
-                return -1;
-            }
-            
-        }
-        
-        return 0;
-        
     }
     
     private void showTimePickerDialog(Date time, TimePickerFragment.CustomTimeSetListener timeSetListener) {
