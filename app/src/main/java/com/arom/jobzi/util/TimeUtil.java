@@ -5,10 +5,14 @@ import android.text.format.DateFormat;
 
 import com.arom.jobzi.service.Availability;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 public final class TimeUtil {
+    
+    private TimeUtil() {}
     
     public static String formatAvailability(Context context, Availability availability) {
         
@@ -64,6 +68,38 @@ public final class TimeUtil {
         }
         
         return null;
+        
+    }
+    
+    public static List<String> getDaysOfWeekNames() {
+    
+        List<String> daysOfWeekList = new ArrayList<String>();
+    
+        daysOfWeekList.add(Weekday.MONDAY.getName());
+        daysOfWeekList.add(Weekday.TUESDAY.getName());
+        daysOfWeekList.add(Weekday.WEDNESDAY.getName());
+        daysOfWeekList.add(Weekday.THURSDAY.getName());
+        daysOfWeekList.add(Weekday.FRIDAY.getName());
+        daysOfWeekList.add(Weekday.SATURDAY.getName());
+        daysOfWeekList.add(Weekday.SUNDAY.getName());
+    
+        return daysOfWeekList;
+        
+    }
+    
+    private enum Weekday {
+        
+        MONDAY("Monday"), TUESDAY("Tuesday"), WEDNESDAY("Wednesday"), THURSDAY("Thursday"), FRIDAY("Friday"), SATURDAY("Saturday"), SUNDAY("Sunday");
+        
+        private final String name;
+        
+        Weekday(String name) {
+            this.name = name;
+        }
+        
+        public String getName() {
+            return name;
+        }
         
     }
     
