@@ -20,22 +20,6 @@ import java.util.List;
 
 public class AvailabilitiesExpandableListAdapter extends BaseExpandableListAdapter {
     
-    private enum Weekday {
-        
-        MONDAY("Monday"), TUESDAY("Tuesday"), WEDNESDAY("Wednesday"), THURSDAY("Thursday"), FRIDAY("Friday"), SATURDAY("Saturday"), SUNDAY("Sunday");
-        
-        private final String name;
-        
-        Weekday(String name) {
-            this.name = name;
-        }
-        
-        public String getName() {
-            return name;
-        }
-        
-    }
-    
     private Context context;
     
     private List<String> daysOfWeekList;
@@ -48,15 +32,7 @@ public class AvailabilitiesExpandableListAdapter extends BaseExpandableListAdapt
     public AvailabilitiesExpandableListAdapter(Context context, OnAvailabilityListener availabilityListener) {
         this.context = context;
         
-        daysOfWeekList = new ArrayList<String>();
-        
-        daysOfWeekList.add(Weekday.MONDAY.getName());
-        daysOfWeekList.add(Weekday.TUESDAY.getName());
-        daysOfWeekList.add(Weekday.WEDNESDAY.getName());
-        daysOfWeekList.add(Weekday.THURSDAY.getName());
-        daysOfWeekList.add(Weekday.FRIDAY.getName());
-        daysOfWeekList.add(Weekday.SATURDAY.getName());
-        daysOfWeekList.add(Weekday.SUNDAY.getName());
+        daysOfWeekList = TimeUtil.getDaysOfWeekNames();
         
         dailyAvailabilities = new HashMap<String, List<Availability>>();
         
