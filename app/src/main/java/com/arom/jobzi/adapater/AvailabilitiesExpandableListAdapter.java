@@ -12,7 +12,7 @@ import android.widget.TextView;
 import com.arom.jobzi.R;
 import com.arom.jobzi.profile.ServiceProviderProfile;
 import com.arom.jobzi.service.Availability;
-import com.arom.jobzi.util.TimeFormatterUtil;
+import com.arom.jobzi.util.TimeUtil;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -170,7 +170,7 @@ public class AvailabilitiesExpandableListAdapter extends BaseExpandableListAdapt
         
         final Availability availability = dailyAvailabilities.get(daysOfWeekList.get(weekdayPosition)).get(availabilityPosition);
         
-        availabilityTextView.setText(TimeFormatterUtil.formatAvailability(context, availability));
+        availabilityTextView.setText(TimeUtil.formatAvailability(context, availability));
         
         availabilityTextView.setOnClickListener(new View.OnClickListener() {
             @Override

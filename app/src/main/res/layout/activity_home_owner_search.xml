@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:layout_margin="9dp"
+              android:orientation="vertical"
+              tools:context=".HomeOwnerSearchActivity">
+
+	<LinearLayout
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content">
+
+		<TextView
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="Service:"
+			android:textSize="20dp" />
+
+		<ExpandableListView
+			android:id="@+id/servicesExpandableList"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content">
+
+		</ExpandableListView>
+
+	</LinearLayout>
+
+	<LinearLayout
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content">
+
+		<TextView
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="Day:"
+			android:textSize="20dp" />
+
+		<ExpandableListView
+			android:id="@+id/dayExpandableList"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content">
+
+		</ExpandableListView>
+	</LinearLayout>
+
+	<LinearLayout
+		android:layout_width="match_parent"
+		android:layout_height="match_parent">
+
+		<TextView
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="Time:"
+			android:textSize="20dp" />
+
+		<EditText
+			android:id="@+id/timeSelectorEditText"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content" />
+	</LinearLayout>
+
+	<LinearLayout
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content">
+
+		<TextView
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="Rating:"
+			android:textSize="20dp" />
+
+		<RatingBar
+			android:id="@+id/ratingBar"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content" />
+	</LinearLayout>
+
+	<LinearLayout
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content">
+
+		<Button
+			android:id="@+id/cancelButton"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="Canel" />
+
+		<Button
+			android:id="@+id/saveButton"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="Save" />
+	</LinearLayout>
+
+
+</LinearLayout>
