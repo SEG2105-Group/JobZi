@@ -68,6 +68,10 @@ public class AvailableTimeSlotEditorActivity extends AppCompatActivity {
         availability = (Availability) bundle.getSerializable(AVAILABILITY_BUNDLE_ARG);
         otherAvailabilities = (Availability[]) bundle.getSerializable(OTHER_AVAILABILITIES_BUNDLE_ARG);
         
+        if(otherAvailabilities == null) {
+            otherAvailabilities = new Availability[0];
+        }
+        
         TextView dayOfWeekTextView = findViewById(R.id.dayOfWeekTextView);
         dayOfWeekTextView.setText(getString(R.string.day_of_week_placeholder, day));
         
