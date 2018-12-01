@@ -11,6 +11,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.RatingBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -22,6 +25,14 @@ import java.util.Calendar;
 public class HomeOwnerSearchActivity extends AppCompatActivity {
 
     private Availability availability;
+    
+    private Spinner dayOfWeekSpinner;
+    private TextView availabilityTextView;
+    
+    private RatingBar ratingBar;
+    
+    private boolean useAvailability;
+    private boolean useRating;
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,7 +46,7 @@ public class HomeOwnerSearchActivity extends AppCompatActivity {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
         
-        Spinner dayOfWeekSpinner = findViewById(R.id.dayOfWeekSpinner);
+        dayOfWeekSpinner = findViewById(R.id.dayOfWeekSpinner);
         ArrayAdapter<TimeUtil.Weekday> spinnerArrayAdapter = new ArrayAdapter<TimeUtil.Weekday>(this, android.R.layout.simple_spinner_dropdown_item, TimeUtil.Weekday.values()) {
             
             @Override
@@ -64,7 +75,7 @@ public class HomeOwnerSearchActivity extends AppCompatActivity {
             }
         });
         
-        TextView availabilityTextView = findViewById(R.id.availabilityTextView);
+        availabilityTextView = findViewById(R.id.availabilityTextView);
     
         availability = new Availability();
         availability.setStartTime(Calendar.getInstance().getTime());
@@ -89,7 +100,46 @@ public class HomeOwnerSearchActivity extends AppCompatActivity {
             }
         });
         
-//        CheckBox useDayCheckBox = findViewById(R.id.use)
+        ratingBar = findViewById(R.id.ratingBar);
+        
+        CheckBox useAvailabilityCheckBox = findViewById(R.id.useAvailabilityCheckBox);
+        
+        useAvailabilityCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                setUseAvailability(b);
+            }
+        });
+        
+        setUseAvailability(false);
+        
+        CheckBox useRatingCheckBox = findViewById(R.id.useRatingCheckBox);
+        
+        useRatingCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                setUserRating(b);
+            }
+        });
+        
+        setUserRating(false);
+        
+    }
+    
+    private void setUseAvailability(boolean useAvailability) {
+        
+        this.useAvailability = useAvailability;
+    
+        dayOfWeekSpinner.setEnabled(useAvailability);
+        availabilityTextView.setEnabled(useAvailability);
+        
+    }
+    
+    private void setUserRating(boolean useRating) {
+        
+        this.useRating = useRating;
+        
+        ratingBar.setEnabled(useRating);
         
     }
     

@@ -71,7 +71,8 @@
 				android:layout_height="wrap_content"
 				android:layout_below="@id/dayTextView"
 				android:layout_alignStart="@id/dayTextView"
-				android:layout_alignLeft="@id/dayTextView"/>
+				android:layout_alignLeft="@id/dayTextView"
+				tools:tooltipText="MONDAY"/>
 
 			<TextView
 				android:id="@+id/availabilityTextView"
