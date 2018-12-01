@@ -123,10 +123,10 @@
 		</RelativeLayout>
 
 		<Button
-			android:id="@+id/saveButton"
+			android:id="@+id/searchForServiceProviderButton"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
-			android:text="@string/save"
+			android:text="@string/search"
 			android:layout_gravity="center_horizontal"/>
 
 		<Button

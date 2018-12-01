@@ -67,14 +67,6 @@ public class HomeOwnerSearchActivity extends AppCompatActivity {
         dayOfWeekSpinner.setAdapter(spinnerArrayAdapter);
         dayOfWeekSpinner.setSelection(TimeUtil.Weekday.MONDAY.ordinal());
         
-        Button cancelButton = findViewById(R.id.cancelButton);
-        cancelButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                HomeOwnerSearchActivity.this.finish();
-            }
-        });
-        
         availabilityTextView = findViewById(R.id.availabilityTextView);
     
         availability = new Availability();
@@ -123,7 +115,25 @@ public class HomeOwnerSearchActivity extends AppCompatActivity {
         });
         
         setUserRating(false);
+    
+        Button searchForServiceProviderButton = findViewById(R.id.searchForServiceProviderButton);
+        searchForServiceProviderButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
         
+            
+            
+            }
+        });
+        
+        Button cancelButton = findViewById(R.id.cancelButton);
+        cancelButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                HomeOwnerSearchActivity.this.finish();
+            }
+        });
+    
     }
     
     private void setUseAvailability(boolean useAvailability) {

@@ -43,5 +43,6 @@
 	<string name="set">Set</string>
 	<string name="day">Day</string>
 	<string name="rating">Rating</string>
+	<string name="search">Search</string>
 
 </resources>
