@@ -19,7 +19,7 @@ public final class UserProfileUtil {
             "A-Z]{2,7}$");
     private static final Pattern NAME_PATTERN = Pattern.compile("^[a-zA-Z]+");
     private static final Pattern ADDRESS_PATTERN = Pattern.compile("\\d+\\s+([a-zA-Z]+|[a-zA-Z]+\\s[a-zA-Z]+)");
-    private static final Pattern PHONE_NUMBER_PATTERN = Pattern.compile("^\\+[0-9]{10,13}$");
+    private static final Pattern PHONE_NUMBER_PATTERN = Pattern.compile("\\d{10}|(?:\\d{3}-){2}\\d{4}|\\(\\d{3}\\)\\d{3}-?\\d{4}");
     
     private static UserProfileUtil instance;
     
