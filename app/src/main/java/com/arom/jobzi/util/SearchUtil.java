@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.util.Log;
 import android.view.WindowManager;
 import android.widget.Toast;
 
@@ -68,7 +67,7 @@ public final class SearchUtil {
                         continue;
                     }
                     
-                    if (searchQuery.getRating() != SearchQuery.IGNORE_RATING && profile.getRating() < searchQuery.getRating()) {
+                    if (searchQuery.getRating() != SearchQuery.IGNORE_RATING && profile.getRating() < searchQuery.getRating() && profile.getRating() != RatingsUtil.DEFAULT_RATING) {
                         continue;
                     }
                     
@@ -82,7 +81,7 @@ public final class SearchUtil {
                     
                     List<Availability> userAvailabilities = profile.getAvailabilities().get(searchQuery.getWeekday().getName());
                     
-                    if(userAvailabilities == null) {
+                    if (userAvailabilities == null) {
                         continue;
                     }
                     
@@ -99,11 +98,11 @@ public final class SearchUtil {
                         if (TimeUtil.compareTo(startTime, searchedStartTime) >= 0 &&
                                 TimeUtil.compareTo(endTime, searchedEndTime) <= 0) {
                             
-                            if(thisDayMatchingActivities.get(user) == null) {
-    
+                            if (thisDayMatchingActivities.get(user) == null) {
+                                
                                 thisDayMatchingActivities.put(user, matchingAvailabilities);
                                 matchingUsers.add(user);
-    
+                                
                             }
                             
                             matchingAvailabilities.add(userAvailability);
@@ -116,15 +115,13 @@ public final class SearchUtil {
                 
                 activity.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
                 
-                if(matchingUsers.isEmpty()) {
-    
+                if (matchingUsers.isEmpty()) {
+                    
                     Toast.makeText(activity, "No service providers were found given the search criteria.", Toast.LENGTH_LONG).show();
                     return;
                     
                 }
-    
-                Log.d("search-debug", "Matched these service providers:\n" + matchingUsers.toString() + "\nWith these availabilities:\n" + thisDayMatchingActivities.toString());
-    
+                
                 Intent toServiceProviderSelectorIntent = new Intent(activity, ServiceProviderSelectorActivity.class);
                 
                 Bundle bundle = new Bundle();

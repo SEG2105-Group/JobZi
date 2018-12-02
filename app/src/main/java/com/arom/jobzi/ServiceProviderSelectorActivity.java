@@ -6,7 +6,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ExpandableListView;
-import android.widget.Toast;
 
 import com.arom.jobzi.adapater.ServiceProviderExpandableArrayAdapter;
 import com.arom.jobzi.search.SearchResult;
@@ -51,17 +50,14 @@ public class ServiceProviderSelectorActivity extends AppCompatActivity implement
     @Override
     public void onSelect(User serviceProvider, Availability availability) {
     
-        Intent data = new Intent();
+        Intent toFeedbackActivity = new Intent(this, FeedbackActivity.class);
         
         Bundle bundle = new Bundle();
-        bundle.putSerializable(SELECTED_SERVICE_PROVIDER_BUNDLE_ARG, serviceProvider);
+        bundle.putSerializable(FeedbackActivity.SERVICE_PROVIDER_BUNDLE_ARG, serviceProvider);
         
-        data.putExtras(bundle);
+        toFeedbackActivity.putExtras(bundle);
         
-        setResult(SERVICE_PROVIDER_SELECTED_RESULT, data);
-        
-        // Start new activity here.
-        Toast.makeText(this, "You have selected: " + serviceProvider.getUsername(), Toast.LENGTH_LONG).show();
+        startActivity(toFeedbackActivity);
         finish();
         
     }
