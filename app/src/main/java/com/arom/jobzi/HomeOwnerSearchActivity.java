@@ -46,7 +46,6 @@ public class HomeOwnerSearchActivity extends AppCompatActivity {
     
     private Button searchForServiceProviderButton;
     
-    private boolean useAvailability;
     private boolean useRating;
     
     @Override
@@ -110,17 +109,6 @@ public class HomeOwnerSearchActivity extends AppCompatActivity {
         
         ratingBar = findViewById(R.id.ratingBar);
         
-        CheckBox useAvailabilityCheckBox = findViewById(R.id.useAvailabilityCheckBox);
-        
-        useAvailabilityCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                setUseAvailability(b);
-            }
-        });
-        
-        setUseAvailability(false);
-        
         CheckBox useRatingCheckBox = findViewById(R.id.useRatingCheckBox);
         
         useRatingCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -143,10 +131,8 @@ public class HomeOwnerSearchActivity extends AppCompatActivity {
                 
                 searchQuery.setService(selectedService);
                 
-                if (useAvailability) {
-                    searchQuery.setAvailability(availability);
-                    searchQuery.setWeekday((TimeUtil.Weekday) dayOfWeekSpinner.getSelectedItem());
-                }
+                searchQuery.setAvailability(availability);
+                searchQuery.setWeekday((TimeUtil.Weekday) dayOfWeekSpinner.getSelectedItem());
                 
                 if (useRating) {
                     searchQuery.setRating(ratingBar.getRating());
@@ -173,8 +159,8 @@ public class HomeOwnerSearchActivity extends AppCompatActivity {
         
         serviceDisplayTextView = findViewById(R.id.serviceDisplayTextView);
         
-        Button setService = findViewById(R.id.setServiceButton);
-        setService.setOnClickListener(new View.OnClickListener() {
+        Button setServiceButton = findViewById(R.id.setServiceButton);
+        setServiceButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(HomeOwnerSearchActivity.this, ServiceSelectorActivity.class);
@@ -190,7 +176,7 @@ public class HomeOwnerSearchActivity extends AppCompatActivity {
         
         serviceDisplayTextView.setText(selectedService.getName());
         
-        searchForServiceProviderButton.setEnabled(true);
+        updateSearchButton();
         
     }
     
@@ -199,15 +185,14 @@ public class HomeOwnerSearchActivity extends AppCompatActivity {
         this.availability = availability;
         
         availabilityTextView.setText(TimeUtil.formatAvailability(this, availability));
-        
+    
+        updateSearchButton();
+    
     }
     
-    private void setUseAvailability(boolean useAvailability) {
+    private void updateSearchButton() {
         
-        this.useAvailability = useAvailability;
-        
-        dayOfWeekSpinner.setEnabled(useAvailability);
-        availabilityTextView.setEnabled(useAvailability);
+        searchForServiceProviderButton.setEnabled(selectedService != null && availability != null);
         
     }
     

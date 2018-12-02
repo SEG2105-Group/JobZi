@@ -59,13 +59,6 @@
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content">
 
-			<CheckBox
-				android:id="@+id/useAvailabilityCheckBox"
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:layout_alignParentStart="true"
-				android:layout_alignParentLeft="true"/>
-
 			<TextView
 				android:id="@+id/dayTextView"
 				android:layout_width="wrap_content"
@@ -73,8 +66,8 @@
 				android:layout_marginStart="16dp"
 				android:layout_marginLeft="16dp"
 				android:layout_marginBottom="16dp"
-				android:layout_toEndOf="@id/useAvailabilityCheckBox"
-				android:layout_toRightOf="@id/useAvailabilityCheckBox"
+				android:layout_alignParentStart="true"
+				android:layout_alignParentLeft="true"
 				android:text="@string/day"
 				android:textSize="24sp"
 				android:textStyle="bold"/>

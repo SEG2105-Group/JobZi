@@ -45,10 +45,10 @@ public final class SearchUtil {
                 SearchResult searchResult = new SearchResult();
                 
                 List<User> matchingUsers = new ArrayList<User>();
+                HashMap<User, List<Availability>> thisDayMatchingActivities = new HashMap<User, List<Availability>>();
                 
                 searchResult.setServiceProviders(matchingUsers);
-                
-                HashMap<User, List<Availability>> thisDayMatchingActivities = new HashMap<User, List<Availability>>();
+                searchResult.setAvailabilities(thisDayMatchingActivities);
                 
                 for (DataSnapshot userSnapshot : accountsSnapshot.getChildren()) {
                     
@@ -72,10 +72,7 @@ public final class SearchUtil {
                         continue;
                     }
                     
-                    if (searchQuery.getWeekday() == null || searchQuery.getAvailability() == null) {
-                        matchingUsers.add(user);
-                        continue;
-                    }
+                    user.setUserProfile(profile);
                     
                     Calendar searchedStartTime = Calendar.getInstance();
                     searchedStartTime.setTime(searchQuery.getAvailability().getStartTime());
@@ -84,9 +81,12 @@ public final class SearchUtil {
                     searchedEndTime.setTime(searchQuery.getAvailability().getEndTime());
                     
                     List<Availability> userAvailabilities = profile.getAvailabilities().get(searchQuery.getWeekday().getName());
-                    List<Availability> matchingAvailabilities = new ArrayList<Availability>();
                     
-                    thisDayMatchingActivities.put(user, matchingAvailabilities);
+                    if(userAvailabilities == null) {
+                        continue;
+                    }
+                    
+                    List<Availability> matchingAvailabilities = new ArrayList<Availability>();
                     
                     for (Availability userAvailability : userAvailabilities) {
                         
@@ -98,7 +98,16 @@ public final class SearchUtil {
                         
                         if (TimeUtil.compareTo(startTime, searchedStartTime) >= 0 &&
                                 TimeUtil.compareTo(endTime, searchedEndTime) <= 0) {
+                            
+                            if(thisDayMatchingActivities.get(user) == null) {
+    
+                                thisDayMatchingActivities.put(user, matchingAvailabilities);
+                                matchingUsers.add(user);
+    
+                            }
+                            
                             matchingAvailabilities.add(userAvailability);
+                            
                         }
                         
                     }
