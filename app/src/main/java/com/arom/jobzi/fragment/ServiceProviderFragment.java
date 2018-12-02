@@ -48,9 +48,9 @@ public class ServiceProviderFragment extends Fragment implements ServiceProvider
         ServiceProviderServicesFragment serviceListFragment = ServiceProviderServicesFragment.newInstance(this);
         ServiceProviderBookingsFragment serviceBookingFragment = ServiceProviderBookingsFragment.newInstance(this);
 
-        customPagerAdapter.addFragment(serviceBookingFragment, getText(R.string.bookings_label));
         customPagerAdapter.addFragment(availableTimeSlotsListFragment, getText(R.string.availabilities_label));
         customPagerAdapter.addFragment(serviceListFragment, getText(R.string.services_label));
+        customPagerAdapter.addFragment(serviceBookingFragment, getText(R.string.bookings_label));
 
         viewPager.setAdapter(customPagerAdapter);
         
