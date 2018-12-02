@@ -40,7 +40,7 @@
 		<activity android:name=".AvailableTimeSlotEditorActivity"/>
 		<activity android:name=".ServiceSelectorActivity"/>
 		<activity android:name=".HomeOwnerSearchActivity"/>
-		<activity android:name=".SearchResultActivity">
+		<activity android:name=".ServiceProviderSelectorActivity">
 		</activity>
 	</application>
 

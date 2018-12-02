@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -18,53 +19,46 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.arom.jobzi.profile.ServiceProviderProfile;
-import com.arom.jobzi.profile.UserProfile;
+import com.arom.jobzi.search.SearchQuery;
 import com.arom.jobzi.service.Availability;
 import com.arom.jobzi.service.Service;
 import com.arom.jobzi.util.SearchUtil;
 import com.arom.jobzi.util.TimeUtil;
-import com.arom.jobzi.util.Util;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.ValueEventListener;
 
-import java.util.ArrayList;
 import java.util.Calendar;
 
 public class HomeOwnerSearchActivity extends AppCompatActivity {
-
+    
+    private static final int EDIT_AVAILABILITY_REQUEST = 0;
+    private static final int SELECT_SERVICE_REQUEST = 1;
+    
     private Availability availability;
-    private Service service;
-
+    private Service selectedService;
+    
+    private TextView serviceDisplayTextView;
+    
     private Spinner dayOfWeekSpinner;
     private TextView availabilityTextView;
     
     private RatingBar ratingBar;
     
+    private Button searchForServiceProviderButton;
+    
     private boolean useAvailability;
     private boolean useRating;
-
-    private TextView serviceDisplayer;
-
-
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_owner_search);
-
+        
         ActionBar actionBar = getSupportActionBar();
         
-        if(actionBar != null) {
+        if (actionBar != null) {
             actionBar.setHomeButtonEnabled(true);
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
-
-        // TODO: Add set service button functionality. Maybe even use service_item layout to display it.
-
+        
         dayOfWeekSpinner = findViewById(R.id.dayOfWeekSpinner);
         ArrayAdapter<TimeUtil.Weekday> spinnerArrayAdapter = new ArrayAdapter<TimeUtil.Weekday>(this, android.R.layout.simple_spinner_dropdown_item, TimeUtil.Weekday.values()) {
             
@@ -72,7 +66,7 @@ public class HomeOwnerSearchActivity extends AppCompatActivity {
             public View getDropDownView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
                 
                 View view = super.getDropDownView(position, convertView, parent);
-    
+                
                 TextView textView = (TextView) view;
                 
                 textView.setText(TimeUtil.Weekday.values()[position].getName());
@@ -82,13 +76,13 @@ public class HomeOwnerSearchActivity extends AppCompatActivity {
             }
             
         };
-
+        
         spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         dayOfWeekSpinner.setAdapter(spinnerArrayAdapter);
         dayOfWeekSpinner.setSelection(TimeUtil.Weekday.MONDAY.ordinal());
         
         availabilityTextView = findViewById(R.id.availabilityTextView);
-    
+        
         availability = new Availability();
         availability.setStartTime(Calendar.getInstance().getTime());
         availability.setEndTime(Calendar.getInstance().getTime());
@@ -107,7 +101,7 @@ public class HomeOwnerSearchActivity extends AppCompatActivity {
                 
                 toAvailableTimeSlotEditorIntent.putExtras(bundle);
                 
-                HomeOwnerSearchActivity.this.startActivity(toAvailableTimeSlotEditorIntent);
+                HomeOwnerSearchActivity.this.startActivityForResult(toAvailableTimeSlotEditorIntent, EDIT_AVAILABILITY_REQUEST);
                 
             }
         });
@@ -135,29 +129,35 @@ public class HomeOwnerSearchActivity extends AppCompatActivity {
         });
         
         setUserRating(false);
-    
-        Button searchForServiceProviderButton = findViewById(R.id.searchForServiceProviderButton);
+        
+        searchForServiceProviderButton = findViewById(R.id.searchForServiceProviderButton);
         searchForServiceProviderButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                SearchUtil.SearchQuery searchQuery = new SearchUtil.SearchQuery();
-
-                searchQuery.setService();
-
-                if(useAvailability) {
+                
+                getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE, WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+                
+                SearchQuery searchQuery = new SearchQuery();
+                
+                searchQuery.setService(selectedService);
+                
+                if (useAvailability) {
                     searchQuery.setAvailability(availability);
                     searchQuery.setWeekday((TimeUtil.Weekday) dayOfWeekSpinner.getSelectedItem());
                 }
-
-                if(useRating) {
+                
+                if (useRating) {
                     searchQuery.setRating(ratingBar.getRating());
+                } else {
+                    searchQuery.setRating(SearchQuery.IGNORE_RATING);
                 }
-
+                
                 SearchUtil.displaySearchResult(HomeOwnerSearchActivity.this, searchQuery);
-            
+                
             }
         });
+        
+        searchForServiceProviderButton.setEnabled(false);
         
         Button cancelButton = findViewById(R.id.cancelButton);
         cancelButton.setOnClickListener(new View.OnClickListener() {
@@ -166,23 +166,44 @@ public class HomeOwnerSearchActivity extends AppCompatActivity {
                 HomeOwnerSearchActivity.this.finish();
             }
         });
-
-        serviceDisplayer = findViewById(R.id.serviceDisplayer);
+        
+        selectedService = null;
+        
+        serviceDisplayTextView = findViewById(R.id.serviceDisplayTextView);
+        
         Button setService = findViewById(R.id.setServiceButton);
         setService.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(HomeOwnerSearchActivity.this, ServiceSelectorActivity.class);
-                startActivityForResult(intent,ServiceSelectorActivity.SERVICE_SELECTED_RESULT);
+                startActivityForResult(intent, SELECT_SERVICE_REQUEST);
             }
         });
-
+        
+    }
+    
+    private void updateSelectedService(Service selectedService) {
+        
+        this.selectedService = selectedService;
+        
+        serviceDisplayTextView.setText(selectedService.getName());
+        
+        searchForServiceProviderButton.setEnabled(true);
+        
+    }
+    
+    private void updateAvailability(Availability availability) {
+        
+        this.availability = availability;
+        
+        availabilityTextView.setText(TimeUtil.formatAvailability(this, availability));
+        
     }
     
     private void setUseAvailability(boolean useAvailability) {
         
         this.useAvailability = useAvailability;
-    
+        
         dayOfWeekSpinner.setEnabled(useAvailability);
         availabilityTextView.setEnabled(useAvailability);
         
@@ -199,7 +220,7 @@ public class HomeOwnerSearchActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         
-        switch(item.getItemId()) {
+        switch (item.getItemId()) {
             case android.R.id.home:
                 finish();
                 return true;
@@ -208,24 +229,45 @@ public class HomeOwnerSearchActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
         
     }
-
-
+    
+    
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-
-        switch (resultCode) {
-            case ServiceSelectorActivity.SERVICE_SELECTED_RESULT:
-
-                final Service selectedService = (Service) data.getSerializableExtra(ServiceSelectorActivity.SERVICE_SELECTED_BUNDLE_ARG);
-                serviceDisplayer.setText(selectedService.getName());
+        
+        switch (requestCode) {
+            case SELECT_SERVICE_REQUEST:
+                switch (resultCode) {
+                    case ServiceSelectorActivity.SERVICE_SELECTED_RESULT:
+                        
+                        Bundle bundle = data.getExtras();
+                        
+                        Service selectedService = (Service) bundle.getSerializable(ServiceSelectorActivity.SERVICE_SELECTED_BUNDLE_ARG);
+                        
+                        updateSelectedService(selectedService);
+                        
+                        break;
+                    case ServiceSelectorActivity.NO_SERVICES_FOUND_RESULT:
+                        Toast.makeText(this, "No services were found at this time.", Toast.LENGTH_LONG).show();
+                        break;
+                    case ServiceSelectorActivity.CANCEL_RESULT:
+                        // No need to do anything.
+                        break;
+                }
                 break;
-            case ServiceSelectorActivity.NO_SERVICES_FOUND_RESULT:
-                Toast.makeText(this, "No services that you can add were found.", Toast.LENGTH_LONG).show();
-                break;
-            case ServiceSelectorActivity.CANCEL_RESULT:
-                // No need to do anything.
+            case EDIT_AVAILABILITY_REQUEST:
+                
+                switch(resultCode) {
+                    case AvailableTimeSlotEditorActivity.AVAILABILITY_SAVED_RESULT:
+                        
+                        Availability availability = (Availability) data.getSerializableExtra(AvailableTimeSlotEditorActivity.AVAILABILITY_BUNDLE_ARG);
+                        
+                        updateAvailability(availability);
+                        
+                        break;
+                }
+                
                 break;
         }
     }
-
+    
 }
