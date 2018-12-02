@@ -3,25 +3,28 @@ package com.arom.jobzi.profile;
 import com.arom.jobzi.service.Availability;
 import com.arom.jobzi.service.Service;
 
+import java.util.HashMap;
 import java.util.List;
 
 public class ServiceProviderProfile extends UserProfile {
 	
-	private List<Availability> availabilities;
+	private HashMap<String, List<Availability>> availabilities;
 	private List<Service> services;
 	
 	private String address;
 	private String phoneNumber;
 	private String companyName;
 	private String description;
+
+	private double rating;
 	
 	private boolean licensed;
 	
-	public List<Availability> getAvailabilities() {
+	public HashMap<String, List<Availability>> getAvailabilities() {
 		return availabilities;
 	}
 	
-	public void setAvailabilities(List<Availability> availabilities) {
+	public void setAvailabilities(HashMap<String, List<Availability>> availabilities) {
 		this.availabilities = availabilities;
 	}
 	
@@ -64,8 +67,16 @@ public class ServiceProviderProfile extends UserProfile {
 	public void setDescription(String description) {
 		this.description = description;
 	}
-	
-	public boolean isLicensed() {
+
+    public double getRating() {
+        return rating;
+    }
+
+    public void setRating(double rating) {
+        this.rating = rating;
+    }
+
+    public boolean isLicensed() {
 		return licensed;
 	}
 	
@@ -82,6 +93,7 @@ public class ServiceProviderProfile extends UserProfile {
 			setAddress(serviceProviderProfile.getAddress());
 			setPhoneNumber(serviceProviderProfile.getPhoneNumber());
 			setDescription(serviceProviderProfile.getDescription());
+			setRating(serviceProviderProfile.getRating());
 			setLicensed(serviceProviderProfile.isLicensed());
 			
 			setAvailabilities(serviceProviderProfile.getAvailabilities());

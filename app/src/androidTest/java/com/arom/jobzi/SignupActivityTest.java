@@ -77,11 +77,33 @@ public class SignupActivityTest {
 	@UiThreadTest
 	public void checkEmail() throws Exception {
 		
-		assertNotNull(suActivity.findViewById(R.id.lastNameEditText));
+		assertNotNull(suActivity.findViewById(R.id.emailEditText));
 		text = suActivity.findViewById(R.id.lastNameEditText);
 		text.setText("myemail@uottawa.ca");
 		String name = text.getText().toString();
 		assertEquals("myemail@uottawa.ca", name);
 	}
+
+
+	@Test
+	@UiThreadTest
+	public void checkAddress() throws Exception {
+
+		text = suActivity.findViewById(R.id.addressEditText);
+		text.setText("123 Test Avenue");
+		String name = text.getText().toString();
+		assertEquals("123 Test Avenue", name);
+	}
+
+	@Test
+	@UiThreadTest
+	public void checkCompany() throws Exception {
+
+		text = suActivity.findViewById(R.id.companyNameEditText);
+		text.setText("Testing Co.");
+		String name = text.getText().toString();
+		assertEquals("Testing Co.", name);
+	}
+
 
 }
