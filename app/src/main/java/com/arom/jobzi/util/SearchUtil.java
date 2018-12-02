@@ -2,6 +2,7 @@ package com.arom.jobzi.util;
 
 import android.app.Activity;
 import android.support.annotation.NonNull;
+import android.util.Log;
 
 import com.arom.jobzi.account.AccountType;
 import com.arom.jobzi.profile.ServiceProviderProfile;
@@ -23,7 +24,7 @@ public final class SearchUtil {
 
     private SearchUtil() {}
     
-    public static void displaySearchResult(Activity activity, SearchQuery searchQuery) {
+    public static void displaySearchResult(Activity activity, final SearchQuery searchQuery) {
     
         DatabaseReference accountsDatabase = Util.getInstance().getAccountsDatabase();
         DatabaseReference profilesDatabase = Util.getInstance().getProfilesDatabase();
@@ -41,7 +42,58 @@ public final class SearchUtil {
                 
                 List<User> matchingUsers = new ArrayList<User>();
                 
-                
+                searchResult.setServiceProviders(matchingUsers);
+
+                HashMap<User, List<Availability>> thisDayMatchingActivities = new HashMap<User, List<Availability>>();
+
+                for(DataSnapshot userSnapshot: accountsSnapshot.getChildren()) {
+
+                    User user = userSnapshot.getValue(User.class);
+
+                    if(!user.getAccountType().equals(AccountType.SERVICE_PROVIDER)) {
+                        continue;
+                    }
+
+                    ServiceProviderProfile profile = profilesSnapshot.child(user.getId()).getValue(ServiceProviderProfile.class);
+
+                    if(!profile.getServices().contains(searchQuery.getService())) {
+                        continue;
+                    }
+
+                    if(searchQuery.getWeekday() == null || searchQuery.getAvailability() == null) {
+                        matchingUsers.add(user);
+                        continue;
+                    }
+
+                    Calendar searchedStartTime = Calendar.getInstance();
+                    searchedStartTime.setTime(searchQuery.getAvailability().getStartTime());
+
+                    Calendar searchedEndTime = Calendar.getInstance();
+                    searchedEndTime.setTime(searchQuery.getAvailability().getEndTime());
+
+                    List<Availability> userAvailabilities = profile.getAvailabilities().get(searchQuery.getWeekday().getName());
+                    List<Availability> matchingAvailabilities = new ArrayList<Availability>();
+
+                    thisDayMatchingActivities.put(user, matchingAvailabilities);
+
+                    for(Availability userAvailability: userAvailabilities) {
+
+                        Calendar startTime = Calendar.getInstance();
+                        startTime.setTime(userAvailability.getStartTime());
+
+                        Calendar endTime = Calendar.getInstance();
+                        endTime.setTime(userAvailability.getEndTime());
+
+                        if (TimeUtil.compareTo(startTime, searchedStartTime) >= 0 &&
+                                TimeUtil.compareTo(endTime, searchedEndTime) <= 0) {
+                            matchingAvailabilities.add(userAvailability);
+                        }
+
+                    }
+
+                }
+
+                Log.d("search-debug", "Matched these service providers:\n" + matchingUsers.toString() + "\nWith these availabilities:\n" + thisDayMatchingActivities.toString());
             
             }
     
@@ -50,94 +102,7 @@ public final class SearchUtil {
         
             }
         });
-        
-        accountsDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-        
-                SearchResult searchResult = new SearchResult();
-                
-                List<User> matchingUsers = new ArrayList<User>();
-                
-                searchResult.setServiceProviders(matchingUsers);
-                
-                for(DataSnapshot userSnapshot: dataSnapshot.getChildren()) {
-                
-                    User user = userSnapshot.getValue(User.class);
-                    
-                    if(user.getAccountType() != AccountType.SERVICE_PROVIDER) {
-                        continue;
-                    }
-    
-                    HashMap<User, List<Availability>> dailyMatchingAvailabilities = new HashMap<User, List<Availability>>();
-    
-                    searchResult.setAvailabilities(dailyMatchingAvailabilities);
-                    
-                    profilesDatabase.child(user.getId()).addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-    
-                            ServiceProviderProfile profile = dataSnapshot.getValue(ServiceProviderProfile.class);
-                            
-                            if(!profile.getServices().contains(searchQuery.getService())) {
-                                return;
-                            }
-                            
-                            HashMap<String, List<Availability>> dailyAvailabilities = profile.getAvailabilities();
-                            
-                            if(searchQuery.getWeekday() != null && searchQuery.getAvailability() != null) {
-    
-                                Calendar searchedStartTime = Calendar.getInstance();
-                                searchedStartTime.setTime(searchQuery.getAvailability().getStartTime());
-    
-                                Calendar searchedEndTime = Calendar.getInstance();
-                                searchedEndTime.setTime(searchQuery.getAvailability().getEndTime());
-    
-                                List<Availability> availabilities = dailyAvailabilities.get(searchQuery.getWeekday().getName());
-                                List<Availability> matchingAvailabilities = null;
-;
-                                for(Availability availability: availabilities) {
-    
-                                    Calendar startTime = Calendar.getInstance();
-                                    startTime.setTime(availability.getStartTime());
-                                    
-                                    Calendar endTime = Calendar.getInstance();
-                                    endTime.setTime(availability.getEndTime());
-                                    
-                                    if(TimeUtil.compareTo(startTime, searchedStartTime) >= 0 &&
-                                            TimeUtil.compareTo(endTime, searchedEndTime) <= 0) {
-                                        
-                                        if(matchingAvailabilities == null) {
-                                            matchingAvailabilities = new ArrayList<Availability>();
-                                            dailyMatchingAvailabilities.put(user, matchingAvailabilities);
-                                        }
-                                        
-                                        matchingAvailabilities.add(availability);
-                                        
-                                    }
-                                    
-                                }
-                                
-                            }
-                            
-                        }
-    
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError databaseError) {
-        
-                        }
-                    });
-                    
-                }
-                
-            }
-    
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-        
-            }
-        });
-        
+
     }
     
     public static class SearchResult {

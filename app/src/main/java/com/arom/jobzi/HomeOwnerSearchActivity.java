@@ -18,6 +18,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.arom.jobzi.service.Availability;
+import com.arom.jobzi.service.Service;
+import com.arom.jobzi.util.SearchUtil;
 import com.arom.jobzi.util.TimeUtil;
 
 import java.util.Calendar;
@@ -25,7 +27,8 @@ import java.util.Calendar;
 public class HomeOwnerSearchActivity extends AppCompatActivity {
 
     private Availability availability;
-    
+    private Service service;
+
     private Spinner dayOfWeekSpinner;
     private TextView availabilityTextView;
     
@@ -38,14 +41,16 @@ public class HomeOwnerSearchActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_owner_search);
-    
+
         ActionBar actionBar = getSupportActionBar();
         
         if(actionBar != null) {
             actionBar.setHomeButtonEnabled(true);
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
-        
+
+        // TODO: Add set service button functionality. Maybe even use service_item layout to display it.
+
         dayOfWeekSpinner = findViewById(R.id.dayOfWeekSpinner);
         ArrayAdapter<TimeUtil.Weekday> spinnerArrayAdapter = new ArrayAdapter<TimeUtil.Weekday>(this, android.R.layout.simple_spinner_dropdown_item, TimeUtil.Weekday.values()) {
             
@@ -120,8 +125,21 @@ public class HomeOwnerSearchActivity extends AppCompatActivity {
         searchForServiceProviderButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-        
-            
+
+                SearchUtil.SearchQuery searchQuery = new SearchUtil.SearchQuery();
+
+                searchQuery.setService();
+
+                if(useAvailability) {
+                    searchQuery.setAvailability(availability);
+                    searchQuery.setWeekday((TimeUtil.Weekday) dayOfWeekSpinner.getSelectedItem());
+                }
+
+                if(useRating) {
+                    searchQuery.setRating(ratingBar.getRating());
+                }
+
+                SearchUtil.displaySearchResult(HomeOwnerSearchActivity.this, searchQuery);
             
             }
         });
