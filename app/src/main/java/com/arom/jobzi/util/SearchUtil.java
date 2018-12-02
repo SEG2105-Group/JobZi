@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.WindowManager;
+import android.widget.Toast;
 
 import com.arom.jobzi.ServiceProviderSelectorActivity;
 import com.arom.jobzi.account.AccountType;
@@ -30,7 +31,7 @@ public final class SearchUtil {
     private SearchUtil() {
     }
     
-    public static void displaySearchResult(Activity activity, final SearchQuery searchQuery) {
+    public static void displaySearchResult(final Activity activity, final SearchQuery searchQuery) {
         
         DatabaseReference database = FirebaseDatabase.getInstance().getReference();
         
@@ -104,14 +105,23 @@ public final class SearchUtil {
                     
                 }
                 
-                Log.d("search-debug", "Matched these service providers:\n" + matchingUsers.toString() + "\nWith these availabilities:\n" + thisDayMatchingActivities.toString());
-                
                 activity.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
                 
+                if(matchingUsers.isEmpty()) {
+    
+                    Toast.makeText(activity, "No service providers were found given the search criteria.", Toast.LENGTH_LONG).show();
+                    return;
+                    
+                }
+    
+                Log.d("search-debug", "Matched these service providers:\n" + matchingUsers.toString() + "\nWith these availabilities:\n" + thisDayMatchingActivities.toString());
+    
                 Intent toServiceProviderSelectorIntent = new Intent(activity, ServiceProviderSelectorActivity.class);
                 
                 Bundle bundle = new Bundle();
                 bundle.putSerializable(ServiceProviderSelectorActivity.SEARCH_RESULT_BUNDLE_ARG, searchResult);
+                
+                toServiceProviderSelectorIntent.putExtras(bundle);
                 
                 activity.startActivity(toServiceProviderSelectorIntent);
                 

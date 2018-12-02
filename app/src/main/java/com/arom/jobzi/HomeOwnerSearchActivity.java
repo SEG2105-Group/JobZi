@@ -22,6 +22,7 @@ import android.widget.Toast;
 import com.arom.jobzi.search.SearchQuery;
 import com.arom.jobzi.service.Availability;
 import com.arom.jobzi.service.Service;
+import com.arom.jobzi.user.User;
 import com.arom.jobzi.util.SearchUtil;
 import com.arom.jobzi.util.TimeUtil;
 
@@ -31,6 +32,7 @@ public class HomeOwnerSearchActivity extends AppCompatActivity {
     
     private static final int EDIT_AVAILABILITY_REQUEST = 0;
     private static final int SELECT_SERVICE_REQUEST = 1;
+    private static final int SELECT_SERVICE_PROVIDER_REQUEST = 2;
     
     private Availability availability;
     private Service selectedService;
@@ -256,7 +258,7 @@ public class HomeOwnerSearchActivity extends AppCompatActivity {
                 break;
             case EDIT_AVAILABILITY_REQUEST:
                 
-                switch(resultCode) {
+                switch (resultCode) {
                     case AvailableTimeSlotEditorActivity.AVAILABILITY_SAVED_RESULT:
                         
                         Availability availability = (Availability) data.getSerializableExtra(AvailableTimeSlotEditorActivity.AVAILABILITY_BUNDLE_ARG);
@@ -267,6 +269,25 @@ public class HomeOwnerSearchActivity extends AppCompatActivity {
                 }
                 
                 break;
+            case SELECT_SERVICE_PROVIDER_REQUEST:
+                
+                switch (resultCode) {
+                    case ServiceProviderSelectorActivity.SERVICE_PROVIDER_SELECTED_RESULT:
+                        
+                        Bundle bundle = data.getExtras();
+                        
+                        User user = (User) bundle.getSerializable(ServiceProviderSelectorActivity.SELECTED_SERVICE_PROVIDER_BUNDLE_ARG);
+                        
+                        finish();
+                        
+                        break;
+                    case ServiceProviderSelectorActivity.CANCEL_RESULT:
+                        // No need to do anything.
+                        break;
+                }
+                
+                break;
+            
         }
     }
     

@@ -42,6 +42,8 @@
 		<activity android:name=".HomeOwnerSearchActivity"/>
 		<activity android:name=".ServiceProviderSelectorActivity">
 		</activity>
+		<activity android:name=".RatingActivity">
+		</activity>
 	</application>
 
 </manifest>
