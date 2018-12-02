@@ -16,12 +16,23 @@ import android.widget.CompoundButton;
 import android.widget.RatingBar;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.arom.jobzi.profile.ServiceProviderProfile;
+import com.arom.jobzi.profile.UserProfile;
 import com.arom.jobzi.service.Availability;
 import com.arom.jobzi.service.Service;
 import com.arom.jobzi.util.SearchUtil;
 import com.arom.jobzi.util.TimeUtil;
+import com.arom.jobzi.util.Util;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 
 public class HomeOwnerSearchActivity extends AppCompatActivity {
@@ -36,7 +47,10 @@ public class HomeOwnerSearchActivity extends AppCompatActivity {
     
     private boolean useAvailability;
     private boolean useRating;
-    
+
+    private TextView serviceDisplayer;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,6 +82,7 @@ public class HomeOwnerSearchActivity extends AppCompatActivity {
             }
             
         };
+
         spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         dayOfWeekSpinner.setAdapter(spinnerArrayAdapter);
         dayOfWeekSpinner.setSelection(TimeUtil.Weekday.MONDAY.ordinal());
@@ -151,7 +166,17 @@ public class HomeOwnerSearchActivity extends AppCompatActivity {
                 HomeOwnerSearchActivity.this.finish();
             }
         });
-    
+
+        serviceDisplayer = findViewById(R.id.serviceDisplayer);
+        Button setService = findViewById(R.id.setServiceButton);
+        setService.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(HomeOwnerSearchActivity.this, ServiceSelectorActivity.class);
+                startActivityForResult(intent,ServiceSelectorActivity.SERVICE_SELECTED_RESULT);
+            }
+        });
+
     }
     
     private void setUseAvailability(boolean useAvailability) {
@@ -183,4 +208,24 @@ public class HomeOwnerSearchActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
         
     }
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        switch (resultCode) {
+            case ServiceSelectorActivity.SERVICE_SELECTED_RESULT:
+
+                final Service selectedService = (Service) data.getSerializableExtra(ServiceSelectorActivity.SERVICE_SELECTED_BUNDLE_ARG);
+                serviceDisplayer.setText(selectedService.getName());
+                break;
+            case ServiceSelectorActivity.NO_SERVICES_FOUND_RESULT:
+                Toast.makeText(this, "No services that you can add were found.", Toast.LENGTH_LONG).show();
+                break;
+            case ServiceSelectorActivity.CANCEL_RESULT:
+                // No need to do anything.
+                break;
+        }
+    }
+
 }
