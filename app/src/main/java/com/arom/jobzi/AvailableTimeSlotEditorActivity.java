@@ -23,9 +23,8 @@ public class AvailableTimeSlotEditorActivity extends AppCompatActivity {
     public static final String AVAILABILITY_INDEX_BUNDLE_ARG = "availability_index";
     public static final String OTHER_AVAILABILITIES_BUNDLE_ARG = "other_availabilities";
     
-    public static final int AVAILABILITY_ADDED_RESULT = 0;
-    public static final int AVAILABILITY_SAVED_RESULT = 1;
-    public static final int CANCEL_RESULT = 2;
+    public static final int AVAILABILITY_SAVED_RESULT = 0;
+    public static final int CANCEL_RESULT = 1;
     
     private TextView startTimeTextView;
     private TextView endTimeTextView;
@@ -68,12 +67,17 @@ public class AvailableTimeSlotEditorActivity extends AppCompatActivity {
         availability = (Availability) bundle.getSerializable(AVAILABILITY_BUNDLE_ARG);
         otherAvailabilities = (Availability[]) bundle.getSerializable(OTHER_AVAILABILITIES_BUNDLE_ARG);
         
-        if(otherAvailabilities == null) {
+        if (otherAvailabilities == null) {
             otherAvailabilities = new Availability[0];
         }
         
         TextView dayOfWeekTextView = findViewById(R.id.dayOfWeekTextView);
-        dayOfWeekTextView.setText(getString(R.string.day_of_week_placeholder, day));
+        
+        if (day == null) {
+            dayOfWeekTextView.setText(getString(R.string.select_time));
+        } else {
+            dayOfWeekTextView.setText(getString(R.string.day_of_week_placeholder, day));
+        }
         
         saveButton = findViewById(R.id.saveButton);
         saveButton.setOnClickListener(new View.OnClickListener() {
@@ -120,14 +124,14 @@ public class AvailableTimeSlotEditorActivity extends AppCompatActivity {
             endTime.add(Calendar.MINUTE, 30);
             
             availability.setEndTime(endTime.getTime());
-    
+            
             Availability conflicting;
             
-            if((conflicting = TimeUtil.getConflicting(startTime, endTime, otherAvailabilities)) != null) {
+            if ((conflicting = TimeUtil.getConflicting(startTime, endTime, otherAvailabilities)) != null) {
                 Toast.makeText(AvailableTimeSlotEditorActivity.this, "This time conflicts with: " + TimeUtil.formatAvailability(AvailableTimeSlotEditorActivity.this, conflicting), Toast.LENGTH_SHORT).show();
                 saveButton.setEnabled(false);
             }
-    
+            
         }
         
         updateTime();

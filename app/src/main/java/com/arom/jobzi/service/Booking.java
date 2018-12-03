@@ -4,6 +4,9 @@ import com.arom.jobzi.user.User;
 
 import java.util.Date;
 
+/**
+ * This class will not be used as the client does not require anything complicated for this.
+ */
 public class Booking {
     
     private Date day;
