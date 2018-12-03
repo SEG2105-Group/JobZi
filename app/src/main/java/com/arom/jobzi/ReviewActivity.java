@@ -9,7 +9,7 @@ import android.widget.EditText;
 import android.widget.RatingBar;
 
 import com.arom.jobzi.profile.ServiceProviderProfile;
-import com.arom.jobzi.service.Feedback;
+import com.arom.jobzi.service.Review;
 import com.arom.jobzi.user.User;
 import com.arom.jobzi.util.RatingsUtil;
 import com.arom.jobzi.util.Util;
@@ -19,14 +19,14 @@ import com.google.firebase.database.DatabaseReference;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FeedbackActivity extends AppCompatActivity {
+public class ReviewActivity extends AppCompatActivity {
     
     public static final String SERVICE_PROVIDER_BUNDLE_ARG = "service_provider";
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_feedback);
+        setContentView(R.layout.activity_review);
     
         Bundle bundle = getIntent().getExtras();
         
@@ -43,24 +43,24 @@ public class FeedbackActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                Feedback feedback = new Feedback();
+                Review review = new Review();
                 
                 double currentRating = ratingBar.getRating();
                 
-                feedback.setUserGivingFeedback(FirebaseAuth.getInstance().getCurrentUser().getUid());
-                feedback.setRating(currentRating);
-                feedback.setComment(commentEditText.getText().toString());
+                review.setUserGivingReview(FirebaseAuth.getInstance().getCurrentUser().getUid());
+                review.setRating(currentRating);
+                review.setComment(commentEditText.getText().toString());
     
                 ServiceProviderProfile profile = (ServiceProviderProfile) serviceProvider.getUserProfile();
                 
-                List<Feedback> feedbacks = profile.getFeedbacks();
+                List<Review> reviews = profile.getReviews();
                 
-                if(feedbacks == null) {
-                    feedbacks = new ArrayList<Feedback>();
-                    profile.setFeedbacks(feedbacks);
+                if(reviews == null) {
+                    reviews = new ArrayList<Review>();
+                    profile.setReviews(reviews);
                 }
                 
-                feedbacks.add(feedback);
+                reviews.add(review);
     
                 if(profile.getRating() == RatingsUtil.DEFAULT_RATING) {
                     profile.setRating(currentRating);
@@ -72,7 +72,7 @@ public class FeedbackActivity extends AppCompatActivity {
                 
                 profilesDatabase.child(serviceProvider.getId()).setValue(profile);
                 
-                FeedbackActivity.this.finish();
+                ReviewActivity.this.finish();
                 
             }
         });
@@ -81,7 +81,7 @@ public class FeedbackActivity extends AppCompatActivity {
         cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                FeedbackActivity.this.finish();
+                ReviewActivity.this.finish();
             }
         });
         
