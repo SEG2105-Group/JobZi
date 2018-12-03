@@ -1,7 +1,7 @@
 package com.arom.jobzi.profile;
 
 import com.arom.jobzi.service.Availability;
-import com.arom.jobzi.service.Feedback;
+import com.arom.jobzi.service.Review;
 import com.arom.jobzi.service.Service;
 
 import java.util.HashMap;
@@ -11,7 +11,7 @@ public class ServiceProviderProfile extends UserProfile {
     
     private HashMap<String, List<Availability>> availabilities;
     private List<Service> services;
-    private List<Feedback> feedbacks;
+    private List<Review> reviews;
     
     private String address;
     private String phoneNumber;
@@ -86,12 +86,12 @@ public class ServiceProviderProfile extends UserProfile {
         this.licensed = licensed;
     }
     
-    public List<Feedback> getFeedbacks() {
-        return feedbacks;
+    public List<Review> getReviews() {
+        return reviews;
     }
     
-    public void setFeedbacks(List<Feedback> feedbacks) {
-        this.feedbacks = feedbacks;
+    public void setReviews(List<Review> reviews) {
+        this.reviews = reviews;
     }
     
     @Override
@@ -108,7 +108,7 @@ public class ServiceProviderProfile extends UserProfile {
             
             setAvailabilities(serviceProviderProfile.getAvailabilities());
             setServices(serviceProviderProfile.getServices());
-            setFeedbacks(serviceProviderProfile.getFeedbacks());
+            setReviews(serviceProviderProfile.getReviews());
             
             return true;
             

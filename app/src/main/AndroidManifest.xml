@@ -42,7 +42,7 @@
 		<activity android:name=".HomeOwnerSearchActivity"/>
 		<activity android:name=".ServiceProviderSelectorActivity">
 		</activity>
-		<activity android:name=".FeedbackActivity">
+		<activity android:name=".ReviewActivity">
 		</activity>
 	</application>
 

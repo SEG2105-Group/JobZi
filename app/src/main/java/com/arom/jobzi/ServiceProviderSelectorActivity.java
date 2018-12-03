@@ -50,10 +50,10 @@ public class ServiceProviderSelectorActivity extends AppCompatActivity implement
     @Override
     public void onSelect(User serviceProvider, Availability availability) {
     
-        Intent toFeedbackActivity = new Intent(this, FeedbackActivity.class);
+        Intent toFeedbackActivity = new Intent(this, ReviewActivity.class);
         
         Bundle bundle = new Bundle();
-        bundle.putSerializable(FeedbackActivity.SERVICE_PROVIDER_BUNDLE_ARG, serviceProvider);
+        bundle.putSerializable(ReviewActivity.SERVICE_PROVIDER_BUNDLE_ARG, serviceProvider);
         
         toFeedbackActivity.putExtras(bundle);
         

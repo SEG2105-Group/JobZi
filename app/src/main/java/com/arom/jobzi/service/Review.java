@@ -2,22 +2,22 @@ package com.arom.jobzi.service;
 
 import java.io.Serializable;
 
-public class Feedback implements Serializable {
+public class Review implements Serializable {
     
     private static final float serialVersionUID = 1F;
     
-    private String userGivingFeedback;
+    private String userGivingReview;
     
     private String comment;
     
     private double rating;
     
-    public String getUserGivingFeedback() {
-        return userGivingFeedback;
+    public String getUserGivingReview() {
+        return userGivingReview;
     }
     
-    public void setUserGivingFeedback(String userGivingFeedback) {
-        this.userGivingFeedback = userGivingFeedback;
+    public void setUserGivingReview(String userGivingReview) {
+        this.userGivingReview = userGivingReview;
     }
     
     public String getComment() {
