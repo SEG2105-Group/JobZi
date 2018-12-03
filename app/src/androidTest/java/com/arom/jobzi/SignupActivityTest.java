@@ -85,25 +85,5 @@ public class SignupActivityTest {
 	}
 
 
-	@Test
-	@UiThreadTest
-	public void checkAddress() throws Exception {
-
-		text = suActivity.findViewById(R.id.addressEditText);
-		text.setText("123 Test Avenue");
-		String name = text.getText().toString();
-		assertEquals("123 Test Avenue", name);
-	}
-
-	@Test
-	@UiThreadTest
-	public void checkCompany() throws Exception {
-
-		text = suActivity.findViewById(R.id.companyNameEditText);
-		text.setText("Testing Co.");
-		String name = text.getText().toString();
-		assertEquals("Testing Co.", name);
-	}
-
 
 }
