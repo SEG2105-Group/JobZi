@@ -4,7 +4,7 @@ import android.support.annotation.Nullable;
 
 import java.io.Serializable;
 
-public class Service implements Serializable {//, Parcelable {
+public class Service implements Serializable {
     
     private static final float serialVersionUID = 2F;
     

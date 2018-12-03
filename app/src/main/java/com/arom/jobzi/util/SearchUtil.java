@@ -95,8 +95,10 @@ public final class SearchUtil {
                         Calendar endTime = Calendar.getInstance();
                         endTime.setTime(userAvailability.getEndTime());
                         
-                        if (TimeUtil.compareTo(startTime, searchedStartTime) >= 0 &&
-                                TimeUtil.compareTo(endTime, searchedEndTime) <= 0) {
+                        boolean startTimeInRange = TimeUtil.compareTo(startTime, searchedStartTime) >= 0;
+                        boolean endTimeInRange = TimeUtil.compareTo(endTime, searchedEndTime) <= 0;
+                        
+                        if (startTimeInRange && endTimeInRange) {
                             
                             if (thisDayMatchingActivities.get(user) == null) {
                                 
