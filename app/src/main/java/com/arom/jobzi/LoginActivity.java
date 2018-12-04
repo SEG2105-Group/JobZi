@@ -65,7 +65,31 @@ public class LoginActivity extends AppCompatActivity {
 
         final String email = emailTextView.getText().toString();
         final String password = passwordTextView.getText().toString();
-
+        
+        // This code is sadly repeated in the UserProfileUtil class but this use case is incompatible
+        // with the methods in that class.
+        if(email.isEmpty()) {
+            
+            Toast.makeText(this, "Please provide an email address.", Toast.LENGTH_SHORT).show();
+    
+            loginButton.setEnabled(true);
+            signupButton.setEnabled(true);
+            
+            return;
+            
+        }
+        
+        if(password.isEmpty()) {
+    
+            Toast.makeText(this, "Please provide a password.", Toast.LENGTH_SHORT).show();
+    
+            loginButton.setEnabled(true);
+            signupButton.setEnabled(true);
+    
+            return;
+    
+        }
+        
         auth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
