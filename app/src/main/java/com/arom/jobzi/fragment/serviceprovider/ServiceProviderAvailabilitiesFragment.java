@@ -106,7 +106,7 @@ public class ServiceProviderAvailabilitiesFragment extends Fragment implements A
     
     @Override
     public void onEdit(String day, Availability availability, int index) {
-    
+        
         List<Availability> availabilities = availabilitiesAdapter.getAvailabilities(day);
         List<Availability> otherAvailabilities = new ArrayList<Availability>(availabilities);
         
@@ -128,22 +128,23 @@ public class ServiceProviderAvailabilitiesFragment extends Fragment implements A
     
     @Override
     public void onDeleteAvailability(final String day, final int index) {
-    
+        
         final DeleteAvailabilityDialogFragment deleteAvailabilityDialogFragment = new DeleteAvailabilityDialogFragment();
         
         Bundle bundle = new Bundle();
         bundle.putSerializable(DeleteAvailabilityDialogFragment.LISTENER_BUNDLE_ARG, new DeleteAvailabilityDialogFragment.DeleteAvailabilityListener() {
             @Override
             public void onDelete(final String day, final int index) {
-    
+                
                 FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                 final DatabaseReference userProfileDatabase = Util.getInstance().getProfilesDatabase().child(user.getUid());
-    
+                
                 userProfileDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-            
+                        
                         ServiceProviderProfile profile = dataSnapshot.getValue(ServiceProviderProfile.class);
+                        
                         profile.getAvailabilities().get(day).remove(index);
                         
                         userProfileDatabase.setValue(profile);
@@ -151,13 +152,13 @@ public class ServiceProviderAvailabilitiesFragment extends Fragment implements A
                         deleteAvailabilityDialogFragment.dismiss();
                         
                     }
-        
+                    
                     @Override
                     public void onCancelled(@NonNull DatabaseError databaseError) {
-            
+                    
                     }
                 });
-    
+                
             }
         });
         bundle.putString(DeleteAvailabilityDialogFragment.DAY_BUNDLE_ARG, day);

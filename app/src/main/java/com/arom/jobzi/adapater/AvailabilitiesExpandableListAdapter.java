@@ -36,7 +36,7 @@ public class AvailabilitiesExpandableListAdapter extends BaseExpandableListAdapt
         
         dailyAvailabilities = new HashMap<String, List<Availability>>();
         
-        for(String dayOfWeek: daysOfWeekList) {
+        for (String dayOfWeek : daysOfWeekList) {
             dailyAvailabilities.put(dayOfWeek, new ArrayList<Availability>());
         }
         
@@ -48,26 +48,34 @@ public class AvailabilitiesExpandableListAdapter extends BaseExpandableListAdapt
         
         HashMap<String, List<Availability>> newDailyAvailabilities = profile.getAvailabilities();
         
-        if(newDailyAvailabilities == null) {
+        if (newDailyAvailabilities == null) {
+            
+            for (List<Availability> availabilityList : dailyAvailabilities.values()) {
+                availabilityList.clear();
+            }
+            
+            notifyDataSetChanged();
+            
             return;
+            
         }
         
-        for(String dayOfWeek: daysOfWeekList) {
+        for (String dayOfWeek : daysOfWeekList) {
             
             List<Availability> newAvailabilities = newDailyAvailabilities.get(dayOfWeek);
             
             List<Availability> availabilities = dailyAvailabilities.get(dayOfWeek);
             
-            if(newAvailabilities == null) {
+            if (newAvailabilities == null) {
                 
-                if(!availabilities.isEmpty()) {
+                if (!availabilities.isEmpty()) {
                     availabilities.clear();
                 }
                 
             } else {
                 availabilities.clear();
                 availabilities.addAll(newAvailabilities);
-    
+                
             }
             
         }
