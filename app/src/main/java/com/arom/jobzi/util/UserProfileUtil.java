@@ -147,6 +147,16 @@ public final class UserProfileUtil {
         
     }
     
+    /**
+     * Validates the <code>user</code> and <code>password</code> provided using {@link #validateUserInfo(User, String)}
+     * <i>and</i> uses the provided <code>context</code> to display an appropriate <code>Toast</code> detailing the
+     * exact error.
+     *
+     * @param context
+     * @param user
+     * @param password
+     * @return <code>true</code> if the information in <code>user</code> is valid and <code>false</code> otherise.
+     */
     public boolean validateUserInfoWithError(Context context, User user, String password) {
         
         ValidationResult validationResult = validateUserInfo(user, password);
