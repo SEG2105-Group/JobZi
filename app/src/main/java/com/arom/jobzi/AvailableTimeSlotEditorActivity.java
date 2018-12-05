@@ -112,19 +112,14 @@ public class AvailableTimeSlotEditorActivity extends AppCompatActivity {
         
         if (availability == null) {
             
-            availability = new Availability();
+            availability = TimeUtil.createDefaultAvailability();
             
             Calendar startTime = Calendar.getInstance();
-            
-            availability.setStartTime(startTime.getTime());
-            
+            startTime.setTime(availability.getStartTime());
+    
             Calendar endTime = Calendar.getInstance();
-            endTime.setTime(startTime.getTime());
-            // Increment by 30 minutes.
-            endTime.add(Calendar.MINUTE, 30);
-            
-            availability.setEndTime(endTime.getTime());
-            
+            endTime.setTime(availability.getEndTime());
+    
             Availability conflicting;
             
             if ((conflicting = TimeUtil.getConflicting(startTime, endTime, otherAvailabilities)) != null) {

@@ -14,6 +14,30 @@ public final class TimeUtil {
     
     private TimeUtil() {}
     
+    /**
+     * Returns the availability used by certain activities to have an initial availability
+     * set (i.e. a <i>default</i> availability.
+     * <p>
+     * Can be modified in the future to return an availability with start/end times that are,
+     * for example, locked to 15-minute intervals and are, by default, an hour apart.
+     * </p>
+     *
+     * @return
+     */
+    public static Availability createDefaultAvailability() {
+        
+        Availability availability = new Availability();
+        
+        Calendar currentCalendar = Calendar.getInstance();
+        availability.setStartTime(currentCalendar.getTime());
+        
+        currentCalendar.add(Calendar.MINUTE, 30);
+        availability.setEndTime(currentCalendar.getTime());
+        
+        return availability;
+        
+    }
+    
     public static String formatAvailability(Context context, Availability availability) {
         
         return formatTime(context, availability.getStartTime()) + " - " + formatTime(context, availability.getEndTime());

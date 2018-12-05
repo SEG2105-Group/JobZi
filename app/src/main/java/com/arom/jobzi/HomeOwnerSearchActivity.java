@@ -26,8 +26,6 @@ import com.arom.jobzi.user.User;
 import com.arom.jobzi.util.SearchUtil;
 import com.arom.jobzi.util.TimeUtil;
 
-import java.util.Calendar;
-
 public class HomeOwnerSearchActivity extends AppCompatActivity {
     
     private static final int EDIT_AVAILABILITY_REQUEST = 0;
@@ -84,10 +82,7 @@ public class HomeOwnerSearchActivity extends AppCompatActivity {
         
         availabilityTextView = findViewById(R.id.availabilityTextView);
         
-        availability = new Availability();
-        availability.setStartTime(Calendar.getInstance().getTime());
-        availability.setEndTime(Calendar.getInstance().getTime());
-        
+        availability = TimeUtil.createDefaultAvailability();
         availabilityTextView.setText(TimeUtil.formatAvailability(this, availability));
         
         availabilityTextView.setOnClickListener(new View.OnClickListener() {
