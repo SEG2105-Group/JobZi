@@ -8,7 +8,7 @@
     android:layout_marginLeft="16dp"
     android:layout_marginRight="16dp"
               android:orientation="vertical"
-    tools:context=".fragment.UserListFragment"
+    tools:context=".fragment.admin.AdminUsersFragment"
     tools:listitem="@layout/user_item" >
 
 	<ListView

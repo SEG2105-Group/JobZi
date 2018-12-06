@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	xmlns:tools="http://schemas.android.com/tools"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	tools:context=".ReviewActivity">
+
+	<TextView
+		android:id="@+id/ratingTextView"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_marginLeft="16dp"
+		android:layout_marginStart="16dp"
+		android:layout_marginTop="16dp"
+		android:text="@string/rating"
+		android:textStyle="bold"
+		android:textSize="24sp"
+		app:layout_constraintTop_toTopOf="parent"
+		app:layout_constraintLeft_toLeftOf="parent"/>
+
+	<RatingBar
+		android:id="@+id/ratingBar"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		app:layout_constraintTop_toBottomOf="@id/ratingTextView"
+		app:layout_constraintLeft_toLeftOf="@id/ratingTextView"/>
+
+	<TextView
+		android:id="@+id/commentTextView"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_marginLeft="16dp"
+		android:layout_marginStart="16dp"
+		android:text="@string/comment"
+		android:textStyle="bold"
+		android:textSize="24sp"
+		app:layout_constraintTop_toBottomOf="@id/ratingBar"
+		app:layout_constraintLeft_toLeftOf="parent"/>
+
+	<EditText
+		android:id="@+id/commentEditText"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_marginLeft="16dp"
+		android:layout_marginStart="16dp"
+		android:layout_marginRight="16dp"
+		android:layout_marginEnd="16dp"
+		android:inputType="textMultiLine"
+		app:layout_constraintTop_toBottomOf="@id/commentTextView"/>
+
+	<Button
+		android:id="@+id/saveButton"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_marginTop="16dp"
+		android:textAllCaps="false"
+		android:text="@string/save"
+		app:layout_constraintLeft_toLeftOf="@id/commentEditText"
+		app:layout_constraintRight_toRightOf="@id/commentEditText"
+		app:layout_constraintTop_toBottomOf="@id/commentEditText"/>
+
+	<Button
+		android:id="@+id/cancelButton"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_marginTop="16dp"
+		android:textAllCaps="false"
+		android:text="@string/cancel"
+		app:layout_constraintLeft_toLeftOf="@id/saveButton"
+		app:layout_constraintRight_toRightOf="@id/saveButton"
+		app:layout_constraintTop_toBottomOf="@id/saveButton"/>
+
+</android.support.constraint.ConstraintLayout>

@@ -17,30 +17,33 @@
 			android:noHistory="true">
 			<intent-filter>
 				<action android:name="android.intent.action.MAIN"/>
+				<action android:name="android.intent.action.VIEW"/>
 
 				<category android:name="android.intent.category.LAUNCHER"/>
 			</intent-filter>
 		</activity>
 		<activity
 			android:name=".LoginActivity"
-			android:label="@string/title_activity_login">
-		</activity>
+			android:label="@string/title_activity_login"/>
 		<activity
 			android:name=".SignupActivity"
 			android:label="@string/title_activity_signup"
 			android:theme="@style/AppTheme.NoActionBar"/>
 		<activity
 			android:name=".ServiceEditorActivity"
-			android:label="@string/title_activity_service_editor"/>
+			android:label="@string/title_activity_service_editor"
+			android:windowSoftInputMode="stateVisible|adjustPan"/>
 		<activity
-			android:name=".AdminActivity"
-			android:label="@string/title_activity_admin"
+			android:name=".LandingActivity"
 			android:theme="@style/AppTheme.NoActionBar"/>
-		<activity android:name=".HomeOwnerActivity"
-		          android:theme="@style/AppTheme.NoActionBar"/>
-		<activity android:name=".ServiceProviderActivity"
-		          android:theme="@style/AppTheme.NoActionBar"/>
-
+		<activity android:name=".ProfileActivity"/>
+		<activity android:name=".AvailableTimeSlotEditorActivity"/>
+		<activity android:name=".ServiceSelectorActivity"/>
+		<activity android:name=".HomeOwnerSearchActivity"/>
+		<activity android:name=".ServiceProviderSelectorActivity">
+		</activity>
+		<activity android:name=".ReviewActivity">
+		</activity>
 	</application>
 
 </manifest>

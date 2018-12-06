@@ -1,20 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="90dp"
-    android:background="@color/colorPrimary"
-    android:gravity="bottom"
-    android:orientation="vertical"
-    android:padding="15dp"
-    android:theme="@style/ThemeOverlay.AppCompat">
-<!--
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingTop="10dp"
-        android:text="userEmail"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-        android:textColor="@color/textColor"
-        android:id="@+id/userEmail_drawer"/>
--->
-</LinearLayout>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:fitsSystemWindows="true"
+              android:gravity="bottom"
+              android:theme="@style/NavHeader"
+              tools:theme="@style/NavHeader">
+
+	<LinearLayout
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:orientation="vertical"
+		android:padding="16dp">
+
+		<TextView
+			android:id="@+id/usernameNavHeader"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:textSize="24sp"
+			tools:text="SomeUsername123"/>
+
+		<TextView
+			android:id="@+id/accountTypeNavHeader"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:textSize="16sp"
+			android:textStyle="italic"
+			tools:text="Account Type"/>
+
+		<TextView
+			android:id="@+id/emailNavHeader"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:textSize="18sp"
+			tools:text="test@gmail.com"/>
+
+	</LinearLayout>
+
+</FrameLayout>
